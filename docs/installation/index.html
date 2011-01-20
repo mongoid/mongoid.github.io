@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang='en-US' xml:lang='en-US' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <title>Mongoid Documentation: Installation</title>
+    <link href='/stylesheets/docs.css' media='all' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div id='docs'>
+      <div id='page_menu'>
+        <ul>
+          <li class=''>
+            <a href='/'>Home</a>
+          </li>
+          <li class='current_page_item'>
+            <a href='/docs/installation/'>Documentation</a>
+          </li>
+          <li class=''>
+            <a href='/links/'>Links</a>
+          </li>
+          <li class=''>
+            <a href='/about/'>About</a>
+          </li>
+        </ul>
+      </div>
+      <div id='header'>
+        <a href='/'>
+          <h1 class='logo' title='[mon-goyd]'>MONGOID</h1>
+        </a>
+        <a class='docs_header' href='../installation/'>Documentation</a>
+      </div>
+      <div class='main'>
+        <div class='border'>
+          <div class='content_body colorize'>
+            <h2>Installation</h2>
+            <div class="text">&#x000A;  Get the Mongoid gem from rubygems.org:&#x000A;  <pre><code class="language-ruby">gem install mongoid --pre</code></pre>&#x000A;  For performance improvements you will want to also install the mongo c extensions if&#x000A;  compatible with your system.&#x000A;  <pre><code class="language-ruby">gem install bson_ext</code></pre>&#x000A;  For Rails applications add the gem dependency to your <tt>Gemfile</tt>:&#x000A;  <pre><code class="language-ruby">gem <span class="s"><span class="dl">"</span><span class="k">mongoid</span><span class="dl">"</span></span>, <span class="s"><span class="dl">"</span><span class="k">2.0.0.rc.6</span><span class="dl">"</span></span>&#x000A;gem <span class="s"><span class="dl">"</span><span class="k">bson_ext</span><span class="dl">"</span></span>, <span class="s"><span class="dl">"</span><span class="k">~&gt; 1.2</span><span class="dl">"</span></span></code></pre>&#x000A;  Setup of the database connection itself is handled by using automatic configuration with&#x000A;  a <tt>config/mongoid.yml</tt>. You can generate a mongoid.yml via the following command:&#x000A;  <pre><code class="language-ruby">rails generate mongoid<span class="sy">:config</span></code></pre>&#x000A;  <p>&#x000A;    Executing this will also switch your default ORM to Mongoid&#x000A;    (i.e. <tt>rails g model</tt> will now generate Mongoid <tt>Documents</tt>&#x000A;    as your models):&#x000A;  </p>&#x000A;  <p>&#x000A;    An example configuration is as follows, with the default values showing:&#x000A;  </p>&#x000A;  <tt>config/mongoid.yml</tt>:&#x000A;  <pre><code class="language-yaml"><span class="ke">defaults</span>: <span class="v">&amp;defaults</span>&#x000A;  <span class="ke">host</span>: <span class="s">localhost</span>&#x000A;  <span class="ke">slaves</span>:&#x000A;    - <span class="s">host: slave1.local</span>&#x000A;      <span class="ke">port</span>: <span class="s">27018</span>&#x000A;    - <span class="s">host: slave2.local</span>&#x000A;      <span class="ke">port</span>: <span class="s">27019</span>&#x000A;  <span class="ke">autocreate_indexes</span>: <span class="s">false</span>&#x000A;  <span class="ke">allow_dynamic_fields</span>: <span class="s">true</span>&#x000A;  <span class="ke">include_root_in_json</span>: <span class="s">false</span>&#x000A;  <span class="ke">parameterize_keys</span>: <span class="s">true</span>&#x000A;  <span class="ke">persist_in_safe_mode</span>: <span class="s">false</span>&#x000A;  <span class="ke">raise_not_found_error</span>: <span class="s">true</span>&#x000A;  <span class="ke">reconnect_time</span>: <span class="s">3</span>&#x000A;&#x000A;<span class="ke">development</span>:&#x000A;  <span class="cv">&lt;&lt;</span>: <span class="gv">*defaults</span>&#x000A;  <span class="ke">database</span>: <span class="s">control_development</span>&#x000A;&#x000A;<span class="ke">test</span>:&#x000A;  <span class="cv">&lt;&lt;</span>: <span class="gv">*defaults</span>&#x000A;  <span class="ke">database</span>: <span class="s">control_test</span>&#x000A;&#x000A;<span class="c"># set these environment variables on your prod server</span>&#x000A;<span class="ke">production</span>:&#x000A;  <span class="cv">&lt;&lt;</span>: <span class="gv">*defaults</span>&#x000A;  <span class="ke">host</span>: <span class="s">&lt;%= ENV['MONGOID_HOST'] %&gt;</span>&#x000A;  <span class="ke">port</span>: <span class="s">&lt;%= ENV['MONGOID_PORT'] %&gt;</span>&#x000A;  <span class="ke">database</span>: <span class="s">&lt;%= ENV['MONGOID_DATABASE'] %&gt;</span></code></pre>&#x000A;  <br>&#x000A;</div>&#x000A;<div class="title">Configuration</div>&#x000A;<div class="text">&#x000A;  <p>&#x000A;    Mongoid currently supports the following configuration options in&#x000A;    the mongoid.yml shown above:&#x000A;  </p>&#x000A;  <p>&#x000A;    <tt>allow_dynamic_fields</tt>: When attributes are not defined as fields but&#x000A;    added to an object, they will get fields added for them dynamically and will get&#x000A;    persisted. This defaults to true, and if set to false an error will get raised when&#x000A;    attempting to set a value that has no field defined.&#x000A;  </p>&#x000A;  <p>&#x000A;    <tt>autocreate_indexes</tt>: Defaults to false. When set to true Mongoid will attempt to&#x000A;    create indexes each time a class is loaded. This is not recommended for any environment&#x000A;    other than development or test.&#x000A;  </p>&#x000A;  <p>&#x000A;    <tt>include_root_in_json</tt>: Defaults to false. When set to true mongoid will&#x000A;    include the name of the root document and the name of each association as the&#x000A;    root element when calling <tt>#to_json</tt> on a model.&#x000A;  </p>&#x000A;  <p>&#x000A;    <tt>parameterize_keys</tt>: Tells Mongoid to convert basic special&#x000A;    characters in composite keys to SEO friendly substrings. Defaults to true.&#x000A;  </p>&#x000A;  <p>&#x000A;    <tt>persist_in_safe_mode</tt>: Tells Mongoid to perform all database&#x000A;    operations in MongoDB's safe mode. This will cause the driver to double&#x000A;    check operations and raise an error if they failed. Defaults to false,&#x000A;    switching to true will be safe but will be a performance hit.&#x000A;  </p>&#x000A;  <p>&#x000A;    <tt>raise_not_found_error</tt>: Will raise a Mongoid::Error::DocumentNotFound&#x000A;    when attempting to find a document by an id that doesnt exist.&#x000A;    Defaults to true, but when set to false will only return nil&#x000A;    for the same query.&#x000A;  </p>&#x000A;  <p>&#x000A;    <tt>reconnect_time</tt>: Tells Mongoid the max time to attempt reconnection&#x000A;    to the database if a connection failure has occured. Default is 3 seconds.&#x000A;  </p>&#x000A;  <p>&#x000A;    <tt>skip_version_check</tt>: If you are having issues authenticating against&#x000A;    MongoHQ or MongoMachine because of access to the system collection being&#x000A;    not allowed, set this to true.&#x000A;  </p>&#x000A;</div>&#x000A;<div class="title">Logging</div>&#x000A;<div class="text">&#x000A;  You can define your own logger for Mongoid if you do not want to use the default&#x000A;  Rails logger in your Rails' <tt>application.rb</tt>.&#x000A;  <pre><code class="language-ruby"><span class="r">module</span> <span class="cl">MyApplication</span>&#x000A;  <span class="r">class</span> <span class="cl">Application</span> &lt; <span class="co">Rails</span>::<span class="co">Application</span>&#x000A;    config.mongoid.logger = <span class="co">Logger</span>.new(<span class="gv">$stdout</span>, <span class="sy">:warn</span>)&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span></code></pre>&#x000A;</div>&#x000A;<div class="title">Removing Active Record</div>&#x000A;<div class="text">&#x000A;  <p>&#x000A;    Now that you have a mongoid.yml you can't wait to delete that pesky database.yml,&#x000A;    right? Do it and you'll start getting ActiveRecord errors all over the place.&#x000A;    You don't need ActiveRecord unless you're trying to use Mongo in concert&#x000A;    with a SQL database. Here's how you remove ActiveRecord from the most&#x000A;    recent version of Rails 3:&#x000A;  </p>&#x000A;  <ul>&#x000A;<li>Open <tt>yourapp/config/application.rb</tt>&#x000A;</li>&#x000A;    <li>&#x000A;      Near the top, remove the line <tt>require 'rails/all'</tt> and add the following&#x000A;      three lines so you end up with this:&#x000A;    </li>&#x000A;  </ul>&#x000A;<pre><code class="language-ruby">require <span class="s"><span class="dl">"</span><span class="k">action_controller/railtie</span><span class="dl">"</span></span>&#x000A;require <span class="s"><span class="dl">"</span><span class="k">action_mailer/railtie</span><span class="dl">"</span></span>&#x000A;require <span class="s"><span class="dl">"</span><span class="k">active_resource/railtie</span><span class="dl">"</span></span>&#x000A;require <span class="s"><span class="dl">"</span><span class="k">rails/test_unit/railtie</span><span class="dl">"</span></span></code></pre>&#x000A;  <ul>&#x000A;<li>Start up your app and welcome yourself to a life without ActiveRecord!</li>&#x000A;  </ul>&#x000A;</div>&#x000A;<div class="title">Other Languages</div>&#x000A;<div class="text">&#x000A;  <p>&#x000A;    By default Mongoid adds the I18n translation file for English. However adding new&#x000A;    languages is easy. In your application initializer (for Rails 3 it can be in <tt>config/initializers/mongoid.rb</tt>), just add the code:&#x000A;  </p>&#x000A;  <pre><code class="language-ruby"><span class="c"># adds Spanish</span>&#x000A;<span class="co">Mongoid</span>.add_language(<span class="s"><span class="dl">"</span><span class="k">es</span><span class="dl">"</span></span>)</code></pre>&#x000A;  <p>Available languages for Mongoid are:</p>&#x000A;  <ul>&#x000A;<li>&#x000A;<tt>es</tt>: Spanish</li>&#x000A;    <li>&#x000A;<tt>fr</tt>: French</li>&#x000A;    <li>&#x000A;<tt>it</tt>: Italian</li>&#x000A;    <li>&#x000A;<tt>pl</tt>: Polish</li>&#x000A;    <li>&#x000A;<tt>pt</tt>: Portuguese</li>&#x000A;    <li>&#x000A;<tt>sv</tt>: Swedish</li>&#x000A;  </ul>&#x000A;<p>You can also just include them all by:</p>&#x000A;  <pre><code class="language-ruby"><span class="c"># include all language that Mongoid knows about</span>&#x000A;<span class="co">Mongoid</span>.add_language(<span class="s"><span class="dl">"</span><span class="k">*</span><span class="dl">"</span></span>)</code></pre>&#x000A;</div>&#x000A;<div class="title">Not Using Rails 3?</div>&#x000A;<div class="text">&#x000A;  You can initialize Mongoid in its configuration block, either by calling the above&#x000A;  mentioned methods directly or using <tt>from_hash</tt> to load in a mongoid.yml:&#x000A;  <pre><code class="language-ruby"><span class="co">Mongoid</span>.configure <span class="r">do</span> |config|&#x000A;  name = <span class="s"><span class="dl">"</span><span class="k">control_development</span><span class="dl">"</span></span>&#x000A;  host = <span class="s"><span class="dl">"</span><span class="k">localhost</span><span class="dl">"</span></span>&#x000A;  config.master = <span class="co">Mongo</span>::<span class="co">Connection</span>.new.db(name)&#x000A;  config.slaves = [&#x000A;    <span class="co">Mongo</span>::<span class="co">Connection</span>.new(host, <span class="i">27018</span>, <span class="sy">:slave_ok</span> =&gt; <span class="pc">true</span>).db(name)&#x000A;  ]&#x000A;  config.persist_in_safe_mode = <span class="pc">false</span>&#x000A;<span class="r">end</span></code></pre>&#x000A;  OR&#x000A;  <pre><code class="language-ruby">file_name = <span class="co">File</span>.join(<span class="co">File</span>.dirname(<span class="pc">__FILE__</span>), <span class="s"><span class="dl">"</span><span class="k">..</span><span class="dl">"</span></span>, <span class="s"><span class="dl">"</span><span class="k">config</span><span class="dl">"</span></span>, <span class="s"><span class="dl">"</span><span class="k">mongoid.yml</span><span class="dl">"</span></span>)&#x000A;<span class="iv">@settings</span> = <span class="co">YAML</span>.load(<span class="co">ERB</span>.new(<span class="co">File</span>.new(file_name).read).result)&#x000A;&#x000A;<span class="co">Mongoid</span>.configure <span class="r">do</span> |config|&#x000A;  config.from_hash(<span class="iv">@settings</span>[<span class="co">ENV</span>[<span class="s"><span class="dl">'</span><span class="k">RACK_ENV</span><span class="dl">'</span></span>]])&#x000A;<span class="r">end</span></code></pre>&#x000A;</div>&#x000A;&#x000A;
+          </div>
+        </div>
+      </div>
+      <div id='rightcolumn'>
+        <div class='box' id='search'>
+          <div class='roundedbox'>
+            <h3>Contents</h3>
+          </div>
+        </div>
+        <ul class='outline'>
+          <li><span class="active" title="You're here.">Installation</span></li>
+          <li><a href="/docs/documents/">Documents</a></li>
+          <li><a href="/docs/associations/">Associations</a></li>
+          <li><a href="/docs/persistence/">Persistence</a></li>
+          <li><a href="/docs/querying/">Querying</a></li>
+          <li><a href="/docs/callbacks/">Callbacks</a></li>
+          <li><a href="/docs/validation/">Validation</a></li>
+          <li><a href="/docs/inheritance/">Inheritance</a></li>
+          <li><a href="/docs/indexing/">Indexing</a></li>
+          <li><a href="/docs/extras/">Extras</a></li>
+          <li><a href="/docs/rake/">Rake Tasks</a></li>
+          <li><a href="/docs/integration/">Integration</a></li>
+          <li><a href="/docs/extensions/">Extensions</a></li>
+          <li><a href="/docs/upgrading/">Upgrading</a></li>
+        </ul>
+      </div>
+      <div id='footer'>
+        <p>
+          Mongoid is maintained by <a href="http://twitter.com/modetojoy">Durran Jordan</a>, Site by <a href="http://twitter.com/railsjedi">@railsjedi</a> and <a href="http://twitter.com/fredrikhenne">@fredrikhenne</a>. Mongoid is free software under the MIT license.
+        </p>
+      </div>
+    </div>
+    <div id='ribbon'>
+      <p>
+        <a href='http://github.com/mongoid/mongoid-site' rel='me' title='Fork me on GitHub!'>Fork me on GitHub!</a>
+      </p>
+    </div>
+  </body>
+</html>

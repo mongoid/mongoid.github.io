@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang='en-US' xml:lang='en-US' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <title>
+      Mongoid
+    </title>
+    <link href='/stylesheets/home.css' rel='stylesheet' type='text/css'>
+    <script src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'></script>
+    <script src='/javascript/jquery.tools.min.js'></script>
+    <script src='/javascript/cufon-yui.js' type='text/javascript'></script>
+    <script src='/javascript/nevis_700.font.js' type='text/javascript'></script>
+    <script type='text/javascript'>
+      //<![CDATA[
+        Cufon.replace('h3.fancy');
+      //]]>
+    </script>
+  </head>
+  <body>
+    <div id='landing'>
+      <div id='page_menu'>
+        <ul>
+          <li class='current_page_item'>
+            <a href='/'>Home</a>
+          </li>
+          <li class=''>
+            <a href='/docs/installation/'>Documentation</a>
+          </li>
+          <li class=''>
+            <a href='/links/'>Links</a>
+          </li>
+          <li class=''>
+            <a href='/about/'>About</a>
+          </li>
+        </ul>
+      </div>
+      <div id='landing_box'>
+        <div class="left" id="main">&#x000A;  <a class="logo" href="../" title="[mon-goyd]">Mongoid</a>&#x000A;  <p class="description">Mongoid provides an elegant way to persist and query Ruby objects to documents in MongoDB.</p>&#x000A;  <hr>&#x000A;<div class="gems">&#x000A;    <div class="gem">&#x000A;      <h3 class="fancy">Mongoid 1.x for<br>Rails 2</h3>&#x000A;      <div class="install">&#x000A;        gem install mongoid&#x000A;      </div>&#x000A;    </div>&#x000A;    <div class="gem">&#x000A;      <h3 class="fancy">Mongoid 2.x for<br>Rails 3</h3>&#x000A;      <div class="install">&#x000A;        gem install mongoid --pre&#x000A;      </div>&#x000A;    </div>&#x000A;    <div class="clear"></div>&#x000A;  </div>&#x000A;  <hr>&#x000A;</div>&#x000A;<div class="right" id="sidebar">&#x000A;  <a class="next browse" id="next_arrow"></a>&#x000A;  <div class="navi" id="slider_nav"></div>&#x000A;  <div class="scrollable" id="slider">&#x000A;    <div class="items colorize">&#x000A;      <div class="item features">&#x000A;        <div class="actions">&#x000A;          <div class="next browse">Ok, Impress Me »</div>&#x000A;        </div>&#x000A;        <h3 class="fancy">&#x000A;          Features&#x000A;        </h3>&#x000A;        <ul>&#x000A;<li>Effortless mapping of Ruby objects to documents and embedded documents.</li>&#x000A;          <li>Rails 3 compatibility including support for ActiveModel and Generators.</li>&#x000A;          <li>Rich criteria API for document retrieval from the database.</li>&#x000A;          <li>Named Scopes / Chainable criteria.</li>&#x000A;          <li>Versioning of your data/documents.</li>&#x000A;          <li>Full callback support on documents and embedded documents.</li>&#x000A;          <li>Proper master/slave distribution against the database.</li>&#x000A;          <li>Optimized for use with extremely large datasets.</li>&#x000A;        </ul>&#x000A;</div>&#x000A;      <div class="item">&#x000A;        <div class="actions">&#x000A;          <div class="next browse">Ok, next! »</div>&#x000A;        </div>&#x000A;        <h3 class="fancy">Map Ruby Objects to Mongo Docs</h3>&#x000A;        <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>&#x000A;  embeds_many <span class="sy">:phones</span>&#x000A;  references_many <span class="sy">:addresses</span>&#x000A;  ...&#x000A;<span class="r">end</span></code></pre>&#x000A;        <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Phone</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  ...&#x000A;<span class="r">end</span></code></pre>&#x000A;      </div>&#x000A;      <div class="item">&#x000A;        <div class="actions">&#x000A;          <div class="next browse">What else you got? »</div>&#x000A;        </div>&#x000A;        <h3 class="fancy">Rich Criteria API</h3>&#x000A;        <pre><code class="language-ruby">.all(<span class="sy">:aliases</span> =&gt; [<span class="s"><span class="dl">"</span><span class="k">The Dude</span><span class="dl">"</span></span>, ...])&#x000A;&#x000A;.and(<span class="sy">:age</span>.gt =&gt; <span class="i">18</span>)&#x000A;&#x000A;.excludes(<span class="sy">:status</span> =&gt; <span class="s"><span class="dl">"</span><span class="k">Married</span><span class="dl">"</span></span>)&#x000A;&#x000A;.in(<span class="sy">:status</span> =&gt; [<span class="s"><span class="dl">"</span><span class="k">Single</span><span class="dl">"</span></span>, <span class="s"><span class="dl">"</span><span class="k">Divorced</span><span class="dl">"</span></span>])&#x000A;&#x000A;.where(<span class="sy">:age</span>.lte =&gt; <span class="i">55</span>)</code></pre>&#x000A;      </div>&#x000A;      <div class="item">&#x000A;        <div class="actions">&#x000A;          <div class="next browse">Dude! »</div>&#x000A;        </div>&#x000A;        <h3 class="fancy">Chainable Criteria &amp; Named Scopes</h3>&#x000A;        <pre><code class="language-ruby"><span class="co">Person</span>&#x000A;  .where(<span class="sy">:last_name</span> =&gt; <span class="s"><span class="dl">"</span><span class="k">Zorg</span><span class="dl">"</span></span>)&#x000A;  .and(<span class="sy">:middle_initial</span> =&gt; <span class="s"><span class="dl">"</span><span class="k">J</span><span class="dl">"</span></span>)&#x000A;  .and(<span class="sy">:age</span>.gt =&gt; <span class="i">30</span>)</code></pre>&#x000A;        <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Player</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:status</span>&#x000A;  scope <span class="sy">:inactive</span>,&#x000A;        <span class="sy">:where</span> =&gt; { <span class="sy">:active</span> =&gt; <span class="pc">false</span> }&#x000A;<span class="r">end</span></code></pre>&#x000A;      </div>&#x000A;      <div class="item">&#x000A;        <div class="actions">&#x000A;          <div class="next browse">Wow! »</div>&#x000A;        </div>&#x000A;        <h3 class="fancy">Dead Simple Versioning</h3>&#x000A;        <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Versioning</span>&#x000A;  ...&#x000A;<span class="r">end</span></code></pre>&#x000A;      </div>&#x000A;      <div class="item">&#x000A;        <div class="actions">&#x000A;          <div class="next browse">Uh, huh »</div>&#x000A;        </div>&#x000A;        <h3 class="fancy">Callbacks</h3>&#x000A;        <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  before_create <span class="sy">:do_something</span>&#x000A;  after_destroy <span class="sy">:do_something_else</span>&#x000A;  ...&#x000A;<span class="r">end</span></code></pre>&#x000A;      </div>&#x000A;      <div class="item">&#x000A;        <div class="actions">&#x000A;          <div class="next browse">Sweet! »</div>&#x000A;        </div>&#x000A;        <h3 class="fancy">Full Rails 3 Compatibility</h3>&#x000A;        <pre><code class="language-ruby">&gt;&gt; rails generate mongoid<span class="sy">:config</span>&#x000A;<span class="c"># generates config/mongoid.yml</span></code></pre>&#x000A;        <pre><code class="language-ruby">&gt;&gt; script/rails generate model&#x000A;<span class="c"># generates a mongoid model</span></code></pre>&#x000A;      </div>&#x000A;      <div class="item">&#x000A;        <div class="actions">&#x000A;          <div class="next browse">Ok, I'm sold »</div>&#x000A;        </div>&#x000A;        <h3 class="fancy">Master/Slave support</h3>&#x000A;        <pre><code class="language-ruby"><span class="c"># all reads go to slaves</span>&#x000A;<span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  enslave&#x000A;<span class="r">end</span></code></pre>&#x000A;        <pre><code class="language-ruby"><span class="c"># force a single query to use slaves</span>&#x000A;.where(<span class="sy">:name</span> =&gt; <span class="s"><span class="dl">"</span><span class="k">Durran</span><span class="dl">"</span></span>).enslave</code></pre>&#x000A;      </div>&#x000A;      <div class="item khaaaaaaan">&#x000A;        <h3 class="fancy">Ghenghis Khan says...</h3>&#x000A;        <div class="quote" style="display:none">&#x000A;          Use Mongoid, <br>&#x000A;          Fool!&#x000A;        </div>&#x000A;        <div class="khan"></div>&#x000A;      </div>&#x000A;    </div>&#x000A;  </div>&#x000A;</div>&#x000A;<script src="/javascript/home.js"></script>&#x000A;
+      </div>
+      <div id='footer'>
+        <p>
+          Mongoid is maintained by <a href="http://twitter.com/modetojoy">Durran Jordan</a>, Site by <a href="http://twitter.com/railsjedi">@railsjedi</a> and <a href="http://twitter.com/fredrikhenne">@fredrikhenne</a>. Mongoid is free software under the MIT license.
+        </p>
+      </div>
+    </div>
+    <div id='ribbon'>
+      <p>
+        <a href='http://github.com/mongoid/mongoid-site' rel='me' title='Fork me on GitHub!'>Fork me on GitHub!</a>
+      </p>
+    </div>
+  </body>
+</html>

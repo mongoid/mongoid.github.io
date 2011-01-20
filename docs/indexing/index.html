@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang='en-US' xml:lang='en-US' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <title>Mongoid Documentation: Indexing</title>
+    <link href='/stylesheets/docs.css' media='all' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div id='docs'>
+      <div id='page_menu'>
+        <ul>
+          <li class=''>
+            <a href='/'>Home</a>
+          </li>
+          <li class='current_page_item'>
+            <a href='/docs/installation/'>Documentation</a>
+          </li>
+          <li class=''>
+            <a href='/links/'>Links</a>
+          </li>
+          <li class=''>
+            <a href='/about/'>About</a>
+          </li>
+        </ul>
+      </div>
+      <div id='header'>
+        <a href='/'>
+          <h1 class='logo' title='[mon-goyd]'>MONGOID</h1>
+        </a>
+        <a class='docs_header' href='../installation/'>Documentation</a>
+      </div>
+      <div class='main'>
+        <div class='border'>
+          <div class='content_body colorize'>
+            <h2>Indexing</h2>
+            <div class="title">Indexing</div>&#x000A;<div class="text">&#x000A;  You can define indexes on documents using the index macro. For unique indexes&#x000A;  provide a unique options, otherwise no option is necessary.&#x000A;  <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:ssn</span>&#x000A;  index <span class="sy">:ssn</span>, <span class="sy">:unique</span> =&gt; <span class="pc">true</span>&#x000A;<span class="r">end</span></code></pre>&#x000A;  You can define indexes on embedded document fields as well.&#x000A;  <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embeds_many <span class="sy">:addresses</span>&#x000A;  index <span class="s"><span class="dl">"</span><span class="k">addresses.street</span><span class="dl">"</span></span>&#x000A;<span class="r">end</span></code></pre>&#x000A;  You can index on multiple fields and provide direction.&#x000A;  <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:first_name</span>&#x000A;  field <span class="sy">:last_name</span>&#x000A;  index(&#x000A;    [&#x000A;      [ <span class="sy">:first_name</span>, <span class="co">Mongo</span>::<span class="co">ASCENDING</span> ],&#x000A;      [ <span class="sy">:last_name</span>, <span class="co">Mongo</span>::<span class="co">ASCENDING</span> ]&#x000A;    ],&#x000A;    <span class="sy">:unique</span> =&gt; <span class="pc">true</span>&#x000A;  )&#x000A;<span class="r">end</span></code></pre>&#x000A;  Indexes can be run in the background in cases where they may take some time:&#x000A;  <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:ssn</span>&#x000A;  index <span class="sy">:ssn</span>, <span class="sy">:unique</span> =&gt; <span class="pc">true</span>, <span class="sy">:background</span> =&gt; <span class="pc">true</span>&#x000A;<span class="r">end</span></code></pre>&#x000A;  For geospacial indexes, make sure the field you are indexing is an <tt>Array</tt>.&#x000A;  <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:location</span>, <span class="sy">:type</span> =&gt; <span class="co">Array</span>&#x000A;  index [[ <span class="sy">:location</span>, <span class="co">Mongo</span>::<span class="co">GEO2D</span> ]], <span class="sy">:min</span> =&gt; <span class="i">200</span>, <span class="sy">:max</span> =&gt; <span class="i">200</span>&#x000A;<span class="r">end</span></code></pre>&#x000A;  You can have Mongoid define indexes for you on "foreign key" fields for&#x000A;  relational associations.&#x000A;  <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Comment</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  referenced_in <span class="sy">:post</span>, <span class="sy">:inverse_of</span> =&gt; <span class="sy">:comments</span>, <span class="sy">:index</span> =&gt; <span class="pc">true</span>&#x000A;  references_many \&#x000A;    <span class="sy">:users</span>,&#x000A;    <span class="sy">:stored_as</span> =&gt; <span class="sy">:array</span>,&#x000A;    <span class="sy">:inverse_of</span> =&gt; <span class="sy">:comments</span>,&#x000A;    <span class="sy">:index</span> =&gt; <span class="pc">true</span>&#x000A;<span class="r">end</span></code></pre>&#x000A;  When you want to create the indexes in the database, use the provided rake task:&#x000A;  <pre><code class="language-ruby">rake db<span class="sy">:create_indexes</span></code></pre>&#x000A;  If you want indexes autocreated when the model classes are loaded, add this&#x000A;  configuration option to your mongoid.yml. Note this is <i>NOT</i> recommended for any&#x000A;  production environment.&#x000A;  <br><pre><code class="language-yaml"><span class="ke">defaults</span>: <span class="v">&amp;defaults</span>&#x000A;  <span class="ke">autocreate_indexes</span>: <span class="s">true</span></code></pre>&#x000A;</div>&#x000A;&#x000A;
+          </div>
+        </div>
+      </div>
+      <div id='rightcolumn'>
+        <div class='box' id='search'>
+          <div class='roundedbox'>
+            <h3>Contents</h3>
+          </div>
+        </div>
+        <ul class='outline'>
+          <li><a href="/docs/installation/">Installation</a></li>
+          <li><a href="/docs/documents/">Documents</a></li>
+          <li><a href="/docs/associations/">Associations</a></li>
+          <li><a href="/docs/persistence/">Persistence</a></li>
+          <li><a href="/docs/querying/">Querying</a></li>
+          <li><a href="/docs/callbacks/">Callbacks</a></li>
+          <li><a href="/docs/validation/">Validation</a></li>
+          <li><a href="/docs/inheritance/">Inheritance</a></li>
+          <li><span class="active" title="You're here.">Indexing</span></li>
+          <li><a href="/docs/extras/">Extras</a></li>
+          <li><a href="/docs/rake/">Rake Tasks</a></li>
+          <li><a href="/docs/integration/">Integration</a></li>
+          <li><a href="/docs/extensions/">Extensions</a></li>
+          <li><a href="/docs/upgrading/">Upgrading</a></li>
+        </ul>
+      </div>
+      <div id='footer'>
+        <p>
+          Mongoid is maintained by <a href="http://twitter.com/modetojoy">Durran Jordan</a>, Site by <a href="http://twitter.com/railsjedi">@railsjedi</a> and <a href="http://twitter.com/fredrikhenne">@fredrikhenne</a>. Mongoid is free software under the MIT license.
+        </p>
+      </div>
+    </div>
+    <div id='ribbon'>
+      <p>
+        <a href='http://github.com/mongoid/mongoid-site' rel='me' title='Fork me on GitHub!'>Fork me on GitHub!</a>
+      </p>
+    </div>
+  </body>
+</html>
