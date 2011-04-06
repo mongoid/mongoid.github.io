@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta content='A Ruby ODM for MongoDB' name='description' />
+    <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
+    <link href="/stylesheets/coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <title>Mongoid Docs: Callbacks.haml</title>
+    
+  </head>
+  <body>
+    <div id='container'>
+      <div class='navigation'>
+        <img src="/images/mongoid-logo-small.png" />
+        <ul class='navigation'>
+          <li class='area'><a class="area" href="/home">home</a></li>
+          <li class='area'><a class="area" href="/docs">docs</a></li>
+          <li><a class="section" href="/docs/installation">installation</a></li>
+          <li><a class="section" href="/docs/documents">documents</a></li>
+          <li><a class="section" href="/docs/persistence">persistence</a></li>
+          <li><a class="section" href="/docs/querying">querying</a></li>
+          <li><a class="section" href="/docs/relations">relations</a></li>
+          <li><a class="section" href="/docs/callbacks">callbacks</a></li>
+          <li><a class="section" href="/docs/validation">validation</a></li>
+          <li><a class="section" href="/docs/indexing">indexing</a></li>
+          <li><a class="section" href="/docs/extras">extras</a></li>
+          <li><a class="section" href="/docs/rails">rails</a></li>
+          <li><a class="section" href="/docs/extensions">extensions</a></li>
+          <li><a class="section" href="/docs/upgrading">upgrading</a></li>
+          <li><a class="section" href="/docs/contributing">contributing</a></li>
+          <li class='area'><a class="area" href="/performance">performance</a></li>
+          <li class='area'><a class="area" href="/credits">credits</a></li>
+          <li class='area'><a class="area" href="/links">links</a></li>
+        </ul>
+      </div>
+      <div class='main'>
+        <div class='header'>
+          <a href="http://twitter.com/modetojoy/"><img src="/images/twitter-logo.png" />
+          </a>
+          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+          </a>
+        </div>
+        <div class='content'>
+          <h1>callbacks</h1>
+          <p>
+            Mongoid supports the following callbacks:
+            <ul>
+              <li><tt>before_create</tt></li>
+              <li><tt>before_destroy</tt></li>
+              <li><tt>before_save</tt></li>
+              <li><tt>before_update</tt></li>
+              <li><tt>before_validation</tt></li>
+              <li><tt>after_create</tt></li>
+              <li><tt>after_initialize</tt></li>
+              <li><tt>after_destroy</tt></li>
+              <li><tt>after_save</tt></li>
+              <li><tt>after_update</tt></li>
+              <li><tt>after_validation</tt></li>
+            </ul>
+          </p>
+          <p>
+            Callbacks are available on any document, whether it is embedded within
+            another document or not. Note that to be efficient, Mongoid only fires
+            the callback of the document that the persistence action was executed on.
+            This is that Mongoid aims to support large hierarchies and to handle
+            optimized atomic updates callbacks can't be firing all over the document
+            hierarchy.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="r">class</span> <span class="cl">Article</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  field <span class="sy">:body</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  field <span class="sy">:slug</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;&#x000A;  before_create <span class="sy">:generate_slug</span>&#x000A;&#x000A;  protected&#x000A;  <span class="r">def</span> <span class="fu">generate_slug</span>&#x000A;    <span class="pc">self</span>.slug = name.to_permalink&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            Callbacks are coming from <tt>ActiveModel</tt>, so you can use the new
+            syntax as well:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="r">class</span> <span class="cl">Article</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;&#x000A;  set_callback(<span class="sy">:save</span>, <span class="sy">:before</span>) <span class="r">do</span> |document|&#x000A;    document.generate_slug&#x000A;  <span class="r">end</span>&#x000A;&#x000A;  protected&#x000A;  <span class="r">def</span> <span class="fu">generate_slug</span>&#x000A;    <span class="pc">self</span>.slug = name.to_permalink&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span></pre></div>
+          </div>
+        </div>
+        <div class='footer'>
+          Mongoid, 2009-2011, written and maintained by
+          <a href="http://github.com/durran">Durran Jordan</a>.
+        </div>
+        <div class='clear'></div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -5,7 +5,7 @@
     <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
     <link href="/stylesheets/coderay.css" media="screen" rel="stylesheet" type="text/css" />
     <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
-    <title>Mongoid Index.haml:</title>
+    <title>Mongoid Docs: Installation - Languages.haml</title>
     
   </head>
   <body>
@@ -16,6 +16,9 @@
           <li class='area'><a class="area" href="/home">home</a></li>
           <li class='area'><a class="area" href="/docs">docs</a></li>
           <li><a class="section" href="/docs/installation">installation</a></li>
+          <li><a class="subsection" href="/docs/installation/configuration">configuration</a></li>
+          <li><a class="subsection" href="/docs/installation/languages">languages</a></li>
+          <li><a class="subsection" href="/docs/installation/replication">replication</a></li>
           <li><a class="section" href="/docs/documents">documents</a></li>
           <li><a class="section" href="/docs/persistence">persistence</a></li>
           <li><a class="section" href="/docs/querying">querying</a></li>
@@ -41,24 +44,43 @@
           </a>
         </div>
         <div class='content'>
-          <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-          <html>
-            <head>
-              <meta content='A Ruby ODM for MongoDB' name='description' />
-              <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
-              <meta content='0; url=/home' http-equiv='refresh' />
-              <title>Mongoid 2</title>
-              <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
-            </head>
-            <body>
-              <div id='centered'>
-                <div id='center'>
-                  <a href="/home"><img src="/images/mongoid-logo-large.png" />
-                  </a>
-                </div>
-              </div>
-            </body>
-          </html>
+          <h1>languages</h1>
+          <p>
+            By default Mongoid adds the I18n translation file for English. However
+            adding new languages is easy. In your application initializer
+            (for Rails 3 it can be in <tt>config/initializers/mongoid.rb</tt>),
+            just add the code:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Add the Spanish exception translations.</span>&#x000A;<span class="co">Mongoid</span>.add_language(<span class="s"><span class="dl">&quot;</span><span class="k">es</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <p>
+            Available languages for Mongoid are:
+            <ul>
+              <li><tt>bg</tt>: Bulgarian</li>
+              <li><tt>de</tt>: German</li>
+              <li><tt>en</tt>: English</li>
+              <li><tt>es</tt>: Spanish</li>
+              <li><tt>fr</tt>: French</li>
+              <li><tt>hu</tt>: Hungarian</li>
+              <li><tt>id</tt>: Indonesian</li>
+              <li><tt>it</tt>: Italian</li>
+              <li><tt>kr</tt>: Korean</li>
+              <li><tt>nl</tt>: Dutch</li>
+              <li><tt>pl</tt>: Polish</li>
+              <li><tt>pt-br</tt>: Brazilian Portuguese</li>
+              <li><tt>pt</tt>: Portuguese</li>
+              <li><tt>ro</tt>: Romanian</li>
+              <li><tt>ru</tt>: Russian</li>
+              <li><tt>sv</tt>: Swedish</li>
+              <li><tt>vi</tt>: Vietnamese</li>
+              <li><tt>zh-CN</tt>: Chinese</li>
+            </ul>
+          </p>
+          <p>You can also just include them all by:</p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="co">Mongoid</span>.add_language(<span class="s"><span class="dl">&quot;</span><span class="k">*</span><span class="dl">&quot;</span></span>)</pre></div>
+          </div>
         </div>
         <div class='footer'>
           Mongoid, 2009-2011, written and maintained by

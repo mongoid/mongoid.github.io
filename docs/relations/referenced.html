@@ -5,7 +5,7 @@
     <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
     <link href="/stylesheets/coderay.css" media="screen" rel="stylesheet" type="text/css" />
     <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
-    <title>Mongoid Index.haml:</title>
+    <title>Mongoid Docs: Relations - Referenced.haml</title>
     
   </head>
   <body>
@@ -20,6 +20,13 @@
           <li><a class="section" href="/docs/persistence">persistence</a></li>
           <li><a class="section" href="/docs/querying">querying</a></li>
           <li><a class="section" href="/docs/relations">relations</a></li>
+          <li><a class="subsection" href="/docs/relations/embedded">embedded</a></li>
+          <li><a class="subsection" href="/docs/relations/referenced">referenced</a></li>
+          <li><a class="chapter" href="/docs/relations/referenced/1-n">1...n</a></li>
+          <li><a class="chapter" href="/docs/relations/referenced/1-1">1...1</a></li>
+          <li><a class="chapter" href="/docs/relations/referenced/n-n">n...n</a></li>
+          <li><a class="subsection" href="/docs/relations/metadata">metadata</a></li>
+          <li><a class="subsection" href="/docs/relations/validations">validations</a></li>
           <li><a class="section" href="/docs/callbacks">callbacks</a></li>
           <li><a class="section" href="/docs/validation">validation</a></li>
           <li><a class="section" href="/docs/indexing">indexing</a></li>
@@ -41,24 +48,18 @@
           </a>
         </div>
         <div class='content'>
-          <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-          <html>
-            <head>
-              <meta content='A Ruby ODM for MongoDB' name='description' />
-              <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
-              <meta content='0; url=/home' http-equiv='refresh' />
-              <title>Mongoid 2</title>
-              <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
-            </head>
-            <body>
-              <div id='centered'>
-                <div id='center'>
-                  <a href="/home"><img src="/images/mongoid-logo-large.png" />
-                  </a>
-                </div>
-              </div>
-            </body>
-          </html>
+          <h1>referenced relations</h1>
+          <p>
+            Referenced relations are associations between documents that reside
+            in separate collections in MongoDB. The link between the documents
+            is handled similar to a relational database where a "foreign key"
+            needs to be stored on one or both sides of the relation, but note
+            that accessing a referenced relation required a separate query to
+            the database since joins cannot be performed.
+          </p>
+          <p>
+            Please consult the specific relation sections for more information.
+          </p>
         </div>
         <div class='footer'>
           Mongoid, 2009-2011, written and maintained by

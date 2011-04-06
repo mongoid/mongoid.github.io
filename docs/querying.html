@@ -5,7 +5,7 @@
     <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
     <link href="/stylesheets/coderay.css" media="screen" rel="stylesheet" type="text/css" />
     <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
-    <title>Mongoid Index.haml:</title>
+    <title>Mongoid Docs: Querying.haml</title>
     
   </head>
   <body>
@@ -19,6 +19,10 @@
           <li><a class="section" href="/docs/documents">documents</a></li>
           <li><a class="section" href="/docs/persistence">persistence</a></li>
           <li><a class="section" href="/docs/querying">querying</a></li>
+          <li><a class="subsection" href="/docs/querying/criteria">criteria</a></li>
+          <li><a class="subsection" href="/docs/querying/modification">criteria + mod</a></li>
+          <li><a class="subsection" href="/docs/querying/finders">finders</a></li>
+          <li><a class="subsection" href="/docs/querying/scopes">scopes</a></li>
           <li><a class="section" href="/docs/relations">relations</a></li>
           <li><a class="section" href="/docs/callbacks">callbacks</a></li>
           <li><a class="section" href="/docs/validation">validation</a></li>
@@ -41,24 +45,19 @@
           </a>
         </div>
         <div class='content'>
-          <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-          <html>
-            <head>
-              <meta content='A Ruby ODM for MongoDB' name='description' />
-              <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
-              <meta content='0; url=/home' http-equiv='refresh' />
-              <title>Mongoid 2</title>
-              <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
-            </head>
-            <body>
-              <div id='centered'>
-                <div id='center'>
-                  <a href="/home"><img src="/images/mongoid-logo-large.png" />
-                  </a>
-                </div>
-              </div>
-            </body>
-          </html>
+          <h1>querying</h1>
+          <p>
+            One of MongoDB's greatest features is its ability to execute dynamic
+            queries, which Mongoid abstracts in a familiar Arel-style DSL.
+          </p>
+          <h3>mongoid queries</h3>
+          <p>
+            All queries in Mongoid are <tt>Criteria</tt>, which is a chainable and
+            lazily evaluated wrapper to a MongoDB dynamic query. Criteria only
+            touch the database when they need to, for example on iteration of the
+            results, and when executed wrap a cursor in order to keep memory
+            management and performance predictable.
+          </p>
         </div>
         <div class='footer'>
           Mongoid, 2009-2011, written and maintained by

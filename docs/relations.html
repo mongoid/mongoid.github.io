@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta content='A Ruby ODM for MongoDB' name='description' />
+    <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
+    <link href="/stylesheets/coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <title>Mongoid Docs: Relations.haml</title>
+    
+  </head>
+  <body>
+    <div id='container'>
+      <div class='navigation'>
+        <img src="/images/mongoid-logo-small.png" />
+        <ul class='navigation'>
+          <li class='area'><a class="area" href="/home">home</a></li>
+          <li class='area'><a class="area" href="/docs">docs</a></li>
+          <li><a class="section" href="/docs/installation">installation</a></li>
+          <li><a class="section" href="/docs/documents">documents</a></li>
+          <li><a class="section" href="/docs/persistence">persistence</a></li>
+          <li><a class="section" href="/docs/querying">querying</a></li>
+          <li><a class="section" href="/docs/relations">relations</a></li>
+          <li><a class="subsection" href="/docs/relations/embedded">embedded</a></li>
+          <li><a class="subsection" href="/docs/relations/referenced">referenced</a></li>
+          <li><a class="subsection" href="/docs/relations/metadata">metadata</a></li>
+          <li><a class="subsection" href="/docs/relations/validations">validations</a></li>
+          <li><a class="section" href="/docs/callbacks">callbacks</a></li>
+          <li><a class="section" href="/docs/validation">validation</a></li>
+          <li><a class="section" href="/docs/indexing">indexing</a></li>
+          <li><a class="section" href="/docs/extras">extras</a></li>
+          <li><a class="section" href="/docs/rails">rails</a></li>
+          <li><a class="section" href="/docs/extensions">extensions</a></li>
+          <li><a class="section" href="/docs/upgrading">upgrading</a></li>
+          <li><a class="section" href="/docs/contributing">contributing</a></li>
+          <li class='area'><a class="area" href="/performance">performance</a></li>
+          <li class='area'><a class="area" href="/credits">credits</a></li>
+          <li class='area'><a class="area" href="/links">links</a></li>
+        </ul>
+      </div>
+      <div class='main'>
+        <div class='header'>
+          <a href="http://twitter.com/modetojoy/"><img src="/images/twitter-logo.png" />
+          </a>
+          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+          </a>
+        </div>
+        <div class='content'>
+          <h1>relations</h1>
+          <p>
+            Relations are associations between one model and another in the domain
+            and in the database. Embedded relations describe documents who are
+            stored inside other documents in the database. Referenced relations
+            describe documents that reference documents in another collection by
+            storing data (usually an id) about the other document in itself.
+          </p>
+          <p>
+            All relation objects in Mongoid are proxies to the actual document or
+            documents themselves, which provide extra functionality for accessing,
+            replacing, appending and persisting.
+          </p>
+          <h2>commonalities between all relations</h2>
+          <h3>attributes</h3>
+          <p>
+            All relations contain a <tt>target</tt>, which is the proxied document
+            or documents, a <tt>base</tt> which is the document the relation hangs
+            off, and <tt>metadata</tt> which provides information about the relation.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embeds_many <span class="sy">:addresses</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;person.addresses = [ address ]&#x000A;person.addresses.target <span class="c">#=&gt; returns [ address ]</span>&#x000A;person.addresses.base <span class="c">#=&gt; returns person</span>&#x000A;person.addresses.metadata <span class="c">#=&gt; returns the metadata</span>&#x000A;</pre></div>
+          </div>
+          <h3>extensions</h3>
+          <p>
+            All relations can have extensions, which provides a way to add
+            application specific functionality to the relation. They are defined by
+            providing a block to the relation definition.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embeds_many <span class="sy">:addresses</span> <span class="r">do</span>&#x000A;    <span class="r">def</span> <span class="fu">find_by_country</span>(country)&#x000A;      where(<span class="ke">country</span>: country).first&#x000A;    <span class="r">end</span>&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+          </div>
+          <h3>custom relation names</h3>
+          <p>
+            You can name your relations whatever you like, but if the class cannot be
+            inferred by Mongoid from the name, and neither can the opposite side you'll
+            want to provide the macro with some additional options to tell Mongoid
+            how to hook them up.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="r">class</span> <span class="cl">Lush</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embeds_one <span class="sy">:whiskey</span>, <span class="ke">class_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Drink</span><span class="dl">&quot;</span></span>, <span class="ke">inverse_of</span>: <span class="sy">:alcoholic</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Drink</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embedded_in <span class="sy">:alcoholic</span>, <span class="ke">class_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Lush</span><span class="dl">&quot;</span></span>, <span class="ke">inverse_of</span>: <span class="sy">:whiskey</span>&#x000A;<span class="r">end</span></pre></div>
+          </div>
+        </div>
+        <div class='footer'>
+          Mongoid, 2009-2011, written and maintained by
+          <a href="http://github.com/durran">Durran Jordan</a>.
+        </div>
+        <div class='clear'></div>
+      </div>
+    </div>
+  </body>
+</html>

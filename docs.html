@@ -5,7 +5,7 @@
     <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
     <link href="/stylesheets/coderay.css" media="screen" rel="stylesheet" type="text/css" />
     <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
-    <title>Mongoid Index.haml:</title>
+    <title>Mongoid Docs.haml:</title>
     
   </head>
   <body>
@@ -41,24 +41,50 @@
           </a>
         </div>
         <div class='content'>
-          <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-          <html>
-            <head>
-              <meta content='A Ruby ODM for MongoDB' name='description' />
-              <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
-              <meta content='0; url=/home' http-equiv='refresh' />
-              <title>Mongoid 2</title>
-              <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
-            </head>
-            <body>
-              <div id='centered'>
-                <div id='center'>
-                  <a href="/home"><img src="/images/mongoid-logo-large.png" />
-                  </a>
-                </div>
-              </div>
-            </body>
-          </html>
+          <h1>documentation</h1>
+          <p>
+            Note when going through the Mongoid documentation, some assumptions will
+            be made to keep everything as brief as possible.
+          </p>
+          <p>
+            <tt>Model#method_name</tt> will be used for describing instance methods.
+          </p>
+          <p>
+            <tt>Model.method_name</tt> will be used for describing class methods.
+          </p>
+          <p>
+            When in the code examples an all lowercase model name is used it is there
+            to imply a document of that class had been created previously in the
+            example:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>person <span class="c">#=&gt; Implies a Person document had been instantiated already.</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            Comments above a line in a code example alert to what is occurring on
+            the next line, and potentially all subsequent lines up to the next
+            empty line:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Make it rain fool!</span>&#x000A;person.make_it_rain&#x000A;person.show_me_the_money!&#x000A;</pre></div>
+          </div>
+          <p>
+            Indication of being on a command prompt will be indicated by a $.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="er">$</span> rails new leisure-suit-larry&#x000A;</pre></div>
+          </div>
+          <p>
+            All Ruby code will be using <tt>1.9.2</tt> syntax. Although note that
+            Mongoid is compatible with <tt>1.8.7</tt>, <tt>REE</tt>, and
+            <tt>JRuby</tt> as well.
+          </p>
+          <p>
+            Note that the Mongoid documentation is only valid for the current release of
+            Mongoid - we do not store historical records of releases. For more detailed
+            information of when functionality was added or removed, please see the API
+            documentation.
+          </p>
         </div>
         <div class='footer'>
           Mongoid, 2009-2011, written and maintained by

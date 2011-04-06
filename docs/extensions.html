@@ -5,7 +5,7 @@
     <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
     <link href="/stylesheets/coderay.css" media="screen" rel="stylesheet" type="text/css" />
     <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
-    <title>Mongoid Index.haml:</title>
+    <title>Mongoid Docs: Extensions.haml</title>
     
   </head>
   <body>
@@ -41,24 +41,17 @@
           </a>
         </div>
         <div class='content'>
-          <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-          <html>
-            <head>
-              <meta content='A Ruby ODM for MongoDB' name='description' />
-              <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
-              <meta content='0; url=/home' http-equiv='refresh' />
-              <title>Mongoid 2</title>
-              <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
-            </head>
-            <body>
-              <div id='centered'>
-                <div id='center'>
-                  <a href="/home"><img src="/images/mongoid-logo-large.png" />
-                  </a>
-                </div>
-              </div>
-            </body>
-          </html>
+          <h1>extensions</h1>
+          <h3>Fabrication</h3>
+          <p>
+            Paul Elliott's
+            <a href="http://github.com/paulelliott/fabrication">Fabrication</a> gem is
+            a slick object generation library. It support's Mongoid out of the box and
+            provides a nice syntax for creating objects with ease for testing.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>Fabricator(<span class="sy">:person</span>) <span class="r">do</span>&#x000A;  title <span class="s"><span class="dl">&quot;</span><span class="k">Grand Poobah</span><span class="dl">&quot;</span></span>&#x000A;  addresses(<span class="ke">count</span>: <span class="i">2</span>) <span class="r">do</span> |address, i|&#x000A;    Fabricate(<span class="sy">:address</span>, <span class="ke">streeet</span>: <span class="s"><span class="dl">&quot;</span><span class="il"><span class="idl">#{</span>i<span class="idl">}</span></span><span class="k"> Bond St.</span><span class="dl">&quot;</span></span>)&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span></pre></div>
+          </div>
         </div>
         <div class='footer'>
           Mongoid, 2009-2011, written and maintained by

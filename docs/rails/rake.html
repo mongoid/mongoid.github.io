@@ -5,7 +5,7 @@
     <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
     <link href="/stylesheets/coderay.css" media="screen" rel="stylesheet" type="text/css" />
     <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
-    <title>Mongoid Index.haml:</title>
+    <title>Mongoid Docs: Rails - Rake.haml</title>
     
   </head>
   <body>
@@ -25,6 +25,8 @@
           <li><a class="section" href="/docs/indexing">indexing</a></li>
           <li><a class="section" href="/docs/extras">extras</a></li>
           <li><a class="section" href="/docs/rails">rails</a></li>
+          <li><a class="subsection" href="/docs/rails/rake">rake tasks</a></li>
+          <li><a class="subsection" href="/docs/rails/railties">railties</a></li>
           <li><a class="section" href="/docs/extensions">extensions</a></li>
           <li><a class="section" href="/docs/upgrading">upgrading</a></li>
           <li><a class="section" href="/docs/contributing">contributing</a></li>
@@ -41,24 +43,40 @@
           </a>
         </div>
         <div class='content'>
-          <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-          <html>
-            <head>
-              <meta content='A Ruby ODM for MongoDB' name='description' />
-              <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
-              <meta content='0; url=/home' http-equiv='refresh' />
-              <title>Mongoid 2</title>
-              <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
-            </head>
-            <body>
-              <div id='centered'>
-                <div id='center'>
-                  <a href="/home"><img src="/images/mongoid-logo-large.png" />
-                  </a>
-                </div>
-              </div>
-            </body>
-          </html>
+          <h1>rake tasks</h1>
+          <p>
+            Mongoid provides the following rake tasks when used in a Rails 3 environment:
+          </p>
+          <p>
+            <tt>db:create</tt>: Exists only for dependency purposes, does not actually
+            do anything.
+          </p>
+          <p>
+            <tt>db:create_indexes</tt>: Reads all index definitions from the models and
+            attempts to create them in the database.
+          </p>
+          <p>
+            <tt>db:drop</tt>: Drops all collections in the database with the exception of
+            the system collections.
+          </p>
+          <p>
+            <tt>db:migrate</tt>: Exists only for dependency purposes, does not actually
+            do anything.
+          </p>
+          <p>
+            <tt>db:schema:load</tt>: Exists only for framework dependency purposes, does
+            not actually do anything.
+          </p>
+          <p>
+            <tt>db:seed</tt>: Seeds the database from db/seeds.rb
+          </p>
+          <p>
+            <tt>db:setup</tt>: Creates indexes and seeds the database.
+          </p>
+          <p>
+            <tt>db:test:prepare</tt>: Exists only for framework dependency purposes, does
+            not actually do anything.
+          </p>
         </div>
         <div class='footer'>
           Mongoid, 2009-2011, written and maintained by
