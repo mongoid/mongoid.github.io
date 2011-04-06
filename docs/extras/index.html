@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang='en-US' xml:lang='en-US' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <title>Mongoid Documentation: Extras</title>
+    <link href='/stylesheets/docs.css' media='all' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div id='docs'>
+      <div id='page_menu'>
+        <ul>
+          <li class=''>
+            <a href='/'>Home</a>
+          </li>
+          <li class='current_page_item'>
+            <a href='/docs/installation/'>Documentation</a>
+          </li>
+          <li class=''>
+            <a href='/links/'>Links</a>
+          </li>
+          <li class=''>
+            <a href='/about/'>About</a>
+          </li>
+        </ul>
+      </div>
+      <div id='header'>
+        <a href='/'>
+          <h1 class='logo' title='[mon-goyd]'>MONGOID</h1>
+        </a>
+        <a class='docs_header' href='../installation/'>Documentation</a>
+      </div>
+      <div class='main'>
+        <div class='border'>
+          <div class='content_body colorize'>
+            <h2>Extras</h2>
+            <div class="text">&#x000A;  Mongoid has some useful extra features that can be used in applications.&#x000A;</div>&#x000A;<br><div class="title">Master / Slave Support</div>&#x000A;<div class="text">&#x000A;  If slave databases are supplied in the <tt>mongoid.yml</tt>, Mongoid will round-robin all&#x000A;  enslaved documents' read queries to the slave databases. This can also be handled on a&#x000A;  per-query basis:&#x000A;  <br><br>&#x000A;  To have all reads for a model round robin between slaves:&#x000A;  <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  enslave&#x000A;<span class="r">end</span></code></pre>&#x000A;  <br>&#x000A;  To send reads to the slaves on a per-query basis just enslave a <tt>Criteria</tt>:&#x000A;  <pre><code class="language-ruby"><span class="co">Person</span>.where(<span class="sy">:first_name</span> =&gt; <span class="s"><span class="dl">"</span><span class="k">Durran</span><span class="dl">"</span></span>).enslave</code></pre>&#x000A;</div>&#x000A;<br><div class="title">Caching</div>&#x000A;<div class="text">&#x000A;  Out of the box, Mongoid wraps the MongoDB Ruby Driver's cursor in order to be memory&#x000A;  efficient for large queries and data sets. However if you want the query to load all&#x000A;  matching documents in memory and return them on <i>n</i> iterations without hitting&#x000A;  the database again you may cache a class or criteria:&#x000A;  <br><br>&#x000A;  To have all queries for a model "cache":&#x000A;  <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  cache&#x000A;<span class="r">end</span></code></pre>&#x000A;  <br>&#x000A;  To cache on a per-query basis:&#x000A;  <pre><code class="language-ruby"><span class="co">Person</span>.where(<span class="sy">:first_name</span> =&gt; <span class="s"><span class="dl">"</span><span class="k">Durran</span><span class="dl">"</span></span>).cache</code></pre>&#x000A;</div>&#x000A;<br><div class="title">Dirty Attributes</div>&#x000A;<div class="text">&#x000A;  Mongoid implements an ActiveModel style dirty attributes module that conforms to the&#x000A;  ActiveModel API exactly:&#x000A;  <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:first_name</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;person = <span class="co">Person</span>.new(<span class="sy">:first_name</span> =&gt; <span class="s"><span class="dl">"</span><span class="k">Leroy</span><span class="dl">"</span></span>)&#x000A;person.first_name = <span class="s"><span class="dl">"</span><span class="k">Lauren</span><span class="dl">"</span></span>&#x000A;person.changed? <span class="c"># true</span>&#x000A;person.first_name_changed? <span class="c"># true</span>&#x000A;person.first_name_was <span class="c"># Leroy</span>&#x000A;person.first_name_change <span class="c"># [ "Leroy", "Lauren" ]</span>&#x000A;person.changes <span class="c"># { "first_name" =&gt; [ "Leroy", "Lauren" ] }</span></code></pre>&#x000A;</div>&#x000A;<br><div class="title">Paranoid Documents</div>&#x000A;<div class="text">&#x000A;  There may be times when you don't want documents to actually get deleted&#x000A;  from the database, but "flagged" as deleted. Mongoid provides a Paranoia&#x000A;  module to give you just that.&#x000A;  <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Paranoia</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;person.delete   <span class="c"># Sets the deleted_at field to the current time.</span>&#x000A;person.delete!  <span class="c"># Permanently deletes the document.</span>&#x000A;person.destroy! <span class="c"># Permanently delete the document with callbacks.</span>&#x000A;person.restore  <span class="c"># Brings the "deleted" document back to life.</span></code></pre>&#x000A;</div>&#x000A;<br><div class="title">Versioning</div>&#x000A;<div class="text">&#x000A;  <p>&#x000A;    Mongoid supports simple versioning through inclusion of the <tt>Mongoid::Versioning</tt> module.&#x000A;    Including this module will create a versions association on the document that it will&#x000A;    append to on each save. It will also update the version number on the document, which is&#x000A;    an integer.&#x000A;  </p>&#x000A;  <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Versioning</span>&#x000A;<span class="r">end</span></code></pre>&#x000A;  <p>&#x000A;    You can also set a <tt>max_versions</tt> setting, and Mongoid will only keep the max most recent versions.&#x000A;  </p>&#x000A;  <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Versioning</span>&#x000A;&#x000A;  <span class="c"># keep at most 5 versions of a record</span>&#x000A;  max_versions <span class="i">5</span>&#x000A;&#x000A;<span class="r">end</span></code></pre>&#x000A;  <br>&#x000A;</div>&#x000A;<div class="title">Timestamping</div>&#x000A;<div class="text">&#x000A;  Mongoid supplies a timestamping module in <tt>Mongoid::Timestamps</tt> which can be included&#x000A;  to get basic behavior for <tt>created_at</tt> and <tt>updated_at</tt> fields.&#x000A;  <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Timestamps</span>&#x000A;<span class="r">end</span></code></pre>&#x000A;  <br>&#x000A;</div>&#x000A;<div class="title">Keys</div>&#x000A;<div class="text">&#x000A;  You can create a composite key in mongoid to replace the default id using the key macro:&#x000A;  <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:first_name</span>&#x000A;  field <span class="sy">:last_name</span>&#x000A;  key <span class="sy">:first_name</span>, <span class="sy">:last_name</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;person = <span class="co">Person</span>.new(<span class="sy">:first_name</span> =&gt; <span class="s"><span class="dl">"</span><span class="k">Syd</span><span class="dl">"</span></span>, <span class="sy">:last_name</span> =&gt; <span class="s"><span class="dl">"</span><span class="k">Vicious</span><span class="dl">"</span></span>)&#x000A;person.id <span class="c"># returns "syd-vicious"</span></code></pre>&#x000A;  <br>&#x000A;</div>&#x000A;<div class="title">Persisting to Different Collections.</div>&#x000A;<div class="text">&#x000A;  Simple, use the <tt>store_in</tt> macro.&#x000A;  <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  store_in <span class="sy">:students</span>&#x000A;<span class="r">end</span></code></pre>&#x000A;</div>&#x000A;&#x000A;
+          </div>
+        </div>
+      </div>
+      <div id='rightcolumn'>
+        <div class='box' id='search'>
+          <div class='roundedbox'>
+            <h3>Contents</h3>
+          </div>
+        </div>
+        <ul class='outline'>
+          <li><a href="/docs/installation/">Installation</a></li>
+          <li><a href="/docs/documents/">Documents</a></li>
+          <li><a href="/docs/associations/">Associations</a></li>
+          <li><a href="/docs/persistence/">Persistence</a></li>
+          <li><a href="/docs/querying/">Querying</a></li>
+          <li><a href="/docs/callbacks/">Callbacks</a></li>
+          <li><a href="/docs/validation/">Validation</a></li>
+          <li><a href="/docs/inheritance/">Inheritance</a></li>
+          <li><a href="/docs/indexing/">Indexing</a></li>
+          <li><span class="active" title="You're here.">Extras</span></li>
+          <li><a href="/docs/rake/">Rake Tasks</a></li>
+          <li><a href="/docs/integration/">Integration</a></li>
+          <li><a href="/docs/extensions/">Extensions</a></li>
+          <li><a href="/docs/upgrading/">Upgrading</a></li>
+        </ul>
+      </div>
+      <div id='footer'>
+        <p>
+          Mongoid is maintained by <a href="http://twitter.com/modetojoy">Durran Jordan</a>, Site by <a href="http://twitter.com/railsjedi">@railsjedi</a> and <a href="http://twitter.com/fredrikhenne">@fredrikhenne</a>. Mongoid is free software under the MIT license.
+        </p>
+      </div>
+    </div>
+    <div id='ribbon'>
+      <p>
+        <a href='http://github.com/mongoid/mongoid-site' rel='me' title='Fork me on GitHub!'>Fork me on GitHub!</a>
+      </p>
+    </div>
+  </body>
+</html>

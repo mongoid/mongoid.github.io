@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang='en-US' xml:lang='en-US' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <title>Mongoid Documentation: Callbacks</title>
+    <link href='/stylesheets/docs.css' media='all' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div id='docs'>
+      <div id='page_menu'>
+        <ul>
+          <li class=''>
+            <a href='/'>Home</a>
+          </li>
+          <li class='current_page_item'>
+            <a href='/docs/installation/'>Documentation</a>
+          </li>
+          <li class=''>
+            <a href='/links/'>Links</a>
+          </li>
+          <li class=''>
+            <a href='/about/'>About</a>
+          </li>
+        </ul>
+      </div>
+      <div id='header'>
+        <a href='/'>
+          <h1 class='logo' title='[mon-goyd]'>MONGOID</h1>
+        </a>
+        <a class='docs_header' href='../installation/'>Documentation</a>
+      </div>
+      <div class='main'>
+        <div class='border'>
+          <div class='content_body colorize'>
+            <h2>Callbacks</h2>
+            <div class="text">&#x000A;  <p>&#x000A;    Mongoid supports the following callbacks:&#x000A;  </p>&#x000A;  <li><tt>before_create</tt></li>&#x000A;  <li><tt>before_destroy</tt></li>&#x000A;  <li><tt>before_save</tt></li>&#x000A;  <li><tt>before_update</tt></li>&#x000A;  <li><tt>before_validation</tt></li>&#x000A;  <li><tt>after_create</tt></li>&#x000A;  <li><tt>after_initialize</tt></li>&#x000A;  <li><tt>after_destroy</tt></li>&#x000A;  <li><tt>after_save</tt></li>&#x000A;  <li><tt>after_update</tt></li>&#x000A;  <li><tt>after_validation</tt></li>&#x000A;  <p>&#x000A;    Callbacks are available on any document, whether it is embedded within another document or not.&#x000A;    Note that to be efficient, Mongoid only fires the callback of the document that the&#x000A;    persistence action was executed on. This is that Mongoid aims to support large hierarchies&#x000A;    and to handle optimized atomic updates callbacks can't be firing all over the document&#x000A;    hierarchy.&#x000A;  </p>&#x000A;  <tt>article.rb</tt>:&#x000A;  <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Article</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>&#x000A;  field <span class="sy">:body</span>&#x000A;  field <span class="sy">:slug</span>&#x000A;&#x000A;  before_create <span class="sy">:generate_slug</span>&#x000A;&#x000A;  protected&#x000A;  <span class="r">def</span> <span class="fu">generate_slug</span>&#x000A;    <span class="pc">self</span>.slug = name.to_permalink&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span></code></pre>&#x000A;  <p>&#x000A;    Callbacks are coming from <tt>ActiveModel</tt>, so you can use the new syntax as well:&#x000A;  </p>&#x000A;  <tt>article.rb</tt>:&#x000A;  <pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Article</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>&#x000A;&#x000A;  set_callback(<span class="sy">:save</span>, <span class="sy">:before</span>) <span class="r">do</span> |document|&#x000A;    document.generate_slug&#x000A;  <span class="r">end</span>&#x000A;&#x000A;  protected&#x000A;  <span class="r">def</span> <span class="fu">generate_slug</span>&#x000A;    <span class="pc">self</span>.slug = name.to_permalink&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span></code></pre>&#x000A;</div>&#x000A;&#x000A;
+          </div>
+        </div>
+      </div>
+      <div id='rightcolumn'>
+        <div class='box' id='search'>
+          <div class='roundedbox'>
+            <h3>Contents</h3>
+          </div>
+        </div>
+        <ul class='outline'>
+          <li><a href="/docs/installation/">Installation</a></li>
+          <li><a href="/docs/documents/">Documents</a></li>
+          <li><a href="/docs/associations/">Associations</a></li>
+          <li><a href="/docs/persistence/">Persistence</a></li>
+          <li><a href="/docs/querying/">Querying</a></li>
+          <li><span class="active" title="You're here.">Callbacks</span></li>
+          <li><a href="/docs/validation/">Validation</a></li>
+          <li><a href="/docs/inheritance/">Inheritance</a></li>
+          <li><a href="/docs/indexing/">Indexing</a></li>
+          <li><a href="/docs/extras/">Extras</a></li>
+          <li><a href="/docs/rake/">Rake Tasks</a></li>
+          <li><a href="/docs/integration/">Integration</a></li>
+          <li><a href="/docs/extensions/">Extensions</a></li>
+          <li><a href="/docs/upgrading/">Upgrading</a></li>
+        </ul>
+      </div>
+      <div id='footer'>
+        <p>
+          Mongoid is maintained by <a href="http://twitter.com/modetojoy">Durran Jordan</a>, Site by <a href="http://twitter.com/railsjedi">@railsjedi</a> and <a href="http://twitter.com/fredrikhenne">@fredrikhenne</a>. Mongoid is free software under the MIT license.
+        </p>
+      </div>
+    </div>
+    <div id='ribbon'>
+      <p>
+        <a href='http://github.com/mongoid/mongoid-site' rel='me' title='Fork me on GitHub!'>Fork me on GitHub!</a>
+      </p>
+    </div>
+  </body>
+</html>

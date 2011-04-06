@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang='en-US' xml:lang='en-US' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <title>Mongoid Documentation: Inheritance</title>
+    <link href='/stylesheets/docs.css' media='all' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div id='docs'>
+      <div id='page_menu'>
+        <ul>
+          <li class=''>
+            <a href='/'>Home</a>
+          </li>
+          <li class='current_page_item'>
+            <a href='/docs/installation/'>Documentation</a>
+          </li>
+          <li class=''>
+            <a href='/links/'>Links</a>
+          </li>
+          <li class=''>
+            <a href='/about/'>About</a>
+          </li>
+        </ul>
+      </div>
+      <div id='header'>
+        <a href='/'>
+          <h1 class='logo' title='[mon-goyd]'>MONGOID</h1>
+        </a>
+        <a class='docs_header' href='../installation/'>Documentation</a>
+      </div>
+      <div class='main'>
+        <div class='border'>
+          <div class='content_body colorize'>
+            <h2>Inheritance</h2>
+            <div class="text">&#x000A;  Mongoid supports inheritance of documents and embedded documents. Consider the following domain model:&#x000A;  <br><pre><code class="language-ruby"><span class="r">class</span> <span class="cl">Canvas</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>&#x000A;  embeds_many <span class="sy">:shapes</span>&#x000A;&#x000A;  <span class="r">def</span> <span class="fu">render</span>&#x000A;    shapes.each { |shape| shape.render }&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Browser</span> &lt; <span class="co">Canvas</span>&#x000A;  field <span class="sy">:version</span>, <span class="sy">:type</span> =&gt; <span class="co">Integer</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Firefox</span> &lt; <span class="co">Browser</span>&#x000A;  field <span class="sy">:useragent</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Shape</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:x</span>, <span class="sy">:type</span> =&gt; <span class="co">Integer</span>&#x000A;  field <span class="sy">:y</span>, <span class="sy">:type</span> =&gt; <span class="co">Integer</span>&#x000A;&#x000A;  embedded_in <span class="sy">:canvas</span>, <span class="sy">:inverse_of</span> =&gt; <span class="sy">:shapes</span>&#x000A;&#x000A;  <span class="r">def</span> <span class="fu">render</span>&#x000A;    <span class="c">#...</span>&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Circle</span> &lt; <span class="co">Shape</span>&#x000A;  field <span class="sy">:radius</span>, <span class="sy">:type</span> =&gt; <span class="co">Float</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Rectangle</span> &lt; <span class="co">Shape</span>&#x000A;  field <span class="sy">:width</span>, <span class="sy">:type</span> =&gt; <span class="co">Float</span>&#x000A;  field <span class="sy">:height</span>, <span class="sy">:type</span> =&gt; <span class="co">Float</span>&#x000A;<span class="r">end</span></code></pre>&#x000A;  In the above example, <tt>Canvas</tt>, <tt>Browser</tt> and <tt>Firefox</tt> will all&#x000A;  save in the canvases collection. An additional attribute <tt>_type</tt> is stored in&#x000A;  order to make sure when loaded from the database the correct document is returned. This&#x000A;  also holds true for the embedded documents <tt>Circle</tt>, <tt>Rectangle</tt>, and&#x000A;  <tt>Shape</tt>. Fields and validations are inherited down the hierachy, but not up. A&#x000A;  subclass will contain all of its parent's fields and validations, but not vise-versa.&#x000A;  <br><br><div class="title">Querying for Subclasses</div>&#x000A;  <div class="text">&#x000A;    Querying for subclasses is handled in the normal manner, and although the documents&#x000A;    are all in the same collection, queries will only return documents of the correct type,&#x000A;    similar to Single Table Inheritance in ActiveRecord.&#x000A;    <br><pre><code class="language-ruby"><span class="co">Canvas</span>.where(<span class="sy">:name</span> =&gt; <span class="s"><span class="dl">"</span><span class="k">Paper</span><span class="dl">"</span></span>) <span class="c"># Returns Canvas documents and subclasses</span>&#x000A;<span class="co">Firefox</span>.where(<span class="sy">:name</span> =&gt; <span class="s"><span class="dl">"</span><span class="k">Window 1</span><span class="dl">"</span></span>) <span class="c"># Returns only Firefox documents</span></code></pre>&#x000A;  </div>&#x000A;  <br><div class="title">Associations</div>&#x000A;  <div class="text">&#x000A;    You can add any type of subclass to a has one or has many association, through either&#x000A;    normal setting or through the <tt>build</tt> and <tt>create</tt> methods on the&#x000A;    association:&#x000A;    <br><pre><code class="language-ruby">firefox = <span class="co">Firefox</span>.new&#x000A;firefox.shapes.build({ <span class="sy">:x</span> =&gt; <span class="i">0</span>, <span class="sy">:y</span> =&gt; <span class="i">0</span> }) <span class="c"># Builds a Shape object</span>&#x000A;firefox.shapes.build({ <span class="sy">:x</span> =&gt; <span class="i">0</span>, <span class="sy">:y</span> =&gt; <span class="i">0</span> }, <span class="co">Circle</span>) <span class="c"># Builds a Circle object</span>&#x000A;firefox.shapes.create({ <span class="sy">:x</span> =&gt; <span class="i">0</span>, <span class="sy">:y</span> =&gt; <span class="i">0</span> }, <span class="co">Rectangle</span>) <span class="c"># Creates a Rectangle object</span>&#x000A;&#x000A;rect = <span class="co">Rectangle</span>.new(<span class="sy">:width</span> =&gt; <span class="i">100</span>, <span class="sy">:height</span> =&gt; <span class="i">200</span>)&#x000A;firefox.shapes</code></pre>&#x000A;  </div>&#x000A;</div>&#x000A;&#x000A;
+          </div>
+        </div>
+      </div>
+      <div id='rightcolumn'>
+        <div class='box' id='search'>
+          <div class='roundedbox'>
+            <h3>Contents</h3>
+          </div>
+        </div>
+        <ul class='outline'>
+          <li><a href="/docs/installation/">Installation</a></li>
+          <li><a href="/docs/documents/">Documents</a></li>
+          <li><a href="/docs/associations/">Associations</a></li>
+          <li><a href="/docs/persistence/">Persistence</a></li>
+          <li><a href="/docs/querying/">Querying</a></li>
+          <li><a href="/docs/callbacks/">Callbacks</a></li>
+          <li><a href="/docs/validation/">Validation</a></li>
+          <li><span class="active" title="You're here.">Inheritance</span></li>
+          <li><a href="/docs/indexing/">Indexing</a></li>
+          <li><a href="/docs/extras/">Extras</a></li>
+          <li><a href="/docs/rake/">Rake Tasks</a></li>
+          <li><a href="/docs/integration/">Integration</a></li>
+          <li><a href="/docs/extensions/">Extensions</a></li>
+          <li><a href="/docs/upgrading/">Upgrading</a></li>
+        </ul>
+      </div>
+      <div id='footer'>
+        <p>
+          Mongoid is maintained by <a href="http://twitter.com/modetojoy">Durran Jordan</a>, Site by <a href="http://twitter.com/railsjedi">@railsjedi</a> and <a href="http://twitter.com/fredrikhenne">@fredrikhenne</a>. Mongoid is free software under the MIT license.
+        </p>
+      </div>
+    </div>
+    <div id='ribbon'>
+      <p>
+        <a href='http://github.com/mongoid/mongoid-site' rel='me' title='Fork me on GitHub!'>Fork me on GitHub!</a>
+      </p>
+    </div>
+  </body>
+</html>

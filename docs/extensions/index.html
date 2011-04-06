@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang='en-US' xml:lang='en-US' xmlns='http://www.w3.org/1999/xhtml'>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <title>Mongoid Documentation: Extensions</title>
+    <link href='/stylesheets/docs.css' media='all' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+    <div id='docs'>
+      <div id='page_menu'>
+        <ul>
+          <li class=''>
+            <a href='/'>Home</a>
+          </li>
+          <li class='current_page_item'>
+            <a href='/docs/installation/'>Documentation</a>
+          </li>
+          <li class=''>
+            <a href='/links/'>Links</a>
+          </li>
+          <li class=''>
+            <a href='/about/'>About</a>
+          </li>
+        </ul>
+      </div>
+      <div id='header'>
+        <a href='/'>
+          <h1 class='logo' title='[mon-goyd]'>MONGOID</h1>
+        </a>
+        <a class='docs_header' href='../installation/'>Documentation</a>
+      </div>
+      <div class='main'>
+        <div class='border'>
+          <div class='content_body colorize'>
+            <h2>Extensions</h2>
+            <div class="title">Fabrication</div>&#x000A;<div class="text">&#x000A;  <p>&#x000A;    Paul Elliott's&#x000A;    <a href="http://github.com/paulelliott/fabrication">Fabrication</a> gem is&#x000A;    a slick object generation library. It support's Mongoid out of the box and&#x000A;    provides a nice syntax for creating objects with ease for testing.&#x000A;  </p>&#x000A;  <pre><code class="language-ruby">Fabricator(<span class="sy">:person</span>) <span class="r">do</span>&#x000A;  title <span class="s"><span class="dl">"</span><span class="k">Grand Poobah</span><span class="dl">"</span></span>&#x000A;  addresses(<span class="sy">:count</span> =&gt; <span class="i">2</span>) <span class="r">do</span> |address, i|&#x000A;    Fabricate(<span class="sy">:address</span>, <span class="sy">:streeet</span> =&gt; <span class="s"><span class="dl">"</span><span class="il"><span class="idl">#{</span>i<span class="idl">}</span></span><span class="k"> Bond St.</span><span class="dl">"</span></span>)&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span></code></pre>&#x000A;</div>&#x000A;<div class="title">mongoid-rspec</div>&#x000A;<div class="text">&#x000A;  <p>&#x000A;    Evan Sagge's <a href="http://github.com/evansagge/mongoid-rspec">mongoid-rspec</a>&#x000A;    provides RSpec matchers for Mongoid. Includes matchers for associations,&#x000A;    options, validations, and fields.&#x000A;  </p>&#x000A;  <pre><code class="language-ruby">describe <span class="co">Person</span> <span class="r">do</span>&#x000A;  it { should reference_one <span class="sy">:account</span> }&#x000A;  it { should reference_many <span class="sy">:posts</span> }&#x000A;  it { should be_referenced_in <span class="sy">:organization</span> }&#x000A;&#x000A;  it { should validate_presence_of(<span class="sy">:name</span>) }&#x000A;&#x000A;  it { should have_field(<span class="sy">:age</span>).of_type(<span class="co">Integer</span>) }&#x000A;<span class="r">end</span>&#x000A;&#x000A;describe <span class="co">Address</span> <span class="r">do</span>&#x000A;  it { should be_embedded_in(<span class="sy">:person</span>).as_inverse_of(<span class="sy">:addresses</span>) }&#x000A;<span class="r">end</span></code></pre>&#x000A;</div>&#x000A;<div class="title">Remarkable</div>&#x000A;<div class="text">&#x000A;  <p>&#x000A;    Brian Cardarella's&#x000A;    <a href="http://github.com/bcardarella/remarkable_mongoid">remarkable-mongoid</a>&#x000A;    gem provides a nice addition of RSpec matchers for Mongoid. It contains&#x000A;    the matchers shown below, plus all validation matchers from&#x000A;    <a href="http://github.com/remarkable/remarkable/tree/master/remarkable_activemodel">&#x000A;    Remarkable::ActiveModel</a>.&#x000A;  </p>&#x000A;  <pre><code class="language-ruby">describe <span class="co">Person</span> <span class="r">do</span>&#x000A;&#x000A;  it { should reference_one <span class="sy">:account</span> }&#x000A;  it { should reference_many <span class="sy">:posts</span> }&#x000A;  it { should be_referenced_in <span class="sy">:organization</span> }&#x000A;  it { should embed_one <span class="sy">:name</span> }&#x000A;  it { should embed_many <span class="sy">:addresses</span> }&#x000A;  it { should be_embedded_in <span class="sy">:group</span> }&#x000A;&#x000A;  it { should validate_uniqueness_of <span class="sy">:dob</span> }&#x000A;<span class="r">end</span></code></pre>&#x000A;</div>&#x000A;<div class="title">Riot</div>&#x000A;<div class="text">&#x000A;  <p>&#x000A;    The <a href="http://github.com/thumblemonks/riot-mongoid">Riot-Mongoid</a>&#x000A;    gem provides a nice addition of riot assertions for Mongoid. It contains&#x000A;    assertions for fields, keys, associations, and validations.&#x000A;  </p>&#x000A;  <pre><code class="language-ruby">context <span class="s"><span class="dl">"</span><span class="k">Person Model</span><span class="dl">"</span></span> <span class="r">do</span>&#x000A;  setup { <span class="co">Person</span>.new }&#x000A;&#x000A;  asserts_topic.has_field <span class="sy">:title</span>,       <span class="sy">:type</span> =&gt; <span class="co">String</span>&#x000A;&#x000A;  asserts_topic.has_association <span class="sy">:references_one</span>, <span class="sy">:account</span>&#x000A;  asserts_topic.has_association <span class="sy">:embeds_many</span>, <span class="sy">:addresses</span>&#x000A;&#x000A;  asserts_topic.has_validation <span class="sy">:validates_presence_of</span>, <span class="sy">:title</span>&#x000A;<span class="r">end</span></code></pre>&#x000A;</div>&#x000A;&#x000A;
+          </div>
+        </div>
+      </div>
+      <div id='rightcolumn'>
+        <div class='box' id='search'>
+          <div class='roundedbox'>
+            <h3>Contents</h3>
+          </div>
+        </div>
+        <ul class='outline'>
+          <li><a href="/docs/installation/">Installation</a></li>
+          <li><a href="/docs/documents/">Documents</a></li>
+          <li><a href="/docs/associations/">Associations</a></li>
+          <li><a href="/docs/persistence/">Persistence</a></li>
+          <li><a href="/docs/querying/">Querying</a></li>
+          <li><a href="/docs/callbacks/">Callbacks</a></li>
+          <li><a href="/docs/validation/">Validation</a></li>
+          <li><a href="/docs/inheritance/">Inheritance</a></li>
+          <li><a href="/docs/indexing/">Indexing</a></li>
+          <li><a href="/docs/extras/">Extras</a></li>
+          <li><a href="/docs/rake/">Rake Tasks</a></li>
+          <li><a href="/docs/integration/">Integration</a></li>
+          <li><span class="active" title="You're here.">Extensions</span></li>
+          <li><a href="/docs/upgrading/">Upgrading</a></li>
+        </ul>
+      </div>
+      <div id='footer'>
+        <p>
+          Mongoid is maintained by <a href="http://twitter.com/modetojoy">Durran Jordan</a>, Site by <a href="http://twitter.com/railsjedi">@railsjedi</a> and <a href="http://twitter.com/fredrikhenne">@fredrikhenne</a>. Mongoid is free software under the MIT license.
+        </p>
+      </div>
+    </div>
+    <div id='ribbon'>
+      <p>
+        <a href='http://github.com/mongoid/mongoid-site' rel='me' title='Fork me on GitHub!'>Fork me on GitHub!</a>
+      </p>
+    </div>
+  </body>
+</html>
