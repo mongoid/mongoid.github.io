@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta content='A Ruby ODM for MongoDB' name='description' />
+    <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
+    <link href="/stylesheets/coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <title>Mongoid: Documents [Dynamic Fields]</title>
+  </head>
+  <body>
+    <div id='container'>
+      <div class='navigation'>
+        <a href="/"><img src="/images/mongoid-logo-small.png" />
+        </a>
+        
+        <ul class='navigation'>
+          <li class='area'><a class="area" href="/">home</a></li>
+          <li class='area'><a class="area" href="/docs.html">docs</a></li>
+          <li><a class="section" href="/docs/installation.html">installation</a></li>
+          <li><a class="section" href="/docs/documents.html">documents</a></li>
+          <li><a class="subsection" href="/docs/documents/fields.html">fields</a></li>
+          <li><a class="subsection active" href="/docs/documents/dynamic.html">dynamic fields</a></li>
+          <li><a class="subsection" href="/docs/documents/access.html">access</a></li>
+          <li><a class="subsection" href="/docs/documents/dirty.html">dirty tracking</a></li>
+          <li><a class="subsection" href="/docs/documents/inheritance.html">inheritance</a></li>
+          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+          <li><a class="section" href="/docs/querying.html">querying</a></li>
+          <li><a class="section" href="/docs/relations.html">relations</a></li>
+          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+          <li><a class="section" href="/docs/validation.html">validation</a></li>
+          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+          <li><a class="section" href="/docs/extras.html">extras</a></li>
+          <li><a class="section" href="/docs/rails.html">rails</a></li>
+          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+          <li class='area'><a class="area" href="/performance.html">performance</a></li>
+          <li class='area'><a class="area" href="/credits.html">credits</a></li>
+          <li class='area'><a class="area" href="/links.html">links</a></li>
+        </ul>
+      </div>
+      <div class='main'>
+        <div class='header'>
+          <a href="http://twitter.com/modetojoy/"><img src="/images/twitter-logo.png" />
+          </a>
+          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+          </a>
+        </div>
+        <div class='content'>
+          <h1>dynamic fields</h1>
+          <p>
+            By default Mongoid supports dynamic fields - that is it will allow
+            attributes to get set and persisted on the document even if a field was not
+            defined for them. There is a slight 'gotcha' however when dealing with
+            dynamic attributes in that Mongoid is not completely lenient about the use of
+            <tt>method_missing</tt> and breaking the public interface of the Document
+            class.
+          </p>
+          <p>
+            When dealing with dynamic attributes the following rules apply:
+          </p>
+          <p>
+            If the attribute exists in the document, Mongoid will provide you with your
+            standard getter and setter methods. For example, consider a person who has an
+            attribute of "gender" set on the document:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Set the person's gender to male.</span>&#x000A;person[<span class="sy">:gender</span>] = <span class="s"><span class="dl">&quot;</span><span class="k">Male</span><span class="dl">&quot;</span></span>&#x000A;person.gender = <span class="s"><span class="dl">&quot;</span><span class="k">Male</span><span class="dl">&quot;</span></span>&#x000A;&#x000A;<span class="c"># Get the person's gender.</span>&#x000A;person.gender&#x000A;</pre></div>
+          </div>
+          <p>
+            If the attribute does not already exist on the document, Mongoid will not
+            provide you with the getters and setters and will enforce normal
+            <tt>method_missing</tt> behavior. In this case you must use the other
+            provided accessor methods: (<tt>[]</tt> and <tt>[]=</tt>) or
+            (<tt>read_attribute</tt> and <tt>write_attribute</tt>).
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Raise a NoMethodError if value isn't set.</span>&#x000A;person.gender&#x000A;person.gender = <span class="s"><span class="dl">&quot;</span><span class="k">Male</span><span class="dl">&quot;</span></span>&#x000A;&#x000A;<span class="c"># Retrieve a dynamic field safely.</span>&#x000A;person[<span class="sy">:gender</span>]&#x000A;person.read_attribute(<span class="sy">:gender</span>)&#x000A;&#x000A;<span class="c"># Write a dynamic field safely.</span>&#x000A;person[<span class="sy">:gender</span>] = <span class="s"><span class="dl">&quot;</span><span class="k">Male</span><span class="dl">&quot;</span></span>&#x000A;person.write_attribute(<span class="sy">:gender</span>, <span class="s"><span class="dl">&quot;</span><span class="k">Male</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <p>
+            Dynamic attributes can be completely turned off by setting the Mongoid
+            configuration option <tt>allow_dynamic_fields</tt> to <tt>false</tt>.
+          </p>
+        </div>
+        <div class='footer'>
+          Mongoid, 2009-2011, written and maintained by
+          <a href="http://github.com/durran">Durran Jordan</a>.
+        </div>
+        <div class='clear'></div>
+      </div>
+    </div>
+  </body>
+</html>

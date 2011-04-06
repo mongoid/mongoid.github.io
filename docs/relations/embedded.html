@@ -5,7 +5,7 @@
     <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
     <link href="/stylesheets/coderay.css" media="screen" rel="stylesheet" type="text/css" />
     <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
-    <title>Mongoid: Home</title>
+    <title>Mongoid: Relations [Embedded]</title>
   </head>
   <body>
     <div id='container'>
@@ -21,6 +21,12 @@
           <li><a class="section" href="/docs/persistence.html">persistence</a></li>
           <li><a class="section" href="/docs/querying.html">querying</a></li>
           <li><a class="section" href="/docs/relations.html">relations</a></li>
+          <li><a class="subsection active" href="/docs/relations/embedded.html">embedded</a></li>
+          <li><a class="chapter" href="/docs/relations/embedded/1-n.html">1...n</a></li>
+          <li><a class="chapter" href="/docs/relations/embedded/1-1.html">1...1</a></li>
+          <li><a class="subsection" href="/docs/relations/referenced.html">referenced</a></li>
+          <li><a class="subsection" href="/docs/relations/metadata.html">metadata</a></li>
+          <li><a class="subsection" href="/docs/relations/validations.html">validations</a></li>
           <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
           <li><a class="section" href="/docs/validation.html">validation</a></li>
           <li><a class="section" href="/docs/indexing.html">indexing</a></li>
@@ -42,28 +48,16 @@
           </a>
         </div>
         <div class='content'>
-          <h1>mongoid</h1>
+          <h1>embedded relations</h1>
           <p>
-            Mongoid (pronounced mann-goyd) is an Object-Document-Mapper (ODM) for
-            <a href="http://mongodb.org">MongoDB</a> written in Ruby. It was conceived in August,
-            2009 during a whiskey-induced evening at the infamous Oasis in Florida,
-            USA by <a href="http://github.com/durran">Durran Jordan</a>.
+            Embedded relations are associations between one or many objects where
+            the child object is embedded within the parent in the same document
+            in the database. They can be extremely efficient when kept to a
+            managable size in MongoDB since the total number of queries required
+            to retrieve an entire object graph can be reduced to one.
           </p>
           <p>
-            The philosophy of Mongoid is to provide a familiar API to Ruby developers
-            who have been using Active Record or Data Mapper, while leveraging the
-            power of MongoDB's schemaless and performant document-based design, dynamic
-            queries, and atomic modifier operations.
-          </p>
-          <h2>sample syntax</h2>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="r">class</span> <span class="cl">Artist</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  embeds_many <span class="sy">:instruments</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Instrument</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  embedded_in <span class="sy">:artist</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="c"># Find the first artist named &quot;Syd Vicious&quot; and create an embedded bass</span>&#x000A;<span class="c"># document for him. Of course he'll smash it within the next few minutes,</span>&#x000A;<span class="c"># but no worries we can delete it later.</span>&#x000A;<span class="co">Artist</span>.where(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Syd Vicious</span><span class="dl">&quot;</span></span>).first.tap <span class="r">do</span> |artist|&#x000A;  artist.instruments.create(<span class="ke">type</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Bass</span><span class="dl">&quot;</span></span>)&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-          </div>
-          <p>
-            *** Note that this site is tested on Firefox only and that any issues brought
-            up around viewing on other browsers will be, to put it bluntly, ignored.
-            We're busy trying to make the best ODM possible here, not worry about
-            browser compatibility.
+            Please consult the specific relation sections for more information.
           </p>
         </div>
         <div class='footer'>

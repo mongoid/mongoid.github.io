@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta content='A Ruby ODM for MongoDB' name='description' />
+    <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
+    <link href="/stylesheets/coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <title>Mongoid: Persistence [Atomic]</title>
+  </head>
+  <body>
+    <div id='container'>
+      <div class='navigation'>
+        <a href="/"><img src="/images/mongoid-logo-small.png" />
+        </a>
+        
+        <ul class='navigation'>
+          <li class='area'><a class="area" href="/">home</a></li>
+          <li class='area'><a class="area" href="/docs.html">docs</a></li>
+          <li><a class="section" href="/docs/installation.html">installation</a></li>
+          <li><a class="section" href="/docs/documents.html">documents</a></li>
+          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+          <li><a class="subsection" href="/docs/persistence/standard.html">standard</a></li>
+          <li><a class="subsection active" href="/docs/persistence/atomic.html">atomic</a></li>
+          <li><a class="section" href="/docs/querying.html">querying</a></li>
+          <li><a class="section" href="/docs/relations.html">relations</a></li>
+          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+          <li><a class="section" href="/docs/validation.html">validation</a></li>
+          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+          <li><a class="section" href="/docs/extras.html">extras</a></li>
+          <li><a class="section" href="/docs/rails.html">rails</a></li>
+          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+          <li class='area'><a class="area" href="/performance.html">performance</a></li>
+          <li class='area'><a class="area" href="/credits.html">credits</a></li>
+          <li class='area'><a class="area" href="/links.html">links</a></li>
+        </ul>
+      </div>
+      <div class='main'>
+        <div class='header'>
+          <a href="http://twitter.com/modetojoy/"><img src="/images/twitter-logo.png" />
+          </a>
+          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+          </a>
+        </div>
+        <div class='content'>
+          <h1>atomic persistence</h1>
+          <p>
+            Although Mongoid performs atomic operations under the covers by default,
+            there may be cases where you want to do this explicitly without
+            persisting other fields. Mongoid provides support for some of
+            these operations as well.
+            <ul>
+              <li><a href="#add_to_set"><tt>Model#add_to_set</tt></a></li>
+              <li><a href="#inc"><tt>Model#inc</tt></a></li>
+              <li><a href="#pull_all"><tt>Model#pull_all</tt></a></li>
+              <li><a href="#push"><tt>Model#push</tt></a></li>
+            </ul>
+          </p>
+          <a name='add_to_set'></a>
+          <h4><tt>Model#add_to_set</tt></h4>
+          <p>
+            Performs MongoDB's <tt>$addToSet</tt> modifier on the supplied field and
+            value. The value will be added to the field if it does not already exist,
+            and if the field is nil it will be initialized to an array with the
+            value in it. If the field is not an array an error will be raised.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre>person.add_to_set(<span class="sy">:aliases</span>, <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb command</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update(&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$addToSet</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">aliases</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span> } }&#x000A;)&#x000A;</pre></div>
+          </div>
+          <a name='inc'></a>
+          <h4><tt>Model#inc</tt></h4>
+          <p>
+            Performs MongoDB's <tt>$inc</tt> modifier which increments it's value
+            by the supplied amount or initializes it to that value. If the field
+            is not numeric an error will be raised.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre>person.inc(<span class="sy">:age</span>, <span class="i">1</span>)&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb command</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update(&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$inc</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">age</span><span class="dl">&quot;</span></span> : <span class="i">1</span> } }&#x000A;)&#x000A;</pre></div>
+          </div>
+          <a name='pull_all'></a>
+          <h4><tt>Model#pull_all</tt></h4>
+          <p>
+            Performs MongoDB's <tt>$pullAll</tt> modifier that removes all the matching
+            supplied values from the array.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre>person.pull_all(<span class="sy">:aliases</span>, [ <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">James</span><span class="dl">&quot;</span></span> ])&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb command</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update(&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$pullAll</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">aliases</span><span class="dl">&quot;</span></span> : [ <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">James</span><span class="dl">&quot;</span></span> ] } }&#x000A;)&#x000A;</pre></div>
+          </div>
+          <a name='push'></a>
+          <h4><tt>Model#push</tt></h4>
+          <p>
+            Performs MongoDB's <tt>$push</tt> modifier that will append the value to
+            the provided field. If the field does not exist it will be initialized
+            as an array with the parameter. If the field exists and is not an
+            array an error will be raised.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre>person.push(<span class="sy">:aliases</span>, <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb command</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update(&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$push</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">aliases</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span> } }&#x000A;)</pre></div>
+          </div>
+        </div>
+        <div class='footer'>
+          Mongoid, 2009-2011, written and maintained by
+          <a href="http://github.com/durran">Durran Jordan</a>.
+        </div>
+        <div class='clear'></div>
+      </div>
+    </div>
+  </body>
+</html>

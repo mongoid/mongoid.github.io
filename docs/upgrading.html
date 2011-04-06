@@ -1,0 +1,241 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta content='A Ruby ODM for MongoDB' name='description' />
+    <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
+    <link href="/stylesheets/coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <title>Mongoid: Upgrading</title>
+  </head>
+  <body>
+    <div id='container'>
+      <div class='navigation'>
+        <a href="/"><img src="/images/mongoid-logo-small.png" />
+        </a>
+        
+        <ul class='navigation'>
+          <li class='area'><a class="area" href="/">home</a></li>
+          <li class='area'><a class="area" href="/docs.html">docs</a></li>
+          <li><a class="section" href="/docs/installation.html">installation</a></li>
+          <li><a class="section" href="/docs/documents.html">documents</a></li>
+          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+          <li><a class="section" href="/docs/querying.html">querying</a></li>
+          <li><a class="section" href="/docs/relations.html">relations</a></li>
+          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+          <li><a class="section" href="/docs/validation.html">validation</a></li>
+          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+          <li><a class="section" href="/docs/extras.html">extras</a></li>
+          <li><a class="section" href="/docs/rails.html">rails</a></li>
+          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+          <li><a class="section active" href="/docs/upgrading.html">upgrading</a></li>
+          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+          <li class='area'><a class="area" href="/performance.html">performance</a></li>
+          <li class='area'><a class="area" href="/credits.html">credits</a></li>
+          <li class='area'><a class="area" href="/links.html">links</a></li>
+        </ul>
+      </div>
+      <div class='main'>
+        <div class='header'>
+          <a href="http://twitter.com/modetojoy/"><img src="/images/twitter-logo.png" />
+          </a>
+          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+          </a>
+        </div>
+        <div class='content'>
+          <h1>upgrading</h1>
+          <p>
+            Use this as a reference when upgrading between Mongoid versions.
+          </p>
+          <h3>Upgrading to 2.0.0</h3>
+          <p>
+            You may use the familiar Active Record macros for relational associations
+            if it helps with understanding where the foreign keys are stored.
+            <ul>
+              <li><tt>has_many</tt></li>
+              <li><tt>has_one</tt></li>
+              <li><tt>belongs_to</tt></li>
+              <li><tt>has_and_belongs_to_many</tt></li>
+            </ul>
+          </p>
+          <p>
+            The <tt>id</tt> method on <tt>criteria</tt> has been removed in favour of
+            <tt>for_ids</tt>.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="co">Person</span>.criteria.for_ids(<span class="s"><span class="dl">&quot;</span><span class="k">4ab2bc4b8ad548971900005c</span><span class="dl">&quot;</span></span>)&#x000A;<span class="co">Person</span>.criteria.for_ids([<span class="s"><span class="dl">&quot;</span><span class="k">4ab2bc4b8ad548971900005c</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">...</span><span class="dl">&quot;</span></span>])&#x000A;</pre></div>
+          </div>
+          <h3>Upgrading to 2.0.0.rc.1 +</h3>
+          <p>
+            Please note there are many changes in this upgrade - please take
+            caution and be mindful of each item listed here. There were close to
+            400 commits between beta 20 and rc 1, and was a COMPLETE REWRITE
+            of all association code as well as refactorings and rewrites in many
+            other areas.
+          </p>
+          <p>
+            Relational associations no longer autosave when the parent relation
+            is created. Previously a save on a new document which had a
+            references_many or references_one association loaded would save
+            the relations on it's first save. In order to get this functionality
+            back, an <tt>autosave: true</tt> option must be provided to the
+            macro (This only applies to references_many and references_one):
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  references_many <span class="sy">:posts</span>, <span class="ke">autosave</span>: <span class="pc">true</span>&#x000A;  references_one <span class="sy">:game</span>, <span class="ke">autosave</span>: <span class="pc">true</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            For relational many-to-many associations, the
+            <tt>stored_as: :array</tt> option on references_many has been
+            sacked. You will get an error on class load to change these to the
+            new syntax:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  references_and_referenced_in_many <span class="sy">:preferences</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            Mongoid now validates all associated "child" relations by default,
+            which is the opposite behaviour from the last release. You may
+            remove any validates_associated definitions that do not require
+            custom behaviour for the following relations:
+            <ul>
+              <li><tt>embeds_many</tt></li>
+              <li><tt>embeds_one</tt></li>
+              <li><tt>references_many</tt></li>
+              <li><tt>references_one</tt></li>
+            </ul>
+          </p>
+          <p>
+            If you do NOT want the automatic validation on these relations, you
+            can supply the definition with a <tt>validate: false</tt>
+            option to turn it off:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embeds_many <span class="sy">:addresses</span>, <span class="ke">validate</span>: <span class="pc">false</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            Criteria object are now immutable, and return a new object with each
+            method call. Also, the following methods have been added:
+            <ul>
+              <li><tt>delete_all</tt></li>
+              <li><tt>destroy_all</tt></li>
+              <li><tt>create</tt></li>
+            </ul>
+          </p>
+          <p>
+            This allows for limited database update commands to happen off of
+            a criteria object:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="co">Person</span>.where(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Prince</span><span class="dl">&quot;</span></span>).create <span class="c"># =&gt; Creates one</span>&#x000A;<span class="co">Person</span>.where(<span class="sy">:age</span>.gt =&gt; <span class="i">40</span>).delete_all <span class="c"># =&gt; Delete all matching</span>&#x000A;<span class="co">Person</span>.where(<span class="sy">:age</span>.gt =&gt; <span class="i">40</span>).destroy_all <span class="c"># =&gt; Destroy all matching</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            Mongoid now supports <tt>default_scope</tt> in a limited capacity:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  default_scope asc(<span class="sy">:name</span>)&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            Mongoid now supports multiple additional database connections on a
+            per-model basis. Note that the "databases" entry in the configuration
+            is only for ADDITIONAL databases - the primary master still is
+            configured as usual:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="ke">defaults</span>: &amp;defaults&#x000A;  <span class="ke">host</span>: localhost&#x000A;  slaves:&#x000A;    - <span class="ke">host</span>: localhost&#x000A;      <span class="ke">port</span>: <span class="i">27018</span>&#x000A;    - <span class="ke">host</span>: localhost&#x000A;      <span class="ke">port</span>: <span class="i">27019</span>&#x000A;  databases:&#x000A;    secondary:&#x000A;      <span class="ke">database</span>: secondary_config_test&#x000A;      <span class="ke">host</span>: localhost&#x000A;      <span class="ke">post</span>: <span class="i">27020</span>&#x000A;      slaves:&#x000A;        - <span class="ke">host</span>: localhost&#x000A;          <span class="ke">port</span>: <span class="i">27021</span>&#x000A;        - <span class="ke">host</span>: localhost&#x000A;          <span class="ke">port</span>: <span class="i">27022</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            To tell a model to persist to another database:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="r">class</span> <span class="cl">Business</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  set_database <span class="sy">:secondary</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            The <tt>inverse_of</tt> option is no longer required on any relation.
+          </p>
+          <p>
+            Mongoid now allows recursive embedded relationships through 2 simple
+            macros:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="r">class</span> <span class="cl">Role</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  recursively_embeds_many&#x000A;<span class="r">end</span>&#x000A;&#x000A;role.parent_role <span class="c"># =&gt; Gets the parent.</span>&#x000A;role.child_roles <span class="c"># =&gt; Gets the children.</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Role</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  recursively_embeds_one&#x000A;<span class="r">end</span>&#x000A;&#x000A;role.parent_role <span class="c"># =&gt; Gets the parent.</span>&#x000A;role.child_role <span class="c"># =&gt; Gets the child.</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            <tt>:default_order</tt> No longer functions on relations and is a known
+            issue.
+          </p>
+          <p>
+            For third-party library developers, the internal Mongoid relation
+            metadata has been revamped. Now when performing a
+            <tt>Document#reflect_on_association(name)</tt> you will be returned a
+            <tt>Mongoid::Relations::Metadata</tt> object, which now provides
+            much more comprehensive information about the relation in question.
+          </p>
+          <h3>Upgrading to 2.0.0.beta.16 +</h3>
+          <p>
+            This version requires an upgrade to
+            <a href="http://www.mongodb.org/downloads">MongoDB 1.6.0</a>.
+          </p>
+          <h3>Upgrading to 2.0.0.beta.15 +</h3>
+          <p>
+            If you had been using the class variable <tt>include_root_in_json</tt>
+            for JSON serialization, this will no longer work. You will need to now
+            use the global Mongoid configuration option of the same name in your
+            <tt>mongoid.yml</tt> if you want to turn it on. (It now defaults to false.)
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="ke">defaults</span>: &amp;defaults&#x000A;  <span class="ke">include_root_in_json</span>: <span class="pc">true</span>&#x000A;</pre></div>
+          </div>
+          <h3>Upgrading to 2.0.0.beta.14 +</h3>
+          <p>
+            The <tt>accessible: false</tt> option on fields has been
+            removed in favor of <tt>attr_accessible</tt> and <tt>attr_protected</tt>.
+            You will need to change those definitions in your models.
+          </p>
+          <p>
+            Note that gemcutter is sorting the gems funkily, so when upgrading
+            Mongoid for now you will have to specify the exact version. If you are
+            using bundler then it takes care of this for you. The gems in the way
+            will get yanked soon.
+          </p>
+          <h3>Upgrading to 2.0.0.beta.11 +</h3>
+          <p>
+            The <tt>Mongoid.use_object_ids</tt> configuration option has been removed
+            and will need to be removed from your mongoid.yml or configuration block.
+          </p>
+          <p>
+            If you had been using the default <tt>String</tt> representation of
+            <tt>BSON::ObjectID</tt> as your ids, you will need to do one of the following
+            options:
+          </p>
+          <p>
+            a) Tell each one of your models to use <tt>Strings</tt> as ids like so:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  identity <span class="ke">type</span>: <span class="co">String</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            b) Migrate all your <tt>String</tt> ids over to <tt>ObjectIDs</tt> in your
+            database. See <a href="http://gist.github.com/489098">This Gist</a> for an
+            example script to do this. (Thanks Kyle Banker)
+          </p>
+          <h3>Upgrading to 2.0.0.beta.10 +</h3>
+          <p>
+            <tt>Passenger</tt> users who are using smart spawning must now remove
+            their initializers with the reconnect on fork code. Mongoid now handles
+            this for you.
+          </p>
+          <p>
+            <tt>Unicorn</tt> users who set <tt>preload_app</tt> to <tt>true</tt>
+            must also delete their initializers with the reconnect on fork code.
+            Mongoid now handles this for you as well.
+          </p>
+        </div>
+        <div class='footer'>
+          Mongoid, 2009-2011, written and maintained by
+          <a href="http://github.com/durran">Durran Jordan</a>.
+        </div>
+        <div class='clear'></div>
+      </div>
+    </div>
+  </body>
+</html>

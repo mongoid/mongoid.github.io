@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta content='A Ruby ODM for MongoDB' name='description' />
+    <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
+    <link href="/stylesheets/coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <title>Mongoid: Querying [Criteria]</title>
+  </head>
+  <body>
+    <div id='container'>
+      <div class='navigation'>
+        <a href="/"><img src="/images/mongoid-logo-small.png" />
+        </a>
+        
+        <ul class='navigation'>
+          <li class='area'><a class="area" href="/">home</a></li>
+          <li class='area'><a class="area" href="/docs.html">docs</a></li>
+          <li><a class="section" href="/docs/installation.html">installation</a></li>
+          <li><a class="section" href="/docs/documents.html">documents</a></li>
+          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+          <li><a class="section" href="/docs/querying.html">querying</a></li>
+          <li><a class="subsection active" href="/docs/querying/criteria.html">criteria</a></li>
+          <li><a class="subsection" href="/docs/querying/modification.html">criteria + mod</a></li>
+          <li><a class="subsection" href="/docs/querying/finders.html">finders</a></li>
+          <li><a class="subsection" href="/docs/querying/scopes.html">scopes</a></li>
+          <li><a class="section" href="/docs/relations.html">relations</a></li>
+          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+          <li><a class="section" href="/docs/validation.html">validation</a></li>
+          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+          <li><a class="section" href="/docs/extras.html">extras</a></li>
+          <li><a class="section" href="/docs/rails.html">rails</a></li>
+          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+          <li class='area'><a class="area" href="/performance.html">performance</a></li>
+          <li class='area'><a class="area" href="/credits.html">credits</a></li>
+          <li class='area'><a class="area" href="/links.html">links</a></li>
+        </ul>
+      </div>
+      <div class='main'>
+        <div class='header'>
+          <a href="http://twitter.com/modetojoy/"><img src="/images/twitter-logo.png" />
+          </a>
+          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+          </a>
+        </div>
+        <div class='content'>
+          <h1>criteria</h1>
+          <p>
+            The following are a list of chainable criteria query methods in
+            Mongoid along with their corresponding database selectors or options.
+          </p>
+          <p>
+            Please note again that criteria are lazy evaluated, and with each
+            chained method it will be cloned and return a new criteria copy.
+          </p>
+          <p>
+            For more information on the underlying database selectors please refer to
+            <a href="http://www.mongodb.org/display/DOCS/Advanced+Queries">MongoDB</a>
+            directly.
+          </p>
+          <h3>query methods</h3>
+          <p>
+            <ul>
+              <li><a href="#all_in"><tt>Model.all_in</tt></a></li>
+              <li><a href="#also_in"><tt>Model.also_in</tt></a></li>
+              <li><a href="#and"><tt>Criteria#and</tt></a></li>
+              <li><a href="#any_in"><tt>Model.any_in</tt></a></li>
+              <li><a href="#any_of"><tt>Model.any_of</tt></a></li>
+              <li><a href="#asc"><tt>Model.asc</tt></a></li>
+              <li><a href="#desc"><tt>Model.desc</tt></a></li>
+              <li><a href="#excludes"><tt>Model.excludes</tt></a></li>
+              <li><a href="#limit"><tt>Model.limit</tt></a></li>
+              <li><a href="#near"><tt>Model.near</tt></a></li>
+              <li><a href="#not_in"><tt>Model.not_in</tt></a></li>
+              <li><a href="#only"><tt>Model.only</tt></a></li>
+              <li><a href="#order_by"><tt>Model.order_by</tt></a></li>
+              <li><a href="#skip"><tt>Model.skip</tt></a></li>
+              <li><a href="#where"><tt>Model.where</tt></a></li>
+              <li><a href="#without"><tt>Model.without</tt></a></li>
+            </ul>
+          </p>
+          <a name='all_in'></a>
+          <h4><tt>Model.all_in</tt> | <tt>Criteria#all_in</tt></h4>
+          <p>
+            Adds a criterion that specifies valus that must all match in order to
+            return results. The corresponding MongoDB operation is <tt>$all</tt>.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Match all people with Bond and 007 as aliases.</span>&#x000A;<span class="co">Person</span>.all_in(<span class="ke">aliases</span>: [ <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span> ])&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query selector</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="s"><span class="dl">&quot;</span><span class="k">aliases</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$all</span><span class="dl">&quot;</span></span> : [ <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span> ] }}&#x000A;</pre></div>
+          </div>
+          <a name='also_in'></a>
+          <h4><tt>Model.also_in</tt> | <tt>Criteria#also_in</tt></h4>
+          <p>
+            Adds a criterion that specifies values where any value can be matched in
+            order to return results. This is similar to <tt>Criteria#any_in</tt> with
+            the exception here that if if it chained with values for the same field
+            it performs a union of the values where <tt>any_in</tt> perform an
+            intersection. The underlying MongoDB expression is <tt>$in</tt>.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Match all people with either Bond or 007 as aliases.</span>&#x000A;<span class="co">Person</span>.also_in(<span class="ke">aliases</span>: [ <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span> ])&#x000A;<span class="co">Person</span>.any_in(<span class="ke">aliases</span>: [ <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span> ]).also_in(<span class="ke">aliases</span>: [ <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span> ])&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query selector</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="s"><span class="dl">&quot;</span><span class="k">aliases</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$in</span><span class="dl">&quot;</span></span> : [ <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span> ] }}&#x000A;</pre></div>
+          </div>
+          <a name='and'></a>
+          <h4><tt>Criteria#and</tt></h4>
+          <p>
+            Adds another simple expression that must match in order to return results.
+            This is the same as <a href="#where">Criteria#where</a> and is mostly
+            here for syntactic sugar.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Match all people with last name Jordan and first name starting with d.</span>&#x000A;<span class="co">Person</span>.where(<span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Jordan</span><span class="dl">&quot;</span></span>).and(<span class="ke">first_name</span>: <span class="rx"><span class="dl">/</span><span class="k">^d</span><span class="dl">/</span><span class="mod">i</span></span>)&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query selector</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Jordan</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="rx"><span class="dl">/</span><span class="k">^d</span><span class="dl">/</span><span class="mod">i</span></span> }&#x000A;</pre></div>
+          </div>
+          <a name='any_in'></a>
+          <h4><tt>Model.any_in</tt> | <tt>Criteria#any_in</tt></h4>
+          <p>
+            Adds a criterion that specifies values where any value can be matched in
+            order to return results. This is similar to <tt>Criteria#also_in</tt> with
+            the exception here that if if it chained with values for the same field
+            it performs an intersection of the values where <tt>also_in</tt> perform a
+            union. The underlying MongoDB expression is <tt>$in</tt>.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Match all people with either Bond or 007 as aliases.</span>&#x000A;<span class="co">Person</span>.any_in(<span class="ke">aliases</span>: [ <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span> ])&#x000A;<span class="co">Person</span>.&#x000A;  any_in(<span class="ke">aliases</span>: [ <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">James</span><span class="dl">&quot;</span></span> ]).&#x000A;  any_in(<span class="ke">aliases</span>: [ <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span> ])&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query selector</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="s"><span class="dl">&quot;</span><span class="k">aliases</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$in</span><span class="dl">&quot;</span></span> : [ <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span> ] }}&#x000A;</pre></div>
+          </div>
+          <a name='any_of'></a>
+          <h4><tt>Model.any_of</tt> | <tt>Criteria#any_of</tt></h4>
+          <p>
+            Adds a criterion that specifies a set of expressions that any can match
+            in order to return results. The underlying MongoDB expression is
+            <tt>$or</tt>.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Match all people with either last name Penn or Teller</span>&#x000A;<span class="co">Person</span>.any_of({ <span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Penn</span><span class="dl">&quot;</span></span> }, { <span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Teller</span><span class="dl">&quot;</span></span> })&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query selector</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> :&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$or</span><span class="dl">&quot;</span></span> :&#x000A;    [ { <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Penn</span><span class="dl">&quot;</span></span> }, { <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Teller</span><span class="dl">&quot;</span></span> } ]&#x000A;  }&#x000A;}&#x000A;</pre></div>
+          </div>
+          <a name='asc'></a>
+          <h4><tt>Model.asc</tt> | <tt>Criteria#asc</tt></h4>
+          <p>
+            Adds ascending sort options for the provided fields.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Sort people by first and last name ascending.</span>&#x000A;<span class="co">Person</span>.asc(<span class="sy">:first_name</span>, <span class="sy">:last_name</span>)&#x000A;<span class="co">Person</span>.ascending(<span class="sy">:first_name</span>, <span class="sy">:last_name</span>)&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query options</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="s"><span class="dl">&quot;</span><span class="k">sort</span><span class="dl">&quot;</span></span> :&#x000A;    {[ [ <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span>, <span class="co">Mongo</span>::<span class="co">ASCENDING</span> ],&#x000A;      [ <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span>, <span class="co">Mongo</span>::<span class="co">ASCENDING</span> ] ]} }&#x000A;</pre></div>
+          </div>
+          <a name='desc'></a>
+          <h4><tt>Model.desc</tt> | <tt>Criteria#desc</tt></h4>
+          <p>
+            Adds descending sort options for the provided fields.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Sort people by first and last name descending.</span>&#x000A;<span class="co">Person</span>.desc(<span class="sy">:first_name</span>, <span class="sy">:last_name</span>)&#x000A;<span class="co">Person</span>.descending(<span class="sy">:first_name</span>, <span class="sy">:last_name</span>)&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query options</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="s"><span class="dl">&quot;</span><span class="k">sort</span><span class="dl">&quot;</span></span> :&#x000A;    {[ [ <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span>, <span class="co">Mongo</span>::<span class="co">DESCENDING</span> ],&#x000A;      [ <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span>, <span class="co">Mongo</span>::<span class="co">DESCENDING</span> ] ]} }&#x000A;</pre></div>
+          </div>
+          <a name='excludes'></a>
+          <h4><tt>Model.excludes</tt> | <tt>Criteria#excludes</tt></h4>
+          <p>
+            Adds a criterion that specifies a set of expressions that cannot match
+            in order to return results. The underlying MongoDB expression is
+            <tt>$ne</tt>.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Match all people without either last name Teller and first name Bob.</span>&#x000A;<span class="co">Person</span>.excludes(<span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Teller</span><span class="dl">&quot;</span></span>, <span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Bob</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query selector</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>{{ <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$ne</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Teller</span><span class="dl">&quot;</span></span> } }, { <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$ne</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Bob</span><span class="dl">&quot;</span></span> } }}&#x000A;</pre></div>
+          </div>
+          <a name='limit'></a>
+          <h4><tt>Model.limit</tt> | <tt>Criteria#limit</tt></h4>
+          <p>
+            Limits the number of returned results by the provided value.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Only return 20 documents.</span>&#x000A;<span class="co">Person</span>.limit(<span class="i">20</span>)&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query options</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="s"><span class="dl">&quot;</span><span class="k">limit</span><span class="dl">&quot;</span></span> : <span class="i">20</span> }&#x000A;</pre></div>
+          </div>
+          <a name='near'></a>
+          <h4><tt>Model.near</tt> | <tt>Criteria#near</tt></h4>
+          <p>
+            Adds a criterion to find locations that are near the supplied
+            coordinates. This performs a MongoDB <tt>$near</tt> selection and
+            requires a 2d index to be on the provided field.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Match all bars near Berlin</span>&#x000A;<span class="co">Bar</span>.near(<span class="ke">location</span>: [ <span class="fl">52.30</span>, <span class="fl">13.25</span> ])&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query selector</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="s"><span class="dl">&quot;</span><span class="k">location</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$near</span><span class="dl">&quot;</span></span> : [ <span class="fl">52.30</span>, <span class="fl">13.25</span> ] }}&#x000A;</pre></div>
+          </div>
+          <a name='not_in'></a>
+          <h4><tt>Model.not_in</tt> | <tt>Criteria#not_in</tt></h4>
+          <p>
+            Adds a criterion that specifies a set of expressions that cannot match
+            in order to return results. The underlying MongoDB expression is
+            <tt>$nin</tt>.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Match all people without last names Zorg and Dallas</span>&#x000A;<span class="co">Person</span>.not_in(<span class="ke">last_name</span>: [ <span class="s"><span class="dl">&quot;</span><span class="k">Zorg</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">Dallas</span><span class="dl">&quot;</span></span> ])&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query selector</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>{{ <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$nin</span><span class="dl">&quot;</span></span> : [ <span class="s"><span class="dl">&quot;</span><span class="k">Zorg</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">Dallas</span><span class="dl">&quot;</span></span> ] } }}&#x000A;</pre></div>
+          </div>
+          <a name='only'></a>
+          <h4><tt>Model.only</tt> | <tt>Criteria#only</tt></h4>
+          <p>
+            Limits the fields returned from the database to those supplied to the
+            method. Extremely useful for list views where the entire documents
+            are not needed. Cannot be used in conjunction with #without.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Return only the first and last names of each person.</span>&#x000A;<span class="co">Person</span>.only(<span class="sy">:first_name</span>, <span class="sy">:last_name</span>)&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query options</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="s"><span class="dl">&quot;</span><span class="k">fields</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="i">1</span>, <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : <span class="i">1</span> }}&#x000A;</pre></div>
+          </div>
+          <a name='order_by'></a>
+          <h4><tt>Model.order_by</tt> | <tt>Criteria#order_by</tt></h4>
+          <p>
+            Sorts the results given the arguments that must match the MongoDB
+            driver sorting syntax (key/value pairs of field and direction).
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Provide the sorting options.</span>&#x000A;<span class="co">Person</span>.order_by([[<span class="sy">:first_name</span>, <span class="sy">:asc</span>], [<span class="sy">:last_name</span>, <span class="sy">:desc</span>]])&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query options</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="s"><span class="dl">&quot;</span><span class="k">sort</span><span class="dl">&quot;</span></span> :&#x000A;    {[ [ <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span>, <span class="co">Mongo</span>::<span class="co">ASCENDING</span> ],&#x000A;      [ <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span>, <span class="co">Mongo</span>::<span class="co">DESCENDING</span> ] ]} }&#x000A;</pre></div>
+          </div>
+          <a name='skip'></a>
+          <h4><tt>Model.skip</tt> | <tt>Criteria#skip</tt></h4>
+          <p>
+            Skips the number of the results given the provided value, similar to
+            a SQL "offset".
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Skip 20 documents.</span>&#x000A;<span class="co">Person</span>.skip(<span class="i">20</span>)&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query options</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="s"><span class="dl">&quot;</span><span class="k">skip</span><span class="dl">&quot;</span></span> : <span class="i">20</span> }&#x000A;</pre></div>
+          </div>
+          <a name='where'></a>
+          <h4><tt>Model.where</tt> | <tt>Criteria#where</tt></h4>
+          <p>
+            Adds a criterion that must match in order to return results. If provided
+            a string it interperets it as a javascript function and converts it to
+            the proper <tt>$where</tt> clause. Mongoid also provides convenience
+            h4s on <tt>Symbol</tt> to make advanced queries simpler to write.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Match all people with first name Emmanuel</span>&#x000A;<span class="co">Person</span>.where(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Emmanuel</span><span class="dl">&quot;</span></span>)&#x000A;&#x000A;<span class="c"># Match all people with first name Emmanuel using Javascript.</span>&#x000A;<span class="co">Person</span>.where(<span class="s"><span class="dl">&quot;</span><span class="k">this.first_name == 'Emmanuel'</span><span class="dl">&quot;</span></span>)&#x000A;&#x000A;<span class="c"># Match all people who live in Berlin, where address is embedded.</span>&#x000A;<span class="co">Person</span>.where(<span class="s"><span class="dl">&quot;</span><span class="k">addresses.city</span><span class="dl">&quot;</span></span> =&gt; <span class="s"><span class="dl">&quot;</span><span class="k">Berlin</span><span class="dl">&quot;</span></span>)&#x000A;&#x000A;<span class="c"># Example queries using symbol h4s to perform more complex criteria.</span>&#x000A;<span class="co">Person</span>.where(<span class="sy">:title</span>.all =&gt; [<span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span>])&#x000A;<span class="co">Person</span>.where(<span class="sy">:age</span>.exists =&gt; <span class="pc">true</span>)&#x000A;<span class="co">Person</span>.where(<span class="sy">:age</span>.gt =&gt; <span class="i">18</span>)&#x000A;<span class="co">Person</span>.where(<span class="sy">:age</span>.gte =&gt; <span class="i">18</span>)&#x000A;<span class="co">Person</span>.where(<span class="sy">:title</span>.in =&gt; [<span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">Madam</span><span class="dl">&quot;</span></span>])&#x000A;<span class="co">Person</span>.where(<span class="sy">:age</span>.lt =&gt; <span class="i">55</span>)&#x000A;<span class="co">Person</span>.where(<span class="sy">:age</span>.lte =&gt; <span class="i">55</span>)&#x000A;<span class="co">Person</span>.where(<span class="sy">:title</span>.ne =&gt; <span class="s"><span class="dl">&quot;</span><span class="k">Mr</span><span class="dl">&quot;</span></span>)&#x000A;<span class="co">Person</span>.where(<span class="sy">:title</span>.nin =&gt; [<span class="s"><span class="dl">&quot;</span><span class="k">Esquire</span><span class="dl">&quot;</span></span>])&#x000A;<span class="co">Person</span>.where(<span class="sy">:aliases</span>.size =&gt; <span class="i">2</span>)&#x000A;<span class="co">Person</span>.where(<span class="sy">:location</span>.near =&gt; [ <span class="fl">22.50</span>, <span class="fl">-21.33</span> ])&#x000A;<span class="co">Person</span>.where(<span class="sy">:location</span>.within =&gt; { <span class="s"><span class="dl">&quot;</span><span class="k">$center</span><span class="dl">&quot;</span></span> =&gt; [ [ <span class="i">50</span>, <span class="i">-40</span> ], <span class="i">1</span> ] })&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query selectors</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Match all people with first name Emmanuel</span>&#x000A;{ <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Emmanuel</span><span class="dl">&quot;</span></span> }&#x000A;&#x000A;<span class="c"># Match all people with first name Emmanuel using Javascript.</span>&#x000A;{ <span class="s"><span class="dl">&quot;</span><span class="k">$where</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">this.first_name == 'Emmanuel'</span><span class="dl">&quot;</span></span> }&#x000A;&#x000A;<span class="c"># Match all people who live in Berlin, where address is embedded.</span>&#x000A;{ <span class="s"><span class="dl">&quot;</span><span class="k">addresses.city</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Berlin</span><span class="dl">&quot;</span></span> }&#x000A;&#x000A;<span class="c"># Example queries using symbol h4s to perform more complex criteria.</span>&#x000A;{ <span class="s"><span class="dl">&quot;</span><span class="k">title</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$all</span><span class="dl">&quot;</span></span> : [ <span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span> ] } }&#x000A;{ <span class="s"><span class="dl">&quot;</span><span class="k">age</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$exists</span><span class="dl">&quot;</span></span> : <span class="pc">true</span> } }&#x000A;{ <span class="s"><span class="dl">&quot;</span><span class="k">age</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$gt</span><span class="dl">&quot;</span></span> : <span class="i">18</span> } }&#x000A;{ <span class="s"><span class="dl">&quot;</span><span class="k">age</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$gte</span><span class="dl">&quot;</span></span> : <span class="i">18</span> } }&#x000A;{ <span class="s"><span class="dl">&quot;</span><span class="k">title</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$in</span><span class="dl">&quot;</span></span> : [ <span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">Madam</span><span class="dl">&quot;</span></span> ] } }&#x000A;{ <span class="s"><span class="dl">&quot;</span><span class="k">age</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$lt</span><span class="dl">&quot;</span></span> : <span class="i">55</span> } }&#x000A;{ <span class="s"><span class="dl">&quot;</span><span class="k">age</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$lte</span><span class="dl">&quot;</span></span> : <span class="i">55</span> } }&#x000A;{ <span class="s"><span class="dl">&quot;</span><span class="k">title</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$ne</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Mr</span><span class="dl">&quot;</span></span> } }&#x000A;{ <span class="s"><span class="dl">&quot;</span><span class="k">title</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$nin</span><span class="dl">&quot;</span></span> : [ <span class="s"><span class="dl">&quot;</span><span class="k">Esquire</span><span class="dl">&quot;</span></span> ] } }&#x000A;{ <span class="s"><span class="dl">&quot;</span><span class="k">aliases</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$size</span><span class="dl">&quot;</span></span> : <span class="i">2</span> } }&#x000A;{ <span class="s"><span class="dl">&quot;</span><span class="k">location</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$near</span><span class="dl">&quot;</span></span> : [ <span class="fl">22.50</span>, <span class="fl">-21.33</span> ] } }&#x000A;{ <span class="s"><span class="dl">&quot;</span><span class="k">location</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$within</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$center</span><span class="dl">&quot;</span></span> =&gt; [ [ <span class="i">50</span>, <span class="i">-40</span> ], <span class="i">1</span> ] } } }&#x000A;</pre></div>
+          </div>
+          <a name='without'></a>
+          <h4><tt>Model.without</tt> | <tt>Criteria#without</tt></h4>
+          <p>
+            Limits the fields returned from the database to those NOT supplied to the
+            method. Extremely useful for list views where the entire documents
+            are not needed. Cannot be used in conjunction with #only.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># Return all fields except first name and last name</span>&#x000A;<span class="co">Person</span>.without(<span class="sy">:first_name</span>, <span class="sy">:last_name</span>)&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query options</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="s"><span class="dl">&quot;</span><span class="k">fields</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="i">0</span>, <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : <span class="i">0</span> }}</pre></div>
+          </div>
+        </div>
+        <div class='footer'>
+          Mongoid, 2009-2011, written and maintained by
+          <a href="http://github.com/durran">Durran Jordan</a>.
+        </div>
+        <div class='clear'></div>
+      </div>
+    </div>
+  </body>
+</html>

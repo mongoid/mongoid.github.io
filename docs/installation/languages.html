@@ -5,7 +5,7 @@
     <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
     <link href="/stylesheets/coderay.css" media="screen" rel="stylesheet" type="text/css" />
     <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
-    <title>Mongoid: Home</title>
+    <title>Mongoid: Installation [Languages]</title>
   </head>
   <body>
     <div id='container'>
@@ -17,6 +17,9 @@
           <li class='area'><a class="area" href="/">home</a></li>
           <li class='area'><a class="area" href="/docs.html">docs</a></li>
           <li><a class="section" href="/docs/installation.html">installation</a></li>
+          <li><a class="subsection" href="/docs/installation/configuration.html">configuration</a></li>
+          <li><a class="subsection active" href="/docs/installation/languages.html">languages</a></li>
+          <li><a class="subsection" href="/docs/installation/replication.html">replication</a></li>
           <li><a class="section" href="/docs/documents.html">documents</a></li>
           <li><a class="section" href="/docs/persistence.html">persistence</a></li>
           <li><a class="section" href="/docs/querying.html">querying</a></li>
@@ -42,29 +45,43 @@
           </a>
         </div>
         <div class='content'>
-          <h1>mongoid</h1>
+          <h1>languages</h1>
           <p>
-            Mongoid (pronounced mann-goyd) is an Object-Document-Mapper (ODM) for
-            <a href="http://mongodb.org">MongoDB</a> written in Ruby. It was conceived in August,
-            2009 during a whiskey-induced evening at the infamous Oasis in Florida,
-            USA by <a href="http://github.com/durran">Durran Jordan</a>.
+            By default Mongoid adds the I18n translation file for English. However
+            adding new languages is easy. In your application initializer
+            (for Rails 3 it can be in <tt>config/initializers/mongoid.rb</tt>),
+            just add the code:
           </p>
-          <p>
-            The philosophy of Mongoid is to provide a familiar API to Ruby developers
-            who have been using Active Record or Data Mapper, while leveraging the
-            power of MongoDB's schemaless and performant document-based design, dynamic
-            queries, and atomic modifier operations.
-          </p>
-          <h2>sample syntax</h2>
           <div class="CodeRay">
-            <div class="code"><pre><span class="r">class</span> <span class="cl">Artist</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  embeds_many <span class="sy">:instruments</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Instrument</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  embedded_in <span class="sy">:artist</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="c"># Find the first artist named &quot;Syd Vicious&quot; and create an embedded bass</span>&#x000A;<span class="c"># document for him. Of course he'll smash it within the next few minutes,</span>&#x000A;<span class="c"># but no worries we can delete it later.</span>&#x000A;<span class="co">Artist</span>.where(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Syd Vicious</span><span class="dl">&quot;</span></span>).first.tap <span class="r">do</span> |artist|&#x000A;  artist.instruments.create(<span class="ke">type</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Bass</span><span class="dl">&quot;</span></span>)&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+            <div class="code"><pre><span class="c"># Add the Spanish exception translations.</span>&#x000A;<span class="co">Mongoid</span>.add_language(<span class="s"><span class="dl">&quot;</span><span class="k">es</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
           </div>
           <p>
-            *** Note that this site is tested on Firefox only and that any issues brought
-            up around viewing on other browsers will be, to put it bluntly, ignored.
-            We're busy trying to make the best ODM possible here, not worry about
-            browser compatibility.
+            Available languages for Mongoid are:
+            <ul>
+              <li><tt>bg</tt>: Bulgarian</li>
+              <li><tt>de</tt>: German</li>
+              <li><tt>en</tt>: English</li>
+              <li><tt>es</tt>: Spanish</li>
+              <li><tt>fr</tt>: French</li>
+              <li><tt>hu</tt>: Hungarian</li>
+              <li><tt>id</tt>: Indonesian</li>
+              <li><tt>it</tt>: Italian</li>
+              <li><tt>kr</tt>: Korean</li>
+              <li><tt>nl</tt>: Dutch</li>
+              <li><tt>pl</tt>: Polish</li>
+              <li><tt>pt-br</tt>: Brazilian Portuguese</li>
+              <li><tt>pt</tt>: Portuguese</li>
+              <li><tt>ro</tt>: Romanian</li>
+              <li><tt>ru</tt>: Russian</li>
+              <li><tt>sv</tt>: Swedish</li>
+              <li><tt>vi</tt>: Vietnamese</li>
+              <li><tt>zh-CN</tt>: Chinese</li>
+            </ul>
           </p>
+          <p>You can also just include them all by:</p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="co">Mongoid</span>.add_language(<span class="s"><span class="dl">&quot;</span><span class="k">*</span><span class="dl">&quot;</span></span>)</pre></div>
+          </div>
         </div>
         <div class='footer'>
           Mongoid, 2009-2011, written and maintained by

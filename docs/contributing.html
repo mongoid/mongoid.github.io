@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta content='A Ruby ODM for MongoDB' name='description' />
+    <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
+    <link href="/stylesheets/coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
+    <title>Mongoid: Contributing</title>
+  </head>
+  <body>
+    <div id='container'>
+      <div class='navigation'>
+        <a href="/"><img src="/images/mongoid-logo-small.png" />
+        </a>
+        
+        <ul class='navigation'>
+          <li class='area'><a class="area" href="/">home</a></li>
+          <li class='area'><a class="area" href="/docs.html">docs</a></li>
+          <li><a class="section" href="/docs/installation.html">installation</a></li>
+          <li><a class="section" href="/docs/documents.html">documents</a></li>
+          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+          <li><a class="section" href="/docs/querying.html">querying</a></li>
+          <li><a class="section" href="/docs/relations.html">relations</a></li>
+          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+          <li><a class="section" href="/docs/validation.html">validation</a></li>
+          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+          <li><a class="section" href="/docs/extras.html">extras</a></li>
+          <li><a class="section" href="/docs/rails.html">rails</a></li>
+          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+          <li><a class="section active" href="/docs/contributing.html">contributing</a></li>
+          <li class='area'><a class="area" href="/performance.html">performance</a></li>
+          <li class='area'><a class="area" href="/credits.html">credits</a></li>
+          <li class='area'><a class="area" href="/links.html">links</a></li>
+        </ul>
+      </div>
+      <div class='main'>
+        <div class='header'>
+          <a href="http://twitter.com/modetojoy/"><img src="/images/twitter-logo.png" />
+          </a>
+          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+          </a>
+        </div>
+        <div class='content'>
+          <h1>contributing</h1>
+          <p>
+            Mongoid is open source and embraces the social coding aspect of github.
+            Here are some guidelines on contributing to the project and ensuring
+            fast acceptance of your contributions.
+          </p>
+          <h3>core contributions</h3>
+          <p>
+            Fork the <a href="http://github.com/mongoid/mongoid">repo on github</a>
+            and issue a pull request with your changes. No
+            other means of supplying code to the team will be accepted.
+          </p>
+          <p>
+            Provide specs with your pull request if the existing specs do not cover
+            the change. Pull requests that provide new functionality without specs
+            will not be pulled in under any circumstance.
+          </p>
+          <h3>running the specs</h3>
+          <p>
+            Getting set up should require minimal effort:
+            <ul>
+              <li>Install MongoDB.</li>
+              <li>Fork and clone the repository.</li>
+              <li>Run <tt>gem install bundler</tt> to get the latest for the gemset.</li>
+              <li>Run <tt>bundle install</tt> for dependencies.</li>
+              <li>Run <tt>rake</tt> to execute all specs.</li>
+            </ul>
+          </p>
+          <p>
+            Mongoid provides a <a href="https://github.com/mynyml/watchr">watchr</a>
+            script as well for easy automated testing. To run it from the project root:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="er">$</span> bundle exec watchr .watchr&#x000A;</pre></div>
+          </div>
+          <h3>spec guidelines</h3>
+          <p>
+            The following code demostrates the desired way to write a spec in Mongoid.
+            For organization, specs are divided into two directories:
+            <tt>spec/functional</tt> and <tt>spec/unit</tt>. Functional specs are
+            those that test the full stack and hit the database, unit specs test
+            a single class in isolation. It's not required to have both, but
+            at least one or the other. Also adhere to these rules:
+            <ul>
+              <li>Use <tt>describe</tt> blocks for method names.</li>
+              <li>Use <tt>context</tt> blocks for conditions.</li>
+              <li>Prefer <tt>let</tt> over the use of instance variables.</li>
+              <li>1 assertion per example block.</li>
+              <li>
+                When describing methods, prefix with <tt>#</tt> for instance methods,
+                <tt>.</tt> for class methods.
+              </li>
+            </ul>
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>require <span class="s"><span class="dl">&quot;</span><span class="k">spec_helper</span><span class="dl">&quot;</span></span>&#x000A;&#x000A;describe <span class="co">Mongoid</span>::<span class="co">Relations</span>::<span class="co">Embedded</span>::<span class="co">Many</span> <span class="r">do</span>&#x000A;&#x000A;  before <span class="r">do</span>&#x000A;    <span class="co">Person</span>.delete_all&#x000A;  <span class="r">end</span>&#x000A;&#x000A;  describe <span class="s"><span class="dl">&quot;</span><span class="k">#=</span><span class="dl">&quot;</span></span> <span class="r">do</span>&#x000A;&#x000A;    context <span class="s"><span class="dl">&quot;</span><span class="k">when the parent is a new record</span><span class="dl">&quot;</span></span> <span class="r">do</span>&#x000A;&#x000A;      let(<span class="sy">:person</span>) <span class="r">do</span>&#x000A;        <span class="co">Person</span>.new&#x000A;      <span class="r">end</span>&#x000A;&#x000A;      let(<span class="sy">:address</span>) <span class="r">do</span>&#x000A;        <span class="co">Address</span>.new&#x000A;      <span class="r">end</span>&#x000A;&#x000A;      before <span class="r">do</span>&#x000A;        person.addresses = [ address ]&#x000A;      <span class="r">end</span>&#x000A;&#x000A;      it <span class="s"><span class="dl">&quot;</span><span class="k">sets the target of the relation</span><span class="dl">&quot;</span></span> <span class="r">do</span>&#x000A;        person.addresses.should == [ address ]&#x000A;      <span class="r">end</span>&#x000A;    <span class="r">end</span>&#x000A;  <span class="r">end</span>&#x000A;&#x000A;  describe <span class="s"><span class="dl">&quot;</span><span class="k">.macro</span><span class="dl">&quot;</span></span> <span class="r">do</span>&#x000A;&#x000A;    it <span class="s"><span class="dl">&quot;</span><span class="k">returns :embeds_many</span><span class="dl">&quot;</span></span> <span class="r">do</span>&#x000A;      described_class.macro.should == <span class="sy">:embeds_many</span>&#x000A;    <span class="r">end</span>&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+          </div>
+          <h3>coding guidelines</h3>
+          <p>
+            Mongoid has the design philosophy of having many fine grained, single purpose
+            objects in its domain. It makes the design more flexible and much easier to
+            test. If you find yourself refactoring at all,
+            <a href="http://www.refactoring.com/catalog/extractClass.html">extract class</a>
+            is always a good refactoring technique to have in mind.
+          </p>
+          <p>
+            Here are some other simple rules that will help expidite your patch
+            acceptance.
+            <ul>
+              <li>Keep method line counts small and easy to read.</li>
+              <li>Do not fear the use of Ruby's <tt>tap</tt>.</li>
+              <li>Copy and pasted code from another library will never be accepted.</li>
+              <li>Provide API documentation in the form of YARD.</li>
+            </ul>
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># encoding: utf-8</span>&#x000A;<span class="r">module</span> <span class="cl">Mongoid</span> <span class="c"># :nodoc:</span>&#x000A;  <span class="r">module</span> <span class="cl">Relations</span> <span class="c">#:nodoc:</span>&#x000A;&#x000A;    <span class="c"># This module contains the core macros for defining relations between</span>&#x000A;    <span class="c"># documents. They can be either embedded or referenced (relational).</span>&#x000A;    <span class="r">module</span> <span class="cl">Macros</span>&#x000A;      extend <span class="co">ActiveSupport</span>::<span class="co">Concern</span>&#x000A;&#x000A;      <span class="r">module</span> <span class="cl">ClassMethods</span> <span class="c">#:nodoc:</span>&#x000A;&#x000A;      <span class="c"># Adds the relation back to the parent document. This macro is</span>&#x000A;      <span class="c"># necessary to set the references from the child back to the parent</span>&#x000A;      <span class="c"># document. If a child does not define this relation calling</span>&#x000A;      <span class="c"># persistence methods on the child object will cause a save to fail.</span>&#x000A;      <span class="c">#</span>&#x000A;      <span class="c"># @example Define the relation.</span>&#x000A;      <span class="c">#</span>&#x000A;      <span class="c">#   class Person</span>&#x000A;      <span class="c">#     include Mongoid::Document</span>&#x000A;      <span class="c">#     embeds_many :addresses</span>&#x000A;      <span class="c">#   end</span>&#x000A;      <span class="c">#</span>&#x000A;      <span class="c">#   class Address</span>&#x000A;      <span class="c">#     include Mongoid::Document</span>&#x000A;      <span class="c">#     embedded_in :person</span>&#x000A;      <span class="c">#   end</span>&#x000A;      <span class="c">#</span>&#x000A;      <span class="c"># @param [ Symbol ] name The name of the relation.</span>&#x000A;      <span class="c"># @param [ Hash ] options The relation options.</span>&#x000A;      <span class="c"># @param [ Proc ] block Optional block for defining extensions.</span>&#x000A;      <span class="r">def</span> <span class="fu">embedded_in</span>(name, options = {}, &amp;block)&#x000A;        characterize(name, <span class="co">Embedded</span>::<span class="co">In</span>, options, &amp;block).tap <span class="r">do</span> |meta|&#x000A;          <span class="pc">self</span>.embedded = <span class="pc">true</span>&#x000A;          relate(name, meta)&#x000A;        <span class="r">end</span>&#x000A;      <span class="r">end</span>&#x000A;    <span class="r">end</span>&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+          </div>
+          <h3>website contributions</h3>
+          <p>
+            The Mongoid website is open source as well, and hosted on github. It
+            uses middleman as a static content generator, and additions to the
+            documentation are always welcome. The same rules apply here:
+          </p>
+          <p>
+            Fork the <a href="http://github.com/mongoid/mongoid-site">repo on github</a>
+            and issue a pull request with your changes. No
+            other means of supplying code to the team will be accepted.
+          </p>
+          <p>
+            Getting set up here is easy as well:
+            <ul>
+              <li>Fork and clone the repository.</li>
+              <li>Run <tt>gem install bundler</tt> to get the latest for the gemset.</li>
+              <li>Run <tt>bundle install</tt> for dependencies.</li>
+              <li>Run <tt>bundle exec mm-server</tt> to run the site with sinatra.</li>
+            </ul>
+          </p>
+          <p>
+            Pull requests will be merged in and regenerated to the mongoid.github.com
+            repo where you're contributions can be seen in all their glory.
+          </p>
+        </div>
+        <div class='footer'>
+          Mongoid, 2009-2011, written and maintained by
+          <a href="http://github.com/durran">Durran Jordan</a>.
+        </div>
+        <div class='clear'></div>
+      </div>
+    </div>
+  </body>
+</html>
