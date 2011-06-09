@@ -56,6 +56,20 @@
             <div class="code"><pre>hosts:&#x000A;  - - db1.mongoid.org&#x000A;      <span class="i">27017</span>&#x000A;  - - db2.mongoid.org&#x000A;      <span class="i">27018</span>&#x000A;<span class="ke">read_secondary</span>: <span class="pc">true</span>&#x000A;</pre></div>
           </div>
           <p>
+            If you use Sinatra (or anything other than rails) you need to do make a mongoid.yml like this:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>production:&#x000A;  <span class="ke">hosts</span>: [[db1.mongoid.org, <span class="i">27017</span>], [db2.mongoid.org, <span class="i">27017</span>], [db3.mongoid.org, <span class="i">27017</span>]]&#x000A;  <span class="ke">database</span>: project_production&#x000A;development:&#x000A;  <span class="ke">hosts</span>: [[db1.mongoid.org, <span class="i">27017</span>], [db2.mongoid.org, <span class="i">27017</span>], [db3.mongoid.org, <span class="i">27017</span>]]&#x000A;  <span class="ke">database</span>: project_development&#x000A;</pre></div>
+          </div>
+          <p>Then in your application load in the settings and configure the connection.</p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="co">Mongoid</span>.load!(<span class="s"><span class="dl">&quot;</span><span class="k">config/mongoid.yml</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <p>To automagically have your models loaded you could do something like this as well:</p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="c"># load models</span>&#x000A;<span class="gv">$LOAD_PATH</span>.unshift(<span class="s"><span class="dl">&quot;</span><span class="k">/Users/tomk32/tmp/mongoid-site/views/docs/installation/models</span><span class="dl">&quot;</span></span>)&#x000A;<span class="co">Dir</span>.glob(<span class="s"><span class="dl">&quot;</span><span class="k">/Users/tomk32/tmp/mongoid-site/views/docs/installation/models/*.rb</span><span class="dl">&quot;</span></span>) { |lib| require <span class="co">File</span>.basename(lib, <span class="s"><span class="dl">'</span><span class="k">.*</span><span class="dl">'</span></span>) }&#x000A;</pre></div>
+          </div>
+          <p>
             If you would also like Mongoid to retry operations if a
             <tt>Mongo::ConnectionFailure</tt> occurs you may specify this option
             in your config. Mongoid will retry the operation every half second up

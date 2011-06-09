@@ -109,7 +109,14 @@
             option on the child.
           </p>
           <div class="CodeRay">
-            <div class="code"><pre><span class="r">class</span> <span class="cl">Doctor</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embeds_one <span class="sy">:name</span>, <span class="ke">as</span>: <span class="sy">:namable</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Nurse</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embeds_one <span class="sy">:name</span>, <span class="ke">as</span>: <span class="sy">:namable</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Name</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embedded_in <span class="sy">:namable</span>, <span class="ke">polymorphic</span>: <span class="pc">true</span>&#x000A;<span class="r">end</span></pre></div>
+            <div class="code"><pre><span class="r">class</span> <span class="cl">Doctor</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embeds_one <span class="sy">:name</span>, <span class="ke">as</span>: <span class="sy">:namable</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Nurse</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embeds_one <span class="sy">:name</span>, <span class="ke">as</span>: <span class="sy">:namable</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Name</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embedded_in <span class="sy">:namable</span>, <span class="ke">polymorphic</span>: <span class="pc">true</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+          </div>
+          <h3>inheritance</h3>
+          <p>
+            When embedding models that inherit from a different class, monogid will store the class of this object in the field <tt>_type</tt>.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  embeds_one <span class="sy">:profession</span>&#x000A;<span class="r">end</span>&#x000A;<span class="r">class</span> <span class="cl">Profession</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embedded_in <span class="sy">:person</span>&#x000A;<span class="r">end</span>&#x000A;<span class="r">class</span> <span class="cl">Doctor</span> &lt; <span class="co">Person</span>; <span class="r">end</span>;&#x000A;<span class="r">class</span> <span class="cl">Nurse</span> &lt; <span class="co">Person</span>; <span class="r">end</span>;</pre></div>
           </div>
         </div>
         <div class='footer'>

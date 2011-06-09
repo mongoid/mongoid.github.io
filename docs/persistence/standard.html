@@ -160,8 +160,8 @@
           <a name='update_attribute'></a>
           <h4><tt>Model#update_attribute</tt></h4>
           <p>
-            Updates a single attribute in the database while running validations.
-            Returns true if valid and false if validation failed.
+            Updates a single attribute in the database without going through the normal validation procedure, but does fire callbacks.
+            Returns true if save was successful, false if not.
           </p>
           <mongoid>mongoid</mongoid>
           <div class="CodeRay">
