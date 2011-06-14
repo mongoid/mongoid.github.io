@@ -22,6 +22,7 @@
           <li><a class="section" href="/docs/querying.html">querying</a></li>
           <li><a class="section" href="/docs/relations.html">relations</a></li>
           <li><a class="section active" href="/docs/callbacks.html">callbacks</a></li>
+          <li><a class="subsection" href="/docs/callbacks/observers.html">observers</a></li>
           <li><a class="section" href="/docs/validation.html">validation</a></li>
           <li><a class="section" href="/docs/indexing.html">indexing</a></li>
           <li><a class="section" href="/docs/extras.html">extras</a></li>
@@ -46,17 +47,21 @@
           <p>
             Mongoid supports the following callbacks:
             <ul>
-              <li><tt>before_create</tt></li>
-              <li><tt>before_destroy</tt></li>
-              <li><tt>before_save</tt></li>
-              <li><tt>before_update</tt></li>
-              <li><tt>before_validation</tt></li>
-              <li><tt>after_create</tt></li>
               <li><tt>after_initialize</tt></li>
-              <li><tt>after_destroy</tt></li>
-              <li><tt>after_save</tt></li>
-              <li><tt>after_update</tt></li>
+              <li><tt>before_validation</tt></li>
               <li><tt>after_validation</tt></li>
+              <li><tt>before_create</tt></li>
+              <li><tt>around_create</tt></li>
+              <li><tt>after_create</tt></li>
+              <li><tt>before_update</tt></li>
+              <li><tt>around_update</tt></li>
+              <li><tt>after_update</tt></li>
+              <li><tt>before_save</tt></li>
+              <li><tt>around_save</tt></li>
+              <li><tt>after_save</tt></li>
+              <li><tt>before_destroy</tt></li>
+              <li><tt>around_destroy</tt></li>
+              <li><tt>after_destroy</tt></li>
             </ul>
           </p>
           <p>
