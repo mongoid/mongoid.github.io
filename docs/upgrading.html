@@ -36,7 +36,7 @@
       </div>
       <div class='main'>
         <div class='header'>
-          <a href="http://twitter.com/modetojoy/"><img src="/images/twitter-logo.png" />
+          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
           </a>
           <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
           </a>
@@ -45,6 +45,18 @@
           <h1>upgrading</h1>
           <p>
             Use this as a reference when upgrading between Mongoid versions.
+          </p>
+          <h3>Upgrading to 2.1.0</h3>
+          <p>
+            Mongoid now requires MongoDB 1.8.0 and higher.
+          </p>
+          <p>
+            Traditional master/slave support has been removed, you will need to switch
+            to using replica sets instead.
+          </p>
+          <p>
+            Custom field serialization has changed. Please see
+            <a href="http://github.com/mongoid/mongoid/blob/master/lib/mongoid/fields/serializable.rb">RDoc</a> for API.
           </p>
           <h3>Upgrading to 2.0.0</h3>
           <p>

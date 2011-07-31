@@ -39,7 +39,7 @@
       </div>
       <div class='main'>
         <div class='header'>
-          <a href="http://twitter.com/modetojoy/"><img src="/images/twitter-logo.png" />
+          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
           </a>
           <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
           </a>
@@ -53,7 +53,7 @@
             <tt>read_secondary</tt> option if you want to send reads to slaves. If
           </p>
           <div class="CodeRay">
-            <div class="code"><pre>hosts:&#x000A;  - - db1.mongoid.org&#x000A;      <span class="i">27017</span>&#x000A;  - - db2.mongoid.org&#x000A;      <span class="i">27018</span>&#x000A;<span class="ke">read_secondary</span>: <span class="pc">true</span>&#x000A;</pre></div>
+            <div class="code"><pre>hosts:&#x000A;  - - db1.mongoid.org&#x000A;    - <span class="i">27017</span>&#x000A;  - - db2.mongoid.org&#x000A;    - <span class="i">27018</span>&#x000A;<span class="ke">read_secondary</span>: <span class="pc">true</span>&#x000A;</pre></div>
           </div>
           <p>
             If you use Sinatra (or anything other than rails) you need to do make a mongoid.yml like this:

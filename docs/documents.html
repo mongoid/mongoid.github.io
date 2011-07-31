@@ -41,7 +41,7 @@
       </div>
       <div class='main'>
         <div class='header'>
-          <a href="http://twitter.com/modetojoy/"><img src="/images/twitter-logo.png" />
+          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
           </a>
           <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
           </a>
@@ -66,7 +66,22 @@
             <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
           </div>
           <p>
-            The collection the model's documents can be changed at the class level
+            NOTE: Model class name cannot end with "s", because it will be considered as
+            the pluralized form of the word. For example <tt>Status</tt> would be considered
+            as the plural form of <tt>Statu</tt>, which will cause a few known problems.
+          </p>
+          <p>
+            This is a limitation of the <tt>ActiveSupport::Inflector#classify</tt> which
+            Mongoid uses to convert from filenames and collection names to class names.
+            You can overcome this by specifying a custom inflection rule for your model class.
+            For example, the following code will take care of the model named <tt>Status</tt>
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="co">ActiveSupport</span>::<span class="co">Inflector</span>.inflections <span class="r">do</span> |inflect|&#x000A;  inflect.singular(<span class="s"><span class="dl">&quot;</span><span class="k">status</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">status</span><span class="dl">&quot;</span></span>)&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+          </div>
+          <br />
+          <p>
+            The collection for the model's documents can be changed at the class level
             if you would like them persisted elsewhere.
           </p>
           <div class="CodeRay">

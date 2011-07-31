@@ -42,7 +42,7 @@
       </div>
       <div class='main'>
         <div class='header'>
-          <a href="http://twitter.com/modetojoy/"><img src="/images/twitter-logo.png" />
+          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
           </a>
           <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
           </a>
@@ -120,7 +120,15 @@
             option on the child.
           </p>
           <div class="CodeRay">
-            <div class="code"><pre><span class="r">class</span> <span class="cl">Office</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embeds_many <span class="sy">:addresses</span>, <span class="ke">as</span>: <span class="sy">:locatable</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embeds_many <span class="sy">:addresses</span>, <span class="ke">as</span>: <span class="sy">:locatable</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Address</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embedded_in <span class="sy">:locatable</span>, <span class="ke">polymorphic</span>: <span class="pc">true</span>&#x000A;<span class="r">end</span></pre></div>
+            <div class="code"><pre><span class="r">class</span> <span class="cl">Office</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embeds_many <span class="sy">:addresses</span>, <span class="ke">as</span>: <span class="sy">:locatable</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embeds_many <span class="sy">:addresses</span>, <span class="ke">as</span>: <span class="sy">:locatable</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Address</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embedded_in <span class="sy">:locatable</span>, <span class="ke">polymorphic</span>: <span class="pc">true</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+          </div>
+          <h3>recursive embedding / cyclic relations</h3>
+          <p>
+            A document can recursively embed itself using <tt>recursively_embeds_many</tt>, which
+            provides accessors for the parent and children.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="r">class</span> <span class="cl">Tag</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  recursively_embeds_many&#x000A;  field <span class="sy">:name</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;programming = <span class="co">Tag</span>.new(<span class="sy">:name</span> =&gt; <span class="s"><span class="dl">'</span><span class="k">programming</span><span class="dl">'</span></span>)&#x000A;ruby = programming.child_tags.build(<span class="sy">:name</span> =&gt; <span class="s"><span class="dl">'</span><span class="k">ruby</span><span class="dl">'</span></span>)&#x000A;python = programming.child_tags.build(<span class="sy">:name</span> =&gt; <span class="s"><span class="dl">'</span><span class="k">python</span><span class="dl">'</span></span>)&#x000A;&#x000A;programming.child_tags  <span class="c"># [ruby, python]</span>&#x000A;ruby.parent_tag         <span class="c"># [programming]</span>&#x000A;python.parent_tag       <span class="c"># [programming]</span></pre></div>
           </div>
         </div>
         <div class='footer'>
