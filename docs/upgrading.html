@@ -46,7 +46,28 @@
               <h1>upgrading</h1>
               <p>
                 Use this as a reference when upgrading between Mongoid versions.
+                You can always reference the
+                <a href="http://github.com/mongoid/mongoid/blob/master/CHANGELOG.md">changelog</a>
+                for bug fixes, new features, and major changes between versions.
               </p>
+              <h3>upgrading to 2.2.0</h3>
+              <p>
+                Previously when setting an embedded relation via attributes on the parent,
+                Mongoid would persist the embedded relation regardless of whether the
+                parent operation was a persistence operation or not. This is best shown with
+                an example:
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  embeds_many <span class="sy">:addresses</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Address</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:street</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  embedded_in <span class="sy">:person</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="c"># The following code would previously save the address with an atomic $push</span>&#x000A;<span class="c"># immediately then the attributes were set.</span>&#x000A;person.addresses_attributes = [ { <span class="sy">:street</span> =&gt; <span class="s"><span class="dl">&quot;</span><span class="k">High St.</span><span class="dl">&quot;</span></span> }]&#x000A;</pre></div>
+              </div>
+              <p>
+                Now Mongoid waits to persist the embedded documents until save is called on
+                the parent, or if the attributes were set via update_attributes. The
+                following are examples of calls and how they <i>now</i> behave:
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Atomic $push of the new address.</span>&#x000A;person.addresses &lt;&lt; <span class="co">Address</span>.new&#x000A;&#x000A;<span class="c"># Atomic $push of the new address.</span>&#x000A;person.addresses.create&#x000A;&#x000A;<span class="c"># Atomic $push of the new address.</span>&#x000A;person.addresses = [ <span class="co">Address</span>.new ]&#x000A;&#x000A;<span class="c"># Atomic $push of the new address.</span>&#x000A;person.addresses = []&#x000A;person.addresses = <span class="pc">nil</span>&#x000A;&#x000A;<span class="c"># No save, will be atomic $set when parent is saved.</span>&#x000A;person.attributes = { <span class="sy">:addresses</span> =&gt; [ <span class="co">Address</span>.new ] }&#x000A;&#x000A;<span class="c"># No save, will be atomic $set when parent is saved.</span>&#x000A;person.addresses_attributes = [ { <span class="sy">:street</span> =&gt; <span class="s"><span class="dl">&quot;</span><span class="k">High St.</span><span class="dl">&quot;</span></span> }]&#x000A;&#x000A;<span class="c"># No save, will be atomic $unset when parent is saved.</span>&#x000A;person.attributes = { <span class="sy">:addresses</span> =&gt; [] }&#x000A;person.attributes = { <span class="sy">:addresses</span> =&gt; <span class="pc">nil</span> }&#x000A;&#x000A;<span class="c"># No save, will be atomic $pull when parent is saved.</span>&#x000A;person.addresses_attributes = [ { <span class="sy">:_id</span> =&gt; <span class="i">1</span>, _destroy =&gt; <span class="pc">true</span> }]&#x000A;&#x000A;</pre></div>
+              </div>
               <h3>Upgrading to 2.1.0</h3>
               <p>
                 Mongoid now requires MongoDB 1.8.0 and higher.
