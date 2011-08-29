@@ -10,230 +10,231 @@
   <body>
     <div id='container'>
       <div class='navigation'>
-        <a href="/"><img src="/images/mongoid-logo-small.png" />
-        </a>
-        
-        <ul class='navigation'>
-          <li class='area'><a class="area" href="/">home</a></li>
-          <li class='area'><a class="area" href="/docs.html">docs</a></li>
-          <li><a class="section" href="/docs/installation.html">installation</a></li>
-          <li><a class="section" href="/docs/documents.html">documents</a></li>
-          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
-          <li><a class="subsection active" href="/docs/persistence/standard.html">standard</a></li>
-          <li><a class="subsection" href="/docs/persistence/atomic.html">atomic</a></li>
-          <li><a class="section" href="/docs/querying.html">querying</a></li>
-          <li><a class="section" href="/docs/relations.html">relations</a></li>
-          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
-          <li><a class="section" href="/docs/validation.html">validation</a></li>
-          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
-          <li><a class="section" href="/docs/extras.html">extras</a></li>
-          <li><a class="section" href="/docs/rails.html">rails</a></li>
-          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
-          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
-          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
-          <li class='area'><a class="area" href="/performance.html">performance</a></li>
-          <li class='area'><a class="area" href="/credits.html">credits</a></li>
-          <li class='area'><a class="area" href="/links.html">links</a></li>
-        </ul>
-      </div>
+            <a href="/"><img src="/images/mongoid-logo-small.png" />
+            </a>
+            
+            <ul class='navigation'>
+              <li class='area'><a class="area" href="/">home</a></li>
+              <li class='area'><a class="area" href="/docs.html">docs</a></li>
+              <li><a class="section" href="/docs/installation.html">installation</a></li>
+              <li><a class="section" href="/docs/documents.html">documents</a></li>
+              <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+              <li><a class="subsection active" href="/docs/persistence/standard.html">standard</a></li>
+              <li><a class="subsection" href="/docs/persistence/atomic.html">atomic</a></li>
+              <li><a class="section" href="/docs/querying.html">querying</a></li>
+              <li><a class="section" href="/docs/relations.html">relations</a></li>
+              <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
+              <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+              <li><a class="section" href="/docs/validation.html">validation</a></li>
+              <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+              <li><a class="section" href="/docs/extras.html">extras</a></li>
+              <li><a class="section" href="/docs/rails.html">rails</a></li>
+              <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+              <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+              <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+              <li class='area'><a class="area" href="/performance.html">performance</a></li>
+              <li class='area'><a class="area" href="/credits.html">credits</a></li>
+              <li class='area'><a class="area" href="/links.html">links</a></li>
+            </ul>
+          </div>
       <div class='main'>
         <div class='header'>
-          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
-          </a>
-          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
-          </a>
-        </div>
+              <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
+              </a>
+              <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+              </a>
+            </div>
         <div class='content'>
-          <h1>standard persistence</h1>
-          <p>
-            Mongoid's standard persistence methods come in the form of common methods
-            you would find in other mapping frameworks.
-            <ul>
-              <li><a href="#create"><tt>Model.create</tt></a></li>
-              <li><a href="#create!"><tt>Model.create!</tt></a></li>
-              <li><a href="#save"><tt>Model#save</tt></a></li>
-              <li><a href="#save!"><tt>Model#save!</tt></a></li>
-              <li><a href="#update_attributes"><tt>Model#update_attributes</tt></a></li>
-              <li><a href="#update_attributes!"><tt>Model#update_attributes!</tt></a></li>
-              <li><a href="#update_attribute"><tt>Model#update_attribute</tt></a></li>
-              <li><a href="#delete"><tt>Model#delete</tt></a></li>
-              <li><a href="#destroy"><tt>Model#destroy</tt></a></li>
-              <li><a href="#delete_all"><tt>Model.delete_all</tt></a></li>
-              <li><a href="#destroy_all"><tt>Model.destroy_all</tt></a></li>
-            </ul>
-          </p>
-          <a name='create'></a>
-          <h4><tt>Model.create</tt></h4>
-          <p>
-            Inserts a new document into the database given the provided attributes.
-            This will run validations and will return the document whether it was
-            persisted or not. You can check <tt>Model#persisted?</tt> to see if it
-            was successful.
-          </p>
-          <mongoid>mongoid</mongoid>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Insert a new German poet to the db.</span>&#x000A;<span class="co">Person</span>.create(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>, <span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>)&#x000A;&#x000A;<span class="c"># This can also take a block.</span>&#x000A;<span class="co">Person</span>.create(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>) <span class="r">do</span> |doc|&#x000A;  doc.last_name = <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-          </div>
-          <mongodb>mongodb command</mongodb>
-          <div class="CodeRay">
-            <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].insert({&#x000A;  <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ..., <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>&#x000A;})&#x000A;</pre></div>
-          </div>
-          <a name='create!'></a>
-          <h4><tt>Model.create!</tt></h4>
-          <p>
-            Inserts a new document into the database given the provided attributes.
-            This will run validations and will return the document if it passed
-            validations, otherwise it will raise a validations error.
-          </p>
-          <mongoid>mongoid</mongoid>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Insert a new German poet to the db, raising an error if</span>&#x000A;<span class="c"># validation failed.</span>&#x000A;<span class="co">Person</span>.create!(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>, <span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>)&#x000A;&#x000A;<span class="c"># This can also take a block.</span>&#x000A;<span class="co">Person</span>.create!(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>) <span class="r">do</span> |doc|&#x000A;  doc.last_name = <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-          </div>
-          <mongodb>mongodb command</mongodb>
-          <div class="CodeRay">
-            <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].insert({&#x000A;  <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ..., <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>&#x000A;})&#x000A;</pre></div>
-          </div>
-          <a name='save'></a>
-          <h4><tt>Model#save</tt></h4>
-          <p>
-            Saves the document to the database. If the document is new then the
-            entire document will be inserted. If the document is already saved
-            then only changes to the document will the persisted. This runs
-            validations by default, however they can be switched off by providing
-            an option to the method. Returns <tt>true</tt> if validation passed
-            and <tt>false</tt> if not.
-          </p>
-          <mongoid>mongoid</mongoid>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Insert a new German poet to the db.</span>&#x000A;person = <span class="co">Person</span>.new(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>, <span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>)&#x000A;person.save&#x000A;&#x000A;<span class="c"># Save without running validations.</span>&#x000A;person.save(<span class="ke">validate</span>: <span class="pc">false</span>)&#x000A;&#x000A;<span class="c"># Save an existing document's changed fields.</span>&#x000A;person.first_name = <span class="s"><span class="dl">&quot;</span><span class="k">Christian Johan</span><span class="dl">&quot;</span></span>&#x000A;person.save&#x000A;</pre></div>
-          </div>
-          <mongodb>mongodb commands</mongodb>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Insert command for the new document.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].insert({&#x000A;  <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ..., <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>&#x000A;})&#x000A;&#x000A;<span class="c"># Update command for the changed document.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update({&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$set</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Christian Johan</span><span class="dl">&quot;</span></span> } }&#x000A;})&#x000A;</pre></div>
-          </div>
-          <a name='save!'></a>
-          <h4><tt>Model#save!</tt></h4>
-          <p>
-            Saves the document to the database. If the document is new then the
-            entire document will be inserted. If the document is already saved
-            then only changes to the document will the persisted. Returns
-            <tt>true</tt> if validation passed and raises an error if not.
-          </p>
-          <mongoid>mongoid</mongoid>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Insert a new German poet to the db.</span>&#x000A;person = <span class="co">Person</span>.new(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>, <span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>)&#x000A;person.save!&#x000A;&#x000A;<span class="c"># Save an existing document's changed fields.</span>&#x000A;person.first_name = <span class="s"><span class="dl">&quot;</span><span class="k">Christian Johan</span><span class="dl">&quot;</span></span>&#x000A;person.save!&#x000A;</pre></div>
-          </div>
-          <mongodb>mongodb commands</mongodb>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Insert command for the new document.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].insert({&#x000A;  <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ..., <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>&#x000A;})&#x000A;&#x000A;<span class="c"># Update command for the changed document.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update({&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$set</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Christian Johan</span><span class="dl">&quot;</span></span> } }&#x000A;})&#x000A;</pre></div>
-          </div>
-          <a name='update_attributes'></a>
-          <h4><tt>Model#update_attributes</tt></h4>
-          <p>
-            Modifies the provided attributes to new values and persists them in
-            a single call. This runs validations and will return true if they
-            passed, false if not.
-          </p>
-          <mongoid>mongoid</mongoid>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Update the provided attributes.</span>&#x000A;person.update_attributes(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Jean</span><span class="dl">&quot;</span></span>, <span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Zorg</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
-          </div>
-          <mongodb>mongodb command</mongodb>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Update command for the changed document.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update({&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$set</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Jean</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Zorg</span><span class="dl">&quot;</span></span> } }&#x000A;})&#x000A;</pre></div>
-          </div>
-          <a name='update_attributes!'></a>
-          <h4><tt>Model#update_attributes!</tt></h4>
-          <p>
-            Modifies the provided attributes to new values and persists them in
-            a single call. This runs validations and will return true if they
-            passed or raise an error if not.
-          </p>
-          <mongoid>mongoid</mongoid>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Update the provided attributes.</span>&#x000A;person.update_attributes!(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Jean</span><span class="dl">&quot;</span></span>, <span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Zorg</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
-          </div>
-          <mongodb>mongodb command</mongodb>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Update command for the changed document.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update({&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$set</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Jean</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Zorg</span><span class="dl">&quot;</span></span> } }&#x000A;})&#x000A;</pre></div>
-          </div>
-          <a name='update_attribute'></a>
-          <h4><tt>Model#update_attribute</tt></h4>
-          <p>
-            Updates a single attribute in the database without going through the normal validation procedure, but does fire callbacks.
-            Returns true if save was successful, false if not.
-          </p>
-          <mongoid>mongoid</mongoid>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Update the provided attribute.</span>&#x000A;person.update_attribute(first_name, <span class="s"><span class="dl">&quot;</span><span class="k">Jean</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
-          </div>
-          <mongodb>mongodb command</mongodb>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Update command for the changed document.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update({&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$set</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Jean</span><span class="dl">&quot;</span></span> } }&#x000A;})&#x000A;</pre></div>
-          </div>
-          <a name='delete'></a>
-          <h4><tt>Model#delete</tt></h4>
-          <p>
-            Deletes the document from the database without running callbacks.
-          </p>
-          <mongoid>mongoid</mongoid>
-          <div class="CodeRay">
-            <div class="code"><pre>person.delete&#x000A;</pre></div>
-          </div>
-          <mongodb>mongodb command</mongodb>
-          <div class="CodeRay">
-            <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].remove(<span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... )&#x000A;</pre></div>
-          </div>
-          <a name='destroy'></a>
-          <h4><tt>Model#destroy</tt></h4>
-          <p>
-            Deletes the document from the database while running destroy callbacks.
-          </p>
-          <mongoid>mongoid</mongoid>
-          <div class="CodeRay">
-            <div class="code"><pre>person.destroy&#x000A;</pre></div>
-          </div>
-          <mongodb>mongodb command</mongodb>
-          <div class="CodeRay">
-            <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].remove(<span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... )&#x000A;</pre></div>
-          </div>
-          <a name='delete_all'></a>
-          <h4><tt>Model.delete_all</tt></h4>
-          <p>
-            Deletes all matching documents in the database given the supplied
-            conditions. See the criteria section on deletion for preferred
-            ways to perform these actions. This does not run any callbacks on
-            the matching documents.
-          </p>
-          <mongoid>mongoid</mongoid>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Delete all the documents from the collection.</span>&#x000A;<span class="co">Person</span>.delete_all&#x000A;&#x000A;<span class="c"># Delete all matching documents.</span>&#x000A;<span class="co">Person</span>.delete_all(<span class="ke">conditions</span>: { <span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span> })&#x000A;</pre></div>
-          </div>
-          <mongodb>mongodb command</mongodb>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Delete all command.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].remove&#x000A;&#x000A;<span class="c"># Delete all matching command.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].remove(<span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
-          </div>
-          <a name='destroy_all'></a>
-          <h4><tt>Model.destroy_all</tt></h4>
-          <p>
-            Deletes all matching documents in the database given the supplied
-            conditions. See the criteria section on deletion for preferred
-            ways to perform these actions. This runs destroy callbacks on all
-            matching documents.
-          </p>
-          <mongoid>mongoid</mongoid>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Destroy all the documents from the collection.</span>&#x000A;<span class="co">Person</span>.destroy_all&#x000A;&#x000A;<span class="c"># Destroy all matching documents.</span>&#x000A;<span class="co">Person</span>.destroy_all(<span class="ke">conditions</span>: { <span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span> })&#x000A;</pre></div>
-          </div>
-          <mongodb>mongodb command</mongodb>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Destroy all command.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].remove&#x000A;&#x000A;<span class="c"># Destroy all matching command.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].remove(<span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>)</pre></div>
-          </div>
-        </div>
+              <h1>standard persistence</h1>
+              <p>
+                Mongoid's standard persistence methods come in the form of common methods
+                you would find in other mapping frameworks.
+                <ul>
+                  <li><a href="#create"><tt>Model.create</tt></a></li>
+                  <li><a href="#create!"><tt>Model.create!</tt></a></li>
+                  <li><a href="#save"><tt>Model#save</tt></a></li>
+                  <li><a href="#save!"><tt>Model#save!</tt></a></li>
+                  <li><a href="#update_attributes"><tt>Model#update_attributes</tt></a></li>
+                  <li><a href="#update_attributes!"><tt>Model#update_attributes!</tt></a></li>
+                  <li><a href="#update_attribute"><tt>Model#update_attribute</tt></a></li>
+                  <li><a href="#delete"><tt>Model#delete</tt></a></li>
+                  <li><a href="#destroy"><tt>Model#destroy</tt></a></li>
+                  <li><a href="#delete_all"><tt>Model.delete_all</tt></a></li>
+                  <li><a href="#destroy_all"><tt>Model.destroy_all</tt></a></li>
+                </ul>
+              </p>
+              <a name='create'></a>
+              <h4><tt>Model.create</tt></h4>
+              <p>
+                Inserts a new document into the database given the provided attributes.
+                This will run validations and will return the document whether it was
+                persisted or not. You can check <tt>Model#persisted?</tt> to see if it
+                was successful.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Insert a new German poet to the db.</span>&#x000A;<span class="co">Person</span>.create(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>, <span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>)&#x000A;&#x000A;<span class="c"># This can also take a block.</span>&#x000A;<span class="co">Person</span>.create(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>) <span class="r">do</span> |doc|&#x000A;  doc.last_name = <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb command</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].insert({&#x000A;  <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ..., <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>&#x000A;})&#x000A;</pre></div>
+              </div>
+              <a name='create!'></a>
+              <h4><tt>Model.create!</tt></h4>
+              <p>
+                Inserts a new document into the database given the provided attributes.
+                This will run validations and will return the document if it passed
+                validations, otherwise it will raise a validations error.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Insert a new German poet to the db, raising an error if</span>&#x000A;<span class="c"># validation failed.</span>&#x000A;<span class="co">Person</span>.create!(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>, <span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>)&#x000A;&#x000A;<span class="c"># This can also take a block.</span>&#x000A;<span class="co">Person</span>.create!(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>) <span class="r">do</span> |doc|&#x000A;  doc.last_name = <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb command</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].insert({&#x000A;  <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ..., <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>&#x000A;})&#x000A;</pre></div>
+              </div>
+              <a name='save'></a>
+              <h4><tt>Model#save</tt></h4>
+              <p>
+                Saves the document to the database. If the document is new then the
+                entire document will be inserted. If the document is already saved
+                then only changes to the document will the persisted. This runs
+                validations by default, however they can be switched off by providing
+                an option to the method. Returns <tt>true</tt> if validation passed
+                and <tt>false</tt> if not.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Insert a new German poet to the db.</span>&#x000A;person = <span class="co">Person</span>.new(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>, <span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>)&#x000A;person.save&#x000A;&#x000A;<span class="c"># Save without running validations.</span>&#x000A;person.save(<span class="ke">validate</span>: <span class="pc">false</span>)&#x000A;&#x000A;<span class="c"># Save an existing document's changed fields.</span>&#x000A;person.first_name = <span class="s"><span class="dl">&quot;</span><span class="k">Christian Johan</span><span class="dl">&quot;</span></span>&#x000A;person.save&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb commands</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Insert command for the new document.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].insert({&#x000A;  <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ..., <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>&#x000A;})&#x000A;&#x000A;<span class="c"># Update command for the changed document.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update({&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$set</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Christian Johan</span><span class="dl">&quot;</span></span> } }&#x000A;})&#x000A;</pre></div>
+              </div>
+              <a name='save!'></a>
+              <h4><tt>Model#save!</tt></h4>
+              <p>
+                Saves the document to the database. If the document is new then the
+                entire document will be inserted. If the document is already saved
+                then only changes to the document will the persisted. Returns
+                <tt>true</tt> if validation passed and raises an error if not.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Insert a new German poet to the db.</span>&#x000A;person = <span class="co">Person</span>.new(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>, <span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>)&#x000A;person.save!&#x000A;&#x000A;<span class="c"># Save an existing document's changed fields.</span>&#x000A;person.first_name = <span class="s"><span class="dl">&quot;</span><span class="k">Christian Johan</span><span class="dl">&quot;</span></span>&#x000A;person.save!&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb commands</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Insert command for the new document.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].insert({&#x000A;  <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ..., <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heine</span><span class="dl">&quot;</span></span>&#x000A;})&#x000A;&#x000A;<span class="c"># Update command for the changed document.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update({&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$set</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Christian Johan</span><span class="dl">&quot;</span></span> } }&#x000A;})&#x000A;</pre></div>
+              </div>
+              <a name='update_attributes'></a>
+              <h4><tt>Model#update_attributes</tt></h4>
+              <p>
+                Modifies the provided attributes to new values and persists them in
+                a single call. This runs validations and will return true if they
+                passed, false if not.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Update the provided attributes.</span>&#x000A;person.update_attributes(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Jean</span><span class="dl">&quot;</span></span>, <span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Zorg</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb command</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Update command for the changed document.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update({&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$set</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Jean</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Zorg</span><span class="dl">&quot;</span></span> } }&#x000A;})&#x000A;</pre></div>
+              </div>
+              <a name='update_attributes!'></a>
+              <h4><tt>Model#update_attributes!</tt></h4>
+              <p>
+                Modifies the provided attributes to new values and persists them in
+                a single call. This runs validations and will return true if they
+                passed or raise an error if not.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Update the provided attributes.</span>&#x000A;person.update_attributes!(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Jean</span><span class="dl">&quot;</span></span>, <span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Zorg</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb command</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Update command for the changed document.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update({&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$set</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Jean</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">last_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Zorg</span><span class="dl">&quot;</span></span> } }&#x000A;})&#x000A;</pre></div>
+              </div>
+              <a name='update_attribute'></a>
+              <h4><tt>Model#update_attribute</tt></h4>
+              <p>
+                Updates a single attribute in the database without going through the normal validation procedure, but does fire callbacks.
+                Returns true if save was successful, false if not.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Update the provided attribute.</span>&#x000A;person.update_attribute(<span class="sy">:first_name</span>, <span class="s"><span class="dl">&quot;</span><span class="k">Jean</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb command</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Update command for the changed document.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update({&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$set</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Jean</span><span class="dl">&quot;</span></span> } }&#x000A;})&#x000A;</pre></div>
+              </div>
+              <a name='delete'></a>
+              <h4><tt>Model#delete</tt></h4>
+              <p>
+                Deletes the document from the database without running callbacks.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre>person.delete&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb command</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].remove(<span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... )&#x000A;</pre></div>
+              </div>
+              <a name='destroy'></a>
+              <h4><tt>Model#destroy</tt></h4>
+              <p>
+                Deletes the document from the database while running destroy callbacks.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre>person.destroy&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb command</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].remove(<span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... )&#x000A;</pre></div>
+              </div>
+              <a name='delete_all'></a>
+              <h4><tt>Model.delete_all</tt></h4>
+              <p>
+                Deletes all matching documents in the database given the supplied
+                conditions. See the criteria section on deletion for preferred
+                ways to perform these actions. This does not run any callbacks on
+                the matching documents.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Delete all the documents from the collection.</span>&#x000A;<span class="co">Person</span>.delete_all&#x000A;&#x000A;<span class="c"># Delete all matching documents.</span>&#x000A;<span class="co">Person</span>.delete_all(<span class="ke">conditions</span>: { <span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span> })&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb command</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Delete all command.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].remove&#x000A;&#x000A;<span class="c"># Delete all matching command.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].remove(<span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
+              </div>
+              <a name='destroy_all'></a>
+              <h4><tt>Model.destroy_all</tt></h4>
+              <p>
+                Deletes all matching documents in the database given the supplied
+                conditions. See the criteria section on deletion for preferred
+                ways to perform these actions. This runs destroy callbacks on all
+                matching documents.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Destroy all the documents from the collection.</span>&#x000A;<span class="co">Person</span>.destroy_all&#x000A;&#x000A;<span class="c"># Destroy all matching documents.</span>&#x000A;<span class="co">Person</span>.destroy_all(<span class="ke">conditions</span>: { <span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span> })&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb command</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Destroy all command.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].remove&#x000A;&#x000A;<span class="c"># Destroy all matching command.</span>&#x000A;collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].remove(<span class="s"><span class="dl">&quot;</span><span class="k">first_name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Heinrich</span><span class="dl">&quot;</span></span>)</pre></div>
+              </div>
+            </div>
         <div class='footer'>
-          Mongoid, 2009-2011, written and maintained by
-          <a href="http://github.com/durran">Durran Jordan</a>.
-        </div>
+              Mongoid, 2009-2011, written and maintained by
+              <a href="http://github.com/durran">Durran Jordan</a>.
+            </div>
         <div class='clear'></div>
       </div>
     </div>

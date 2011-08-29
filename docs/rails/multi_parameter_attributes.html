@@ -5,7 +5,7 @@
     <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
     <link href="/stylesheets/coderay.css" media="screen" rel="stylesheet" type="text/css" />
     <link href="/stylesheets/site.css" media="screen" rel="stylesheet" type="text/css" />
-    
+    <title>Mongoid: Rails [ Multi Parameter Attributes ]</title>
   </head>
   <body>
     <div id='container'>
@@ -27,8 +27,8 @@
               <li><a class="section" href="/docs/indexing.html">indexing</a></li>
               <li><a class="section" href="/docs/extras.html">extras</a></li>
               <li><a class="section" href="/docs/rails.html">rails</a></li>
-              <li><a class="subsection" href="/docs/rails/multi_parameter_attributes.html">multi-param attributes</a></li>
-              <li><a class="subsection active" href="/docs/rails/rake.html">rake tasks</a></li>
+              <li><a class="subsection active" href="/docs/rails/multi_parameter_attributes.html">multi-param attributes</a></li>
+              <li><a class="subsection" href="/docs/rails/rake.html">rake tasks</a></li>
               <li><a class="subsection" href="/docs/rails/railties.html">railties</a></li>
               <li><a class="section" href="/docs/extensions.html">extensions</a></li>
               <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
@@ -46,40 +46,14 @@
               </a>
             </div>
         <div class='content'>
-              <h1>rake tasks</h1>
+              <h1>multi parameter attributes</h1>
               <p>
-                Mongoid provides the following rake tasks when used in a Rails 3 environment:
+                If you want to use multi-paramater attributes with Rails, you will
+                need to include an extra Mongoid module to support it.
               </p>
-              <p>
-                <tt>db:create</tt>: Exists only for dependency purposes, does not actually
-                do anything.
-              </p>
-              <p>
-                <tt>db:create_indexes</tt>: Reads all index definitions from the models and
-                attempts to create them in the database.
-              </p>
-              <p>
-                <tt>db:drop</tt>: Drops all collections in the database with the exception of
-                the system collections.
-              </p>
-              <p>
-                <tt>db:migrate</tt>: Exists only for dependency purposes, does not actually
-                do anything.
-              </p>
-              <p>
-                <tt>db:schema:load</tt>: Exists only for framework dependency purposes, does
-                not actually do anything.
-              </p>
-              <p>
-                <tt>db:seed</tt>: Seeds the database from db/seeds.rb
-              </p>
-              <p>
-                <tt>db:setup</tt>: Creates indexes and seeds the database.
-              </p>
-              <p>
-                <tt>db:test:prepare</tt>: Exists only for framework dependency purposes, does
-                not actually do anything.
-              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">MultiParameterAttributes</span>&#x000A;<span class="r">end</span></pre></div>
+              </div>
             </div>
         <div class='footer'>
               Mongoid, 2009-2011, written and maintained by

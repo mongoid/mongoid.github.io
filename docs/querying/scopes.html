@@ -10,98 +10,108 @@
   <body>
     <div id='container'>
       <div class='navigation'>
-        <a href="/"><img src="/images/mongoid-logo-small.png" />
-        </a>
-        
-        <ul class='navigation'>
-          <li class='area'><a class="area" href="/">home</a></li>
-          <li class='area'><a class="area" href="/docs.html">docs</a></li>
-          <li><a class="section" href="/docs/installation.html">installation</a></li>
-          <li><a class="section" href="/docs/documents.html">documents</a></li>
-          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
-          <li><a class="section" href="/docs/querying.html">querying</a></li>
-          <li><a class="subsection" href="/docs/querying/criteria.html">criteria</a></li>
-          <li><a class="subsection" href="/docs/querying/modification.html">criteria + mod</a></li>
-          <li><a class="subsection" href="/docs/querying/finders.html">finders</a></li>
-          <li><a class="subsection active" href="/docs/querying/scopes.html">scopes</a></li>
-          <li><a class="section" href="/docs/relations.html">relations</a></li>
-          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
-          <li><a class="section" href="/docs/validation.html">validation</a></li>
-          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
-          <li><a class="section" href="/docs/extras.html">extras</a></li>
-          <li><a class="section" href="/docs/rails.html">rails</a></li>
-          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
-          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
-          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
-          <li class='area'><a class="area" href="/performance.html">performance</a></li>
-          <li class='area'><a class="area" href="/credits.html">credits</a></li>
-          <li class='area'><a class="area" href="/links.html">links</a></li>
-        </ul>
-      </div>
+            <a href="/"><img src="/images/mongoid-logo-small.png" />
+            </a>
+            
+            <ul class='navigation'>
+              <li class='area'><a class="area" href="/">home</a></li>
+              <li class='area'><a class="area" href="/docs.html">docs</a></li>
+              <li><a class="section" href="/docs/installation.html">installation</a></li>
+              <li><a class="section" href="/docs/documents.html">documents</a></li>
+              <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+              <li><a class="section" href="/docs/querying.html">querying</a></li>
+              <li><a class="subsection" href="/docs/querying/criteria.html">criteria</a></li>
+              <li><a class="subsection" href="/docs/querying/modification.html">criteria + mod</a></li>
+              <li><a class="subsection" href="/docs/querying/finders.html">finders</a></li>
+              <li><a class="subsection active" href="/docs/querying/scopes.html">scopes</a></li>
+              <li><a class="section" href="/docs/relations.html">relations</a></li>
+              <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
+              <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+              <li><a class="section" href="/docs/validation.html">validation</a></li>
+              <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+              <li><a class="section" href="/docs/extras.html">extras</a></li>
+              <li><a class="section" href="/docs/rails.html">rails</a></li>
+              <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+              <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+              <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+              <li class='area'><a class="area" href="/performance.html">performance</a></li>
+              <li class='area'><a class="area" href="/credits.html">credits</a></li>
+              <li class='area'><a class="area" href="/links.html">links</a></li>
+            </ul>
+          </div>
       <div class='main'>
         <div class='header'>
-          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
-          </a>
-          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
-          </a>
-        </div>
+              <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
+              </a>
+              <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+              </a>
+            </div>
         <div class='content'>
-          <h1>scopes</h1>
-          <p>
-            Similar to Active Record, Mongoid allows you to define scopes on your
-            models as a convenience for filtering result sets. Scopes are defined
-            at the class level, either using the <tt>scope</tt> macro or by
-            defining class methods that return a criteria object. All scopes are
-            chainable and can be applied to associations as well, the later being
-            discussed in the relations section.
-          </p>
-          <h3>named scopes</h3>
-          <p>
-            Named scopes are defined at the class level using a <tt>scope</tt>
-            macro and can be chained to create result sets in a nice DSL.
-          </p>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:occupation</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  field <span class="sy">:age</span>, <span class="ke">type</span>: <span class="co">Integer</span>&#x000A;&#x000A;  scope <span class="sy">:rock_n_rolla</span>, where(<span class="ke">occupation</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Rockstar</span><span class="dl">&quot;</span></span>)&#x000A;  scope <span class="sy">:washed_up</span>, where(<span class="sy">:age</span>.gt =&gt; <span class="i">30</span>)&#x000A;  scope <span class="sy">:over</span>, -&gt;(limit) { where(<span class="sy">:age</span>.gt =&gt; limit) }&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="c"># Find all the rockstars.</span>&#x000A;<span class="co">Person</span>.rock_n_rolla&#x000A;&#x000A;<span class="c"># Find all rockstars that should probably quit.</span>&#x000A;<span class="co">Person</span>.washed_up.rock_n_rolla&#x000A;&#x000A;<span class="c"># Find a criteria with Keith Richards in it.</span>&#x000A;<span class="co">Person</span>.rock_n_rolla.over(<span class="i">60</span>)&#x000A;</pre></div>
-          </div>
-          <h3>class methods</h3>
-          <p>
-            For those who prefer a Data Mapper style syntax, class methods that
-            return criteria can be treated as chainable scopes as well.
-          </p>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:occupation</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  field <span class="sy">:age</span>, <span class="ke">type</span>: <span class="co">Integer</span>&#x000A;&#x000A;  <span class="r">class</span> &lt;&lt; <span class="cl">self</span>&#x000A;&#x000A;    <span class="r">def</span> <span class="fu">rock_n_rolla</span>&#x000A;      where(<span class="ke">occupation</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Rockstar</span><span class="dl">&quot;</span></span>)&#x000A;    <span class="r">end</span>&#x000A;&#x000A;    <span class="r">def</span> <span class="fu">washed_up</span>&#x000A;      where(<span class="sy">:age</span>.gt =&gt; <span class="i">30</span>)&#x000A;    <span class="r">end</span>&#x000A;&#x000A;    <span class="r">def</span> <span class="fu">over</span>(limit)&#x000A;      where(<span class="sy">:age</span>.gt =&gt; limit)&#x000A;    <span class="r">end</span>&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="c"># Find all the rockstars.</span>&#x000A;<span class="co">Person</span>.rock_n_rolla&#x000A;&#x000A;<span class="c"># Find all rockstars that should probably quit.</span>&#x000A;<span class="co">Person</span>.washed_up.rock_n_rolla&#x000A;&#x000A;<span class="c"># Find a criteria with Keith Richards in it.</span>&#x000A;<span class="co">Person</span>.rock_n_rolla.over(<span class="i">60</span>)&#x000A;</pre></div>
-          </div>
-          <p>
-            Named scopes and class methods that return a criteria can be chained
-            together - that's the beauty of Mongoid's powerful criteria API.
-          </p>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:occupation</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  field <span class="sy">:age</span>, <span class="ke">type</span>: <span class="co">Integer</span>&#x000A;&#x000A;  scope <span class="sy">:washed_up</span>, where(<span class="sy">:age</span>.gt =&gt; <span class="i">30</span>)&#x000A;  scope <span class="sy">:over</span>, -&gt;(limit) { where(<span class="sy">:age</span>.gt =&gt; limit) }&#x000A;&#x000A;  <span class="r">def</span> <span class="pc">self</span>.<span class="fu">rock_n_rolla</span>&#x000A;    where(<span class="ke">occupation</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Rockstar</span><span class="dl">&quot;</span></span>)&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="c"># Same queries apply here as well.</span>&#x000A;<span class="co">Person</span>.rock_n_rolla&#x000A;<span class="co">Person</span>.washed_up.rock_n_rolla&#x000A;<span class="co">Person</span>.rock_n_rolla.over(<span class="i">60</span>)&#x000A;</pre></div>
-          </div>
-          <h3>default scopes</h3>
-          <p>
-            You can supply a default scope at the class level to tell Mongoid that
-            all queries need to filter by the provided criteria without needing
-            to specify it for every query. This is very useful when you find
-            yourself filtering by a particular criterion many times througout an
-            application.
-          </p>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:occupation</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  field <span class="sy">:age</span>, <span class="ke">type</span>: <span class="co">Integer</span>&#x000A;&#x000A;  default_scope where(<span class="ke">occupation</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Rockstar</span><span class="dl">&quot;</span></span>)&#x000A;  scope <span class="sy">:washed_up</span>, where(<span class="sy">:age</span>.gt =&gt; <span class="i">30</span>)&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="c"># We seem to search for rockstars all the time, so just make that</span>&#x000A;<span class="c"># included by default. The following query applies the rock_n_rolla</span>&#x000A;<span class="c"># scope to it by default.</span>&#x000A;<span class="co">Person</span>.washed_up&#x000A;</pre></div>
-          </div>
-          <p>
-            When a default scope is defined, you may find yourself executing
-            queries that do not need the default applied. This is where Mongoid's
-            familiar <tt>unscoped</tt> method comes in.
-          </p>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># We just want some old people who aren't rockstars.</span>&#x000A;<span class="co">Person</span>.unscoped.washed_up</pre></div>
-          </div>
-        </div>
+              <h1>scopes</h1>
+              <p>
+                Similar to Active Record, Mongoid allows you to define scopes on your
+                models as a convenience for filtering result sets. Scopes are defined
+                at the class level, either using the <tt>scope</tt> macro or by
+                defining class methods that return a criteria object. All scopes are
+                chainable and can be applied to associations as well, the later being
+                discussed in the relations section.
+              </p>
+              <h3>named scopes</h3>
+              <p>
+                Named scopes are defined at the class level using a <tt>scope</tt>
+                macro and can be chained to create result sets in a nice DSL.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:occupation</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  field <span class="sy">:age</span>, <span class="ke">type</span>: <span class="co">Integer</span>&#x000A;&#x000A;  scope <span class="sy">:rock_n_rolla</span>, where(<span class="ke">occupation</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Rockstar</span><span class="dl">&quot;</span></span>)&#x000A;  scope <span class="sy">:washed_up</span>, where(<span class="sy">:age</span>.gt =&gt; <span class="i">30</span>)&#x000A;  scope <span class="sy">:over</span>, -&gt;(limit) { where(<span class="sy">:age</span>.gt =&gt; limit) }&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="c"># Find all the rockstars.</span>&#x000A;<span class="co">Person</span>.rock_n_rolla&#x000A;&#x000A;<span class="c"># Find all rockstars that should probably quit.</span>&#x000A;<span class="co">Person</span>.washed_up.rock_n_rolla&#x000A;&#x000A;<span class="c"># Find a criteria with Keith Richards in it.</span>&#x000A;<span class="co">Person</span>.rock_n_rolla.over(<span class="i">60</span>)&#x000A;</pre></div>
+              </div>
+              <p>
+                Note that definitions are evaluated at class load time. For evaluation
+                at runtime you will want to make sure to define using a proc or lambda. In
+                the following example the first date is set as the date of class load,
+                where the second scope sets the date at the time the scope is called.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre>scope <span class="sy">:current</span>, where(<span class="sy">:start_date</span>.lte =&gt; <span class="co">Date</span>.today)&#x000A;scope <span class="sy">:current</span>, -&gt; { where(<span class="sy">:start_date</span>.lte =&gt; <span class="co">Date</span>.today) }&#x000A;</pre></div>
+              </div>
+              <h3>class methods</h3>
+              <p>
+                For those who prefer a Data Mapper style syntax, class methods that
+                return criteria can be treated as chainable scopes as well.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:occupation</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  field <span class="sy">:age</span>, <span class="ke">type</span>: <span class="co">Integer</span>&#x000A;&#x000A;  <span class="r">class</span> &lt;&lt; <span class="cl">self</span>&#x000A;&#x000A;    <span class="r">def</span> <span class="fu">rock_n_rolla</span>&#x000A;      where(<span class="ke">occupation</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Rockstar</span><span class="dl">&quot;</span></span>)&#x000A;    <span class="r">end</span>&#x000A;&#x000A;    <span class="r">def</span> <span class="fu">washed_up</span>&#x000A;      where(<span class="sy">:age</span>.gt =&gt; <span class="i">30</span>)&#x000A;    <span class="r">end</span>&#x000A;&#x000A;    <span class="r">def</span> <span class="fu">over</span>(limit)&#x000A;      where(<span class="sy">:age</span>.gt =&gt; limit)&#x000A;    <span class="r">end</span>&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="c"># Find all the rockstars.</span>&#x000A;<span class="co">Person</span>.rock_n_rolla&#x000A;&#x000A;<span class="c"># Find all rockstars that should probably quit.</span>&#x000A;<span class="co">Person</span>.washed_up.rock_n_rolla&#x000A;&#x000A;<span class="c"># Find a criteria with Keith Richards in it.</span>&#x000A;<span class="co">Person</span>.rock_n_rolla.over(<span class="i">60</span>)&#x000A;</pre></div>
+              </div>
+              <p>
+                Named scopes and class methods that return a criteria can be chained
+                together - that's the beauty of Mongoid's powerful criteria API.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:occupation</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  field <span class="sy">:age</span>, <span class="ke">type</span>: <span class="co">Integer</span>&#x000A;&#x000A;  scope <span class="sy">:washed_up</span>, where(<span class="sy">:age</span>.gt =&gt; <span class="i">30</span>)&#x000A;  scope <span class="sy">:over</span>, -&gt;(limit) { where(<span class="sy">:age</span>.gt =&gt; limit) }&#x000A;&#x000A;  <span class="r">def</span> <span class="pc">self</span>.<span class="fu">rock_n_rolla</span>&#x000A;    where(<span class="ke">occupation</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Rockstar</span><span class="dl">&quot;</span></span>)&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="c"># Same queries apply here as well.</span>&#x000A;<span class="co">Person</span>.rock_n_rolla&#x000A;<span class="co">Person</span>.washed_up.rock_n_rolla&#x000A;<span class="co">Person</span>.rock_n_rolla.over(<span class="i">60</span>)&#x000A;</pre></div>
+              </div>
+              <h3>default scopes</h3>
+              <p>
+                You can supply a default scope at the class level to tell Mongoid that
+                all queries need to filter by the provided criteria without needing
+                to specify it for every query. This is very useful when you find
+                yourself filtering by a particular criterion many times througout an
+                application.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:occupation</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  field <span class="sy">:age</span>, <span class="ke">type</span>: <span class="co">Integer</span>&#x000A;&#x000A;  default_scope where(<span class="ke">occupation</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Rockstar</span><span class="dl">&quot;</span></span>)&#x000A;  scope <span class="sy">:washed_up</span>, where(<span class="sy">:age</span>.gt =&gt; <span class="i">30</span>)&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="c"># We seem to search for rockstars all the time, so just make that</span>&#x000A;<span class="c"># included by default. The following query applies the rock_n_rolla</span>&#x000A;<span class="c"># scope to it by default.</span>&#x000A;<span class="co">Person</span>.washed_up&#x000A;</pre></div>
+              </div>
+              <p>
+                When a default scope is defined, you may find yourself executing
+                queries that do not need the default applied. This is where Mongoid's
+                familiar <tt>unscoped</tt> method comes in.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># We just want some old people who aren't rockstars.</span>&#x000A;<span class="co">Person</span>.unscoped.washed_up</pre></div>
+              </div>
+            </div>
         <div class='footer'>
-          Mongoid, 2009-2011, written and maintained by
-          <a href="http://github.com/durran">Durran Jordan</a>.
-        </div>
+              Mongoid, 2009-2011, written and maintained by
+              <a href="http://github.com/durran">Durran Jordan</a>.
+            </div>
         <div class='clear'></div>
       </div>
     </div>

@@ -10,65 +10,66 @@
   <body>
     <div id='container'>
       <div class='navigation'>
-        <a href="/"><img src="/images/mongoid-logo-small.png" />
-        </a>
-        
-        <ul class='navigation'>
-          <li class='area'><a class="area" href="/">home</a></li>
-          <li class='area'><a class="area" href="/docs.html">docs</a></li>
-          <li><a class="section" href="/docs/installation.html">installation</a></li>
-          <li><a class="section" href="/docs/documents.html">documents</a></li>
-          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
-          <li><a class="section" href="/docs/querying.html">querying</a></li>
-          <li><a class="section" href="/docs/relations.html">relations</a></li>
-          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
-          <li><a class="section" href="/docs/validation.html">validation</a></li>
-          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
-          <li><a class="section" href="/docs/extras.html">extras</a></li>
-          <li><a class="section" href="/docs/rails.html">rails</a></li>
-          <li><a class="section active" href="/docs/extensions.html">extensions</a></li>
-          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
-          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
-          <li class='area'><a class="area" href="/performance.html">performance</a></li>
-          <li class='area'><a class="area" href="/credits.html">credits</a></li>
-          <li class='area'><a class="area" href="/links.html">links</a></li>
-        </ul>
-      </div>
+            <a href="/"><img src="/images/mongoid-logo-small.png" />
+            </a>
+            
+            <ul class='navigation'>
+              <li class='area'><a class="area" href="/">home</a></li>
+              <li class='area'><a class="area" href="/docs.html">docs</a></li>
+              <li><a class="section" href="/docs/installation.html">installation</a></li>
+              <li><a class="section" href="/docs/documents.html">documents</a></li>
+              <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+              <li><a class="section" href="/docs/querying.html">querying</a></li>
+              <li><a class="section" href="/docs/relations.html">relations</a></li>
+              <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
+              <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+              <li><a class="section" href="/docs/validation.html">validation</a></li>
+              <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+              <li><a class="section" href="/docs/extras.html">extras</a></li>
+              <li><a class="section" href="/docs/rails.html">rails</a></li>
+              <li><a class="section active" href="/docs/extensions.html">extensions</a></li>
+              <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+              <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+              <li class='area'><a class="area" href="/performance.html">performance</a></li>
+              <li class='area'><a class="area" href="/credits.html">credits</a></li>
+              <li class='area'><a class="area" href="/links.html">links</a></li>
+            </ul>
+          </div>
       <div class='main'>
         <div class='header'>
-          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
-          </a>
-          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
-          </a>
-        </div>
+              <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
+              </a>
+              <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+              </a>
+            </div>
         <div class='content'>
-          <h1>extensions</h1>
-          <h3>Fabrication</h3>
-          <p>
-            Paul Elliott's
-            <a href="http://github.com/paulelliott/fabrication">Fabrication</a> gem is
-            a slick object generation library. It support's Mongoid out of the box and
-            provides a nice syntax for creating objects with ease for testing.
-          </p>
-          <div class="CodeRay">
-            <div class="code"><pre>Fabricator(<span class="sy">:person</span>) <span class="r">do</span>&#x000A;  title <span class="s"><span class="dl">&quot;</span><span class="k">Grand Poobah</span><span class="dl">&quot;</span></span>&#x000A;  addresses(<span class="ke">count</span>: <span class="i">2</span>) <span class="r">do</span> |address, i|&#x000A;    Fabricate(<span class="sy">:address</span>, <span class="ke">streeet</span>: <span class="s"><span class="dl">&quot;</span><span class="il"><span class="idl">#{</span>i<span class="idl">}</span></span><span class="k"> Bond St.</span><span class="dl">&quot;</span></span>)&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-          </div>
-          <h3>Voting</h3>
-          <p>
-            Alex Nguyen's
-            <a href="https://github.com/vinova/voteable_mongo">voteable_mongo</a> gem
-            add up / down voteability to Mongoid and MongoMapper. It takes advantage
-            of document-oriented & in-place update to ensure data integrity and use
-            only ONE database request to validate, update & get updated vote data.
-          </p>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="r">class</span> <span class="cl">Post</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  include <span class="co">Mongo</span>::<span class="co">Voteable</span>&#x000A;  voteable <span class="pc">self</span>, <span class="sy">:up</span> =&gt; <span class="i">1</span>, <span class="sy">:down</span> =&gt; <span class="i">-2</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">User</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  include <span class="co">Mongo</span>::<span class="co">Voter</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="iv">@user</span>.vote(<span class="iv">@post</span>, <span class="sy">:down</span>)&#x000A;<span class="c"># =&gt; &lt;Post .. votes: {&quot;up&quot;=&gt;[], &quot;down&quot;=&gt;[..], &quot;count&quot;=&gt;1, &quot;point&quot;=&gt;-2, ..}&gt;</span>&#x000A;<span class="iv">@user</span>.voted?(<span class="iv">@post</span>)&#x000A;<span class="c"># =&gt; true</span>&#x000A;<span class="iv">@user</span>.vote_value(<span class="iv">@post</span>)&#x000A;<span class="c"># =&gt; :down</span></pre></div>
-          </div>
-        </div>
+              <h1>extensions</h1>
+              <h3>Fabrication</h3>
+              <p>
+                Paul Elliott's
+                <a href="http://github.com/paulelliott/fabrication">Fabrication</a> gem is
+                a slick object generation library. It support's Mongoid out of the box and
+                provides a nice syntax for creating objects with ease for testing.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre>Fabricator(<span class="sy">:person</span>) <span class="r">do</span>&#x000A;  title <span class="s"><span class="dl">&quot;</span><span class="k">Grand Poobah</span><span class="dl">&quot;</span></span>&#x000A;  addresses(<span class="ke">count</span>: <span class="i">2</span>) <span class="r">do</span> |address, i|&#x000A;    Fabricate(<span class="sy">:address</span>, <span class="ke">streeet</span>: <span class="s"><span class="dl">&quot;</span><span class="il"><span class="idl">#{</span>i<span class="idl">}</span></span><span class="k"> Bond St.</span><span class="dl">&quot;</span></span>)&#x000A;  <span class="r">end</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+              </div>
+              <h3>Voting</h3>
+              <p>
+                Alex Nguyen's
+                <a href="https://github.com/vinova/voteable_mongo">voteable_mongo</a> gem
+                add up / down voteability to Mongoid and MongoMapper. It takes advantage
+                of document-oriented & in-place update to ensure data integrity and use
+                only ONE database request to validate, update & get updated vote data.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="r">class</span> <span class="cl">Post</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  include <span class="co">Mongo</span>::<span class="co">Voteable</span>&#x000A;  voteable <span class="pc">self</span>, <span class="sy">:up</span> =&gt; <span class="i">1</span>, <span class="sy">:down</span> =&gt; <span class="i">-2</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">User</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  include <span class="co">Mongo</span>::<span class="co">Voter</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="iv">@user</span>.vote(<span class="iv">@post</span>, <span class="sy">:down</span>)&#x000A;<span class="c"># =&gt; &lt;Post .. votes: {&quot;up&quot;=&gt;[], &quot;down&quot;=&gt;[..], &quot;count&quot;=&gt;1, &quot;point&quot;=&gt;-2, ..}&gt;</span>&#x000A;<span class="iv">@user</span>.voted?(<span class="iv">@post</span>)&#x000A;<span class="c"># =&gt; true</span>&#x000A;<span class="iv">@user</span>.vote_value(<span class="iv">@post</span>)&#x000A;<span class="c"># =&gt; :down</span></pre></div>
+              </div>
+            </div>
         <div class='footer'>
-          Mongoid, 2009-2011, written and maintained by
-          <a href="http://github.com/durran">Durran Jordan</a>.
-        </div>
+              Mongoid, 2009-2011, written and maintained by
+              <a href="http://github.com/durran">Durran Jordan</a>.
+            </div>
         <div class='clear'></div>
       </div>
     </div>

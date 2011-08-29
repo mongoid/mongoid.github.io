@@ -10,91 +10,92 @@
   <body>
     <div id='container'>
       <div class='navigation'>
-        <a href="/"><img src="/images/mongoid-logo-small.png" />
-        </a>
-        
-        <ul class='navigation'>
-          <li class='area'><a class="area" href="/">home</a></li>
-          <li class='area'><a class="area" href="/docs.html">docs</a></li>
-          <li><a class="section" href="/docs/installation.html">installation</a></li>
-          <li><a class="section" href="/docs/documents.html">documents</a></li>
-          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
-          <li><a class="section" href="/docs/querying.html">querying</a></li>
-          <li><a class="subsection" href="/docs/querying/criteria.html">criteria</a></li>
-          <li><a class="subsection active" href="/docs/querying/modification.html">criteria + mod</a></li>
-          <li><a class="subsection" href="/docs/querying/finders.html">finders</a></li>
-          <li><a class="subsection" href="/docs/querying/scopes.html">scopes</a></li>
-          <li><a class="section" href="/docs/relations.html">relations</a></li>
-          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
-          <li><a class="section" href="/docs/validation.html">validation</a></li>
-          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
-          <li><a class="section" href="/docs/extras.html">extras</a></li>
-          <li><a class="section" href="/docs/rails.html">rails</a></li>
-          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
-          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
-          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
-          <li class='area'><a class="area" href="/performance.html">performance</a></li>
-          <li class='area'><a class="area" href="/credits.html">credits</a></li>
-          <li class='area'><a class="area" href="/links.html">links</a></li>
-        </ul>
-      </div>
+            <a href="/"><img src="/images/mongoid-logo-small.png" />
+            </a>
+            
+            <ul class='navigation'>
+              <li class='area'><a class="area" href="/">home</a></li>
+              <li class='area'><a class="area" href="/docs.html">docs</a></li>
+              <li><a class="section" href="/docs/installation.html">installation</a></li>
+              <li><a class="section" href="/docs/documents.html">documents</a></li>
+              <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+              <li><a class="section" href="/docs/querying.html">querying</a></li>
+              <li><a class="subsection" href="/docs/querying/criteria.html">criteria</a></li>
+              <li><a class="subsection active" href="/docs/querying/modification.html">criteria + mod</a></li>
+              <li><a class="subsection" href="/docs/querying/finders.html">finders</a></li>
+              <li><a class="subsection" href="/docs/querying/scopes.html">scopes</a></li>
+              <li><a class="section" href="/docs/relations.html">relations</a></li>
+              <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
+              <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+              <li><a class="section" href="/docs/validation.html">validation</a></li>
+              <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+              <li><a class="section" href="/docs/extras.html">extras</a></li>
+              <li><a class="section" href="/docs/rails.html">rails</a></li>
+              <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+              <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+              <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+              <li class='area'><a class="area" href="/performance.html">performance</a></li>
+              <li class='area'><a class="area" href="/credits.html">credits</a></li>
+              <li class='area'><a class="area" href="/links.html">links</a></li>
+            </ul>
+          </div>
       <div class='main'>
         <div class='header'>
-          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
-          </a>
-          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
-          </a>
-        </div>
+              <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
+              </a>
+              <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+              </a>
+            </div>
         <div class='content'>
-          <h1>modification</h1>
-          <p>
-            You may use a Mongoid criteria or chain or criteria to build up a
-            MongoDB selector that you may want to use in order to modify some
-            documents in the database. Mongoid provides a few ways to do this
-            in the form of some non-chainable methods that you can append to
-            the end of your criteria chains.
-          </p>
-          <h3>creation</h3>
-          <p>
-            If you would like to create a document in the database based on your
-            criteria you can use <tt>Criteria#create</tt>, or if you just want to
-            instantiate a new one <tt>Criteria#build</tt>.
-          </p>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Create a saved person with a title of Sir and first name Lancelot.</span>&#x000A;<span class="co">Person</span>.where(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span>, <span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Lancelot</span><span class="dl">&quot;</span></span>).create&#x000A;<span class="co">Person</span>.where(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span>).create(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Lancelot</span><span class="dl">&quot;</span></span>)&#x000A;&#x000A;<span class="c"># Build an unsaved person with a title of Sir and first name Lancelot.</span>&#x000A;<span class="co">Person</span>.where(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span>, <span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Lancelot</span><span class="dl">&quot;</span></span>).build&#x000A;<span class="co">Person</span>.where(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span>).build(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Lancelot</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
-          </div>
-          <p>
-            Note that for obvious reasons certain criterion cannot be translated
-            into a value to set on the object, for example...
-          </p>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># The values in this criteria will be ignored.</span>&#x000A;<span class="co">Person</span>.where(<span class="sy">:age</span>.gt =&gt; <span class="i">5</span>, <span class="sy">:aliases</span>.in =&gt; [ <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">008</span><span class="dl">&quot;</span></span> ]).create&#x000A;</pre></div>
-          </div>
-          <h3>updating</h3>
-          <p>
-            You can atomically update multiple documents in the database via
-            a criteria using <tt>Criteria#update_all</tt>. This will perform
-            an atomic <tt>$set</tt> on all the attributes passed to the
-            method.
-          </p>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Update all people with last name Oldman with new first name.</span>&#x000A;<span class="co">Person</span>.where(<span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Oldman</span><span class="dl">&quot;</span></span>).update_all(&#x000A;  <span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Pappa Gary</span><span class="dl">&quot;</span></span>&#x000A;)&#x000A;</pre></div>
-          </div>
-          <h3>removal</h3>
-          <p>
-            Removing documents based on criteria is also possible through the
-            <tt>Criteria#delete_all</tt> and <tt>Criteria#destroy_all</tt>.
-            Using the delete will hit the database directly where destroy will load
-            each object in order to run the destroy callbacks on them.
-          </p>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="c"># Delete all of Arthur's knight's from the db.</span>&#x000A;<span class="co">Person</span>.where(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span>).and(<span class="ke">king</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Arthur</span><span class="dl">&quot;</span></span>).delete_all&#x000A;<span class="co">Person</span>.where(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span>, <span class="ke">king</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Arthur</span><span class="dl">&quot;</span></span>).destroy_all</pre></div>
-          </div>
-        </div>
+              <h1>modification</h1>
+              <p>
+                You may use a Mongoid criteria or chain or criteria to build up a
+                MongoDB selector that you may want to use in order to modify some
+                documents in the database. Mongoid provides a few ways to do this
+                in the form of some non-chainable methods that you can append to
+                the end of your criteria chains.
+              </p>
+              <h3>creation</h3>
+              <p>
+                If you would like to create a document in the database based on your
+                criteria you can use <tt>Criteria#create</tt>, or if you just want to
+                instantiate a new one <tt>Criteria#build</tt>.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Create a saved person with a title of Sir and first name Lancelot.</span>&#x000A;<span class="co">Person</span>.where(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span>, <span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Lancelot</span><span class="dl">&quot;</span></span>).create&#x000A;<span class="co">Person</span>.where(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span>).create(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Lancelot</span><span class="dl">&quot;</span></span>)&#x000A;&#x000A;<span class="c"># Build an unsaved person with a title of Sir and first name Lancelot.</span>&#x000A;<span class="co">Person</span>.where(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span>, <span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Lancelot</span><span class="dl">&quot;</span></span>).build&#x000A;<span class="co">Person</span>.where(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span>).build(<span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Lancelot</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
+              </div>
+              <p>
+                Note that for obvious reasons certain criterion cannot be translated
+                into a value to set on the object, for example...
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># The values in this criteria will be ignored.</span>&#x000A;<span class="co">Person</span>.where(<span class="sy">:age</span>.gt =&gt; <span class="i">5</span>, <span class="sy">:aliases</span>.in =&gt; [ <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">008</span><span class="dl">&quot;</span></span> ]).create&#x000A;</pre></div>
+              </div>
+              <h3>updating</h3>
+              <p>
+                You can atomically update multiple documents in the database via
+                a criteria using <tt>Criteria#update_all</tt>. This will perform
+                an atomic <tt>$set</tt> on all the attributes passed to the
+                method.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Update all people with last name Oldman with new first name.</span>&#x000A;<span class="co">Person</span>.where(<span class="ke">last_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Oldman</span><span class="dl">&quot;</span></span>).update_all(&#x000A;  <span class="ke">first_name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Pappa Gary</span><span class="dl">&quot;</span></span>&#x000A;)&#x000A;</pre></div>
+              </div>
+              <h3>removal</h3>
+              <p>
+                Removing documents based on criteria is also possible through the
+                <tt>Criteria#delete_all</tt> and <tt>Criteria#destroy_all</tt>.
+                Using the delete will hit the database directly where destroy will load
+                each object in order to run the destroy callbacks on them.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Delete all of Arthur's knight's from the db.</span>&#x000A;<span class="co">Person</span>.where(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span>).and(<span class="ke">king</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Arthur</span><span class="dl">&quot;</span></span>).delete_all&#x000A;<span class="co">Person</span>.where(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span>, <span class="ke">king</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Arthur</span><span class="dl">&quot;</span></span>).destroy_all</pre></div>
+              </div>
+            </div>
         <div class='footer'>
-          Mongoid, 2009-2011, written and maintained by
-          <a href="http://github.com/durran">Durran Jordan</a>.
-        </div>
+              Mongoid, 2009-2011, written and maintained by
+              <a href="http://github.com/durran">Durran Jordan</a>.
+            </div>
         <div class='clear'></div>
       </div>
     </div>

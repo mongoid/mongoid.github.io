@@ -10,67 +10,68 @@
   <body>
     <div id='container'>
       <div class='navigation'>
-        <a href="/"><img src="/images/mongoid-logo-small.png" />
-        </a>
-        
-        <ul class='navigation'>
-          <li class='area'><a class="area" href="/">home</a></li>
-          <li class='area'><a class="area" href="/docs.html">docs</a></li>
-          <li><a class="section" href="/docs/installation.html">installation</a></li>
-          <li><a class="section" href="/docs/documents.html">documents</a></li>
-          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
-          <li><a class="section" href="/docs/querying.html">querying</a></li>
-          <li><a class="section" href="/docs/relations.html">relations</a></li>
-          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
-          <li><a class="section" href="/docs/validation.html">validation</a></li>
-          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
-          <li><a class="section" href="/docs/extras.html">extras</a></li>
-          <li><a class="section" href="/docs/rails.html">rails</a></li>
-          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
-          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
-          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
-          <li class='area'><a class="area" href="/performance.html">performance</a></li>
-          <li class='area'><a class="area" href="/credits.html">credits</a></li>
-          <li class='area'><a class="area" href="/links.html">links</a></li>
-        </ul>
-      </div>
+            <a href="/"><img src="/images/mongoid-logo-small.png" />
+            </a>
+            
+            <ul class='navigation'>
+              <li class='area'><a class="area" href="/">home</a></li>
+              <li class='area'><a class="area" href="/docs.html">docs</a></li>
+              <li><a class="section" href="/docs/installation.html">installation</a></li>
+              <li><a class="section" href="/docs/documents.html">documents</a></li>
+              <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+              <li><a class="section" href="/docs/querying.html">querying</a></li>
+              <li><a class="section" href="/docs/relations.html">relations</a></li>
+              <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
+              <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+              <li><a class="section" href="/docs/validation.html">validation</a></li>
+              <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+              <li><a class="section" href="/docs/extras.html">extras</a></li>
+              <li><a class="section" href="/docs/rails.html">rails</a></li>
+              <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+              <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+              <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+              <li class='area'><a class="area" href="/performance.html">performance</a></li>
+              <li class='area'><a class="area" href="/credits.html">credits</a></li>
+              <li class='area'><a class="area" href="/links.html">links</a></li>
+            </ul>
+          </div>
       <div class='main'>
         <div class='header'>
-          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
-          </a>
-          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
-          </a>
-        </div>
+              <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
+              </a>
+              <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+              </a>
+            </div>
         <div class='content'>
-          <h1>mongoid</h1>
-          <p>
-            Mongoid (pronounced mann-goyd) is an Object-Document-Mapper (ODM) for
-            <a href="http://mongodb.org">MongoDB</a> written in Ruby. It was conceived in August,
-            2009 during a whiskey-induced evening at the infamous Oasis in Florida,
-            USA by <a href="http://github.com/durran">Durran Jordan</a>.
-          </p>
-          <p>
-            The philosophy of Mongoid is to provide a familiar API to Ruby developers
-            who have been using Active Record or Data Mapper, while leveraging the
-            power of MongoDB's schemaless and performant document-based design, dynamic
-            queries, and atomic modifier operations.
-          </p>
-          <h2>sample syntax</h2>
-          <p>*** Note that all code samples are written in Ruby 1.9 syntax.</p>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="r">class</span> <span class="cl">Artist</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  embeds_many <span class="sy">:instruments</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Instrument</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  embedded_in <span class="sy">:artist</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="c"># Find the first artist named &quot;Syd Vicious&quot; and create an embedded bass</span>&#x000A;<span class="c"># document for him. Of course he'll smash it within the next few minutes,</span>&#x000A;<span class="c"># but no worries we can delete it later.</span>&#x000A;<span class="co">Artist</span>.where(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Syd Vicious</span><span class="dl">&quot;</span></span>).first.tap <span class="r">do</span> |artist|&#x000A;  artist.instruments.create(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Bass</span><span class="dl">&quot;</span></span>)&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-          </div>
-          <p>
-            *** Note that this site is tested on Firefox only and that any issues brought
-            up around viewing on other browsers will be, to put it bluntly, ignored.
-            We're busy trying to make the best ODM possible here, not worry about
-            browser compatibility.
-          </p>
-        </div>
+              <h1>mongoid</h1>
+              <p>
+                Mongoid (pronounced mann-goyd) is an Object-Document-Mapper (ODM) for
+                <a href="http://mongodb.org">MongoDB</a> written in Ruby. It was conceived in August,
+                2009 during a whiskey-induced evening at the infamous Oasis in Florida,
+                USA by <a href="http://github.com/durran">Durran Jordan</a>.
+              </p>
+              <p>
+                The philosophy of Mongoid is to provide a familiar API to Ruby developers
+                who have been using Active Record or Data Mapper, while leveraging the
+                power of MongoDB's schemaless and performant document-based design, dynamic
+                queries, and atomic modifier operations.
+              </p>
+              <h2>sample syntax</h2>
+              <p>*** Note that all code samples are written in Ruby 1.9 syntax.</p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="r">class</span> <span class="cl">Artist</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  embeds_many <span class="sy">:instruments</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Instrument</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  embedded_in <span class="sy">:artist</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="c"># Find the first artist named &quot;Syd Vicious&quot; and create an embedded bass</span>&#x000A;<span class="c"># document for him. Of course he'll smash it within the next few minutes,</span>&#x000A;<span class="c"># but no worries we can delete it later.</span>&#x000A;<span class="co">Artist</span>.where(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Syd Vicious</span><span class="dl">&quot;</span></span>).first.tap <span class="r">do</span> |artist|&#x000A;  artist.instruments.create(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Bass</span><span class="dl">&quot;</span></span>)&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+              </div>
+              <p>
+                *** Note that this site is tested on Firefox only and that any issues brought
+                up around viewing on other browsers will be, to put it bluntly, ignored.
+                We're busy trying to make the best ODM possible here, not worry about
+                browser compatibility.
+              </p>
+            </div>
         <div class='footer'>
-          Mongoid, 2009-2011, written and maintained by
-          <a href="http://github.com/durran">Durran Jordan</a>.
-        </div>
+              Mongoid, 2009-2011, written and maintained by
+              <a href="http://github.com/durran">Durran Jordan</a>.
+            </div>
         <div class='clear'></div>
       </div>
     </div>
