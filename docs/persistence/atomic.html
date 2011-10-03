@@ -21,6 +21,7 @@
               <li><a class="section" href="/docs/persistence.html">persistence</a></li>
               <li><a class="subsection" href="/docs/persistence/standard.html">standard</a></li>
               <li><a class="subsection active" href="/docs/persistence/atomic.html">atomic</a></li>
+              <li><a class="subsection" href="/docs/persistence/safe_mode.html">safe mode</a></li>
               <li><a class="section" href="/docs/querying.html">querying</a></li>
               <li><a class="section" href="/docs/relations.html">relations</a></li>
               <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
@@ -51,13 +52,20 @@
                 there may be cases where you want to do this explicitly without
                 persisting other fields. Mongoid provides support for some of
                 these operations as well.
-                <ul>
-                  <li><a href="#add_to_set"><tt>Model#add_to_set</tt></a></li>
-                  <li><a href="#inc"><tt>Model#inc</tt></a></li>
-                  <li><a href="#pull_all"><tt>Model#pull_all</tt></a></li>
-                  <li><a href="#push"><tt>Model#push</tt></a></li>
-                </ul>
               </p>
+              <ul>
+                <li><a href="#add_to_set"><tt>Model#add_to_set</tt></a></li>
+                <li><a href="#bit"><tt>Model#bit</tt></a></li>
+                <li><a href="#inc"><tt>Model#inc</tt></a></li>
+                <li><a href="#pop"><tt>Model#pop</tt></a></li>
+                <li><a href="#pull"><tt>Model#pull</tt></a></li>
+                <li><a href="#pull_all"><tt>Model#pull_all</tt></a></li>
+                <li><a href="#push"><tt>Model#push</tt></a></li>
+                <li><a href="#push_all"><tt>Model#push_all</tt></a></li>
+                <li><a href="#rename"><tt>Model#rename</tt></a></li>
+                <li><a href="#set"><tt>Model#set</tt></a></li>
+                <li><a href="#unset"><tt>Model#unset</tt></a></li>
+              </ul>
               <a name='add_to_set'></a>
               <h4><tt>Model#add_to_set</tt></h4>
               <p>
@@ -74,6 +82,21 @@
               <div class="CodeRay">
                 <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update(&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$addToSet</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">aliases</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span> } }&#x000A;)&#x000A;</pre></div>
               </div>
+              <a name='bit'></a>
+              <h4><tt>Model#bit</tt></h4>
+              <p>
+                Performs MongoDB's <tt>$bit</tt> modifier on the supplied field and
+                bitwise operations. Note that Ruby 1.8.x hashes are not ordered so the
+                order of application is not guaranteed there.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre>person.bit(<span class="sy">:age</span>, { <span class="ke">and</span>: <span class="i">10</span>, <span class="ke">or</span>: <span class="i">12</span> })&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb command</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update(&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$bit</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">age</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">and</span><span class="dl">&quot;</span></span> : <span class="i">10</span>, <span class="s"><span class="dl">&quot;</span><span class="k">or</span><span class="dl">&quot;</span></span> : <span class="i">12</span> } } }&#x000A;)&#x000A;</pre></div>
+              </div>
               <a name='inc'></a>
               <h4><tt>Model#inc</tt></h4>
               <p>
@@ -88,6 +111,34 @@
               <mongodb>mongodb command</mongodb>
               <div class="CodeRay">
                 <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update(&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$inc</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">age</span><span class="dl">&quot;</span></span> : <span class="i">1</span> } }&#x000A;)&#x000A;</pre></div>
+              </div>
+              <a name='pop'></a>
+              <h4><tt>Model#pop</tt></h4>
+              <p>
+                Performs MongoDB's <tt>$pop</tt> modifier that removes the number of
+                elements from the array.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre>person.pop(<span class="sy">:aliases</span>, <span class="i">1</span>)&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb command</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update(&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$pop</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">aliases</span><span class="dl">&quot;</span></span> : <span class="i">1</span> } }&#x000A;)&#x000A;</pre></div>
+              </div>
+              <a name='pull'></a>
+              <h4><tt>Model#pull</tt></h4>
+              <p>
+                Performs MongoDB's <tt>$pull</tt> modifier that removes the provided
+                value from the array.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre>person.pull(<span class="sy">:aliases</span>, <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb command</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update(&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$pull</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">aliases</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span> } }&#x000A;)&#x000A;</pre></div>
               </div>
               <a name='pull_all'></a>
               <h4><tt>Model#pull_all</tt></h4>
@@ -117,7 +168,61 @@
               </div>
               <mongodb>mongodb command</mongodb>
               <div class="CodeRay">
-                <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update(&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$push</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">aliases</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span> } }&#x000A;)</pre></div>
+                <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update(&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$push</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">aliases</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span> } }&#x000A;)&#x000A;</pre></div>
+              </div>
+              <a name='push_all'></a>
+              <h4><tt>Model#push_all</tt></h4>
+              <p>
+                Performs MongoDB's <tt>$pushAll</tt> modifier that will append the values to
+                the provided field.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre>person.push_all(<span class="sy">:aliases</span>, [ <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">008</span><span class="dl">&quot;</span></span> ])&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb command</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update(&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$pushAll</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">aliases</span><span class="dl">&quot;</span></span> : [ <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">008</span><span class="dl">&quot;</span></span> ] } }&#x000A;)&#x000A;</pre></div>
+              </div>
+              <a name='rename'></a>
+              <h4><tt>Model#rename</tt></h4>
+              <p>
+                Performs MongoDB's <tt>$rename</tt> modifier that renames a field atomically.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre>person.rename(<span class="sy">:bday</span>, <span class="sy">:dob</span>)&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb command</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update(&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$rename</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">bday</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">dob</span><span class="dl">&quot;</span></span> } }&#x000A;)&#x000A;</pre></div>
+              </div>
+              <a name='set'></a>
+              <h4><tt>Model#set</tt></h4>
+              <p>
+                Performs MongoDB's <tt>$set</tt> modifier to atomically set a single value.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre>person.set(<span class="sy">:name</span>, <span class="s"><span class="dl">&quot;</span><span class="k">Tyler Durden</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb command</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update(&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$set</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">name</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Tyler Durden</span><span class="dl">&quot;</span></span> } }&#x000A;)&#x000A;</pre></div>
+              </div>
+              <a name='unset'></a>
+              <h4><tt>Model#unset</tt></h4>
+              <p>
+                Performs MongoDB's <tt>$unset</tt> modifier to atomically remove a field
+                completely from the database.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre>person.unset(<span class="sy">:name</span>)&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb command</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre>collections[<span class="s"><span class="dl">&quot;</span><span class="k">people</span><span class="dl">&quot;</span></span>].update(&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ... },&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">$unset</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">name</span><span class="dl">&quot;</span></span> : <span class="i">1</span> } }&#x000A;)</pre></div>
               </div>
             </div>
         <div class='footer'>

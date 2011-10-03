@@ -130,7 +130,24 @@
                 provides accessors for the parent and children.
               </p>
               <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Tag</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  recursively_embeds_many&#x000A;  field <span class="sy">:name</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;programming = <span class="co">Tag</span>.new(<span class="sy">:name</span> =&gt; <span class="s"><span class="dl">'</span><span class="k">programming</span><span class="dl">'</span></span>)&#x000A;ruby = programming.child_tags.build(<span class="sy">:name</span> =&gt; <span class="s"><span class="dl">'</span><span class="k">ruby</span><span class="dl">'</span></span>)&#x000A;python = programming.child_tags.build(<span class="sy">:name</span> =&gt; <span class="s"><span class="dl">'</span><span class="k">python</span><span class="dl">'</span></span>)&#x000A;&#x000A;programming.child_tags  <span class="c"># [ruby, python]</span>&#x000A;ruby.parent_tag         <span class="c"># [programming]</span>&#x000A;python.parent_tag       <span class="c"># [programming]</span></pre></div>
+                <div class="code"><pre><span class="r">class</span> <span class="cl">Tag</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  recursively_embeds_many&#x000A;  field <span class="sy">:name</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;programming = <span class="co">Tag</span>.new(<span class="sy">:name</span> =&gt; <span class="s"><span class="dl">'</span><span class="k">programming</span><span class="dl">'</span></span>)&#x000A;ruby = programming.child_tags.build(<span class="sy">:name</span> =&gt; <span class="s"><span class="dl">'</span><span class="k">ruby</span><span class="dl">'</span></span>)&#x000A;python = programming.child_tags.build(<span class="sy">:name</span> =&gt; <span class="s"><span class="dl">'</span><span class="k">python</span><span class="dl">'</span></span>)&#x000A;&#x000A;programming.child_tags  <span class="c"># [ruby, python]</span>&#x000A;ruby.parent_tag         <span class="c"># [programming]</span>&#x000A;python.parent_tag       <span class="c"># [programming]</span>&#x000A;</pre></div>
+              </div>
+              <h3>cascading callbacks</h3>
+              <p>
+                If you want the embedded document callbacks to fire when calling a persistence
+                operation on it's parent, you will need to provide the cascade callbacks
+                option to the relation.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embeds_many <span class="sy">:addresses</span>, <span class="ke">cascade_callbacks</span>: <span class="pc">true</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+              </div>
+              <p>
+                <i>Gotcha</i>: You run the risk of having the callbacks on an embedded document
+                fire more than once if this option is set to true and you call the
+                operation on the child. In these cases it's best to always call from the parent.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># This will fire the callbacks twice</span>&#x000A;person.addresses.create(<span class="ke">street</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Unter den Linden</span><span class="dl">&quot;</span></span>)&#x000A;<span class="c"># This fires the callbacks once</span>&#x000A;person.addresses.build(<span class="ke">street</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Maybachufer</span><span class="dl">&quot;</span></span>)&#x000A;person.save</pre></div>
               </div>
             </div>
         <div class='footer'>

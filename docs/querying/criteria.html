@@ -65,6 +65,7 @@
               <p>
                 <ul>
                   <li><a href="#all_in"><tt>Model.all_in</tt></a></li>
+                  <li><a href="#all_of"><tt>Model.all_of</tt></a></li>
                   <li><a href="#also_in"><tt>Model.also_in</tt></a></li>
                   <li><a href="#and"><tt>Criteria#and</tt></a></li>
                   <li><a href="#any_in"><tt>Model.any_in</tt></a></li>
@@ -97,6 +98,20 @@
               <mongodb>mongodb query selector</mongodb>
               <div class="CodeRay">
                 <div class="code"><pre>{ <span class="s"><span class="dl">&quot;</span><span class="k">aliases</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$all</span><span class="dl">&quot;</span></span> : [ <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">007</span><span class="dl">&quot;</span></span> ] }}&#x000A;</pre></div>
+              </div>
+              <a name='all_of'></a>
+              <h4><tt>Model.all_of</tt> | <tt>Criteria#all_of</tt></h4>
+              <p>
+                Adds a criterion that specifies expressions that must all match in order to
+                return results. The corresponding MongoDB operation is <tt>$and</tt>.
+              </p>
+              <mongoid>mongoid</mongoid>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Match all crazy old people.</span>&#x000A;<span class="co">Person</span>.all_of(<span class="sy">:age</span>.gt =&gt; <span class="i">60</span>, <span class="ke">mental_state</span>: <span class="s"><span class="dl">&quot;</span><span class="k">crazy mofos</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
+              </div>
+              <mongodb>mongodb query selector</mongodb>
+              <div class="CodeRay">
+                <div class="code"><pre>{ <span class="s"><span class="dl">&quot;</span><span class="k">$and</span><span class="dl">&quot;</span></span> : [{ <span class="s"><span class="dl">&quot;</span><span class="k">age</span><span class="dl">&quot;</span></span> : { <span class="s"><span class="dl">&quot;</span><span class="k">$gt</span><span class="dl">&quot;</span></span> : <span class="i">60</span> }}, { <span class="s"><span class="dl">&quot;</span><span class="k">mental_state</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">crazy mofos</span><span class="dl">&quot;</span></span> }] }&#x000A;</pre></div>
               </div>
               <a name='also_in'></a>
               <h4><tt>Model.also_in</tt> | <tt>Criteria#also_in</tt></h4>

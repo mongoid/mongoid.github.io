@@ -118,7 +118,24 @@
                 When embedding models that inherit from a different class, monogid will store the class of this object in the field <tt>_type</tt>.
               </p>
               <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  embeds_one <span class="sy">:profession</span>&#x000A;<span class="r">end</span>&#x000A;<span class="r">class</span> <span class="cl">Profession</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embedded_in <span class="sy">:person</span>&#x000A;<span class="r">end</span>&#x000A;<span class="r">class</span> <span class="cl">Doctor</span> &lt; <span class="co">Person</span>; <span class="r">end</span>;&#x000A;<span class="r">class</span> <span class="cl">Nurse</span> &lt; <span class="co">Person</span>; <span class="r">end</span>;</pre></div>
+                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  embeds_one <span class="sy">:profession</span>&#x000A;<span class="r">end</span>&#x000A;<span class="r">class</span> <span class="cl">Profession</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embedded_in <span class="sy">:person</span>&#x000A;<span class="r">end</span>&#x000A;<span class="r">class</span> <span class="cl">Doctor</span> &lt; <span class="co">Person</span>; <span class="r">end</span>;&#x000A;<span class="r">class</span> <span class="cl">Nurse</span> &lt; <span class="co">Person</span>; <span class="r">end</span>;&#x000A;</pre></div>
+              </div>
+              <h3>cascading callbacks</h3>
+              <p>
+                If you want the embedded document callbacks to fire when calling a persistence
+                operation on it's parent, you will need to provide the cascade callbacks
+                option to the relation.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embeds_one <span class="sy">:name</span>, <span class="ke">cascade_callbacks</span>: <span class="pc">true</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+              </div>
+              <p>
+                <i>Gotcha</i>: You run the risk of having the callbacks on an embedded document
+                fire more than once if this option is set to true and you call the
+                operation on the child. In these cases it's best to always call from the parent.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># This will fire the callbacks twice</span>&#x000A;person.create_name(<span class="ke">first</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Bob</span><span class="dl">&quot;</span></span>)&#x000A;<span class="c"># This fires the callbacks once</span>&#x000A;person.build_name(<span class="ke">first</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Joe</span><span class="dl">&quot;</span></span>)&#x000A;person.save</pre></div>
               </div>
             </div>
         <div class='footer'>

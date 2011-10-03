@@ -138,6 +138,13 @@
               <div class="CodeRay">
                 <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Timestamps</span>::<span class="co">Created</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Post</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Timestamps</span>::<span class="co">Updated</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
               </div>
+              <p>
+                If you want to turn off timestamping for specific calls, use the timeless
+                method:
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre>person.timeless.save&#x000A;<span class="co">Person</span>.timeless.create!&#x000A;</pre></div>
+              </div>
               <h3>Keys</h3>
               <p>
                 You can create a composite key in mongoid to replace the default id using the key macro:
