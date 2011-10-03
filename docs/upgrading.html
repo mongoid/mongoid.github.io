@@ -50,6 +50,24 @@
                 <a href="http://github.com/mongoid/mongoid/blob/master/CHANGELOG.md">changelog</a>
                 for bug fixes, new features, and major changes between versions.
               </p>
+              <h3>upgrading to 2.3.0</h3>
+              <p>
+                Active Model, MongoDB, and the MongoDB Ruby Driver requirements have been raised:
+                <ul>
+                  <li>Active Model 3.1 is now the minimum requirement.</li>
+                  <li>MongoDB 2.0.0 is now the minimum requirement.</li>
+                  <li>MongoDB Ruby Driver, BSON versions 1.4.0 are the minimum.</li>
+                </ul>
+              </p>
+              <p>
+                For those using <tt>#create</tt>, <tt>#create!</tt>, and <tt>#build</tt> on
+                associations that are subclassed and passing in types to these methods,
+                the type now needs to be the third argument as mass assignment scoping is
+                now supported in these methods:
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre>canvas.shapes.build({ <span class="ke">x</span>: <span class="i">10</span>, <span class="ke">y</span>: <span class="i">10</span> }, <span class="ke">as</span>: <span class="sy">:admin</span>, <span class="co">Circle</span>)&#x000A;canvas.shapes.create({ <span class="ke">x</span>: <span class="i">10</span>, <span class="ke">y</span>: <span class="i">10</span> }, <span class="ke">as</span>: <span class="sy">:admin</span>, <span class="co">Circle</span>)&#x000A;canvas.shapes.create!({ <span class="ke">x</span>: <span class="i">10</span>, <span class="ke">y</span>: <span class="i">10</span> }, <span class="ke">as</span>: <span class="sy">:admin</span>, <span class="co">Circle</span>)&#x000A;</pre></div>
+              </div>
               <h3>upgrading to 2.2.0</h3>
               <p>
                 Previously when setting an embedded relation via attributes on the parent,
