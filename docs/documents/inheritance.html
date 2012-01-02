@@ -66,6 +66,25 @@
                 returned. This also holds true for the embedded documents <tt>Circle</tt>,
                 <tt>Rectangle</tt>, and <tt>Shape</tt>.
               </p>
+              <h3>querying for subclasses</h3>
+              <p>
+                Querying for subclasses is handled in the normal manner, and although
+                the documents are all in the same collection, queries will only return
+                documents of the correct type, similar to Single Table Inheritance in
+                ActiveRecord.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="c"># Returns Canvas documents and subclasses</span>&#x000A;<span class="co">Canvas</span>.where(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Paper</span><span class="dl">&quot;</span></span>)&#x000A;<span class="c"># Returns only Firefox documents</span>&#x000A;<span class="co">Firefox</span>.where(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Window 1</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
+              </div>
+              <h3>associations</h3>
+              <p>
+                You can add any type of subclass to a has one or has many association,
+                through either normal setting or through the build and create methods
+                on the association:
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre>firefox = <span class="co">Firefox</span>.new&#x000A;<span class="c"># Builds a Shape object</span>&#x000A;firefox.shapes.build({ <span class="ke">x</span>: <span class="i">0</span>, <span class="ke">y</span>: <span class="i">0</span> })&#x000A;<span class="c"># Builds a Circle object</span>&#x000A;firefox.shapes.build({ <span class="ke">x</span>: <span class="i">0</span>, <span class="ke">y</span>: <span class="i">0</span> }, <span class="co">Circle</span>)&#x000A;<span class="c"># Creates a Rectangle object</span>&#x000A;firefox.shapes.create({ <span class="ke">x</span>: <span class="i">0</span>, <span class="ke">y</span>: <span class="i">0</span> }, <span class="co">Rectangle</span>)&#x000A;&#x000A;rect = <span class="co">Rectangle</span>.new(<span class="ke">width</span>: <span class="i">100</span>, <span class="ke">height</span>: <span class="i">200</span>)&#x000A;firefox.shapes</pre></div>
+              </div>
             </div>
         <div class='footer'>
               Mongoid, 2009-2011, written and maintained by

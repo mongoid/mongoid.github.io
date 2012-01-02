@@ -61,7 +61,7 @@
                 You can index on multiple fields and provide direction.
               </p>
               <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:first_name</span>&#x000A;  field <span class="sy">:last_name</span>&#x000A;  index(&#x000A;    [&#x000A;      [ <span class="sy">:first_name</span>, <span class="co">Mongo</span>::<span class="co">ASCENDING</span> ],&#x000A;      [ <span class="sy">:last_name</span>, <span class="co">Mongo</span>::<span class="co">ASCENDING</span> ]&#x000A;    ],&#x000A;    <span class="ke">unique</span>: <span class="pc">true</span>&#x000A;  )&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:first_name</span>&#x000A;  field <span class="sy">:last_name</span>&#x000A;  index(&#x000A;    [&#x000A;      [ <span class="sy">:first_name</span>, <span class="co">Mongo</span>::<span class="co">ASCENDING</span> ],&#x000A;      [ <span class="sy">:last_name</span>, <span class="co">Mongo</span>::<span class="co">ASCENDING</span> ]&#x000A;    ],&#x000A;    <span class="ke">unique</span>: <span class="pc">true</span>&#x000A;  )&#x000A;<span class="r">end</span>&#x000A;&#x000A;%p&#x000A;  <span class="co">Indexes</span> can be sparse:&#x000A;&#x000A;<span class="sy">:coderay</span>&#x000A;  <span class="c">#!ruby</span>&#x000A;  <span class="r">class</span> <span class="cl">Person</span>&#x000A;    include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;    field <span class="sy">:ssn</span>&#x000A;    index <span class="sy">:ssn</span>, <span class="ke">sparse</span>: <span class="pc">true</span>&#x000A;  <span class="r">end</span>&#x000A;</pre></div>
               </div>
               <p>
                 Indexes can be run in the background in cases where they may take some time:
@@ -95,7 +95,26 @@
                 production environment.
               </p>
               <div class="CodeRay">
-                <div class="code"><pre><span class="ke">defaults</span>: &amp;defaults&#x000A;  <span class="ke">autocreate_indexes</span>: <span class="pc">true</span></pre></div>
+                <div class="code"><pre><span class="ke">defaults</span>: &amp;defaults&#x000A;  <span class="ke">autocreate_indexes</span>: <span class="pc">true</span>&#x000A;&#x000A;</pre></div>
+              </div>
+              <h3>dropping indexes</h3>
+              <p>
+                When you want to remove an index, it must be done using the MongoDB index name.
+                Therefore if you create a range index on the <i>birthday</i> date coluumn in the Person
+                model in the Rails console, you would do it like this.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre>:<span class="i">001</span> &gt; <span class="co">Person</span>.collection.ensure_index([[<span class="s"><span class="dl">'</span><span class="k">birthday</span><span class="dl">'</span></span>,<span class="co">Mongo</span>::<span class="co">DESCENDING</span>]])&#x000A;</pre></div>
+              </div>
+              <p>
+                In order to delete that same index, you need to use the index name, not the index definition.
+                The index name is <i>birthday</i>, but the index definition according to MongoDB will include
+                an <i>_1</i> for an <i>Mongo::ASCENDING</i> range index and a <i>_-1</i> for a
+                <i>Mongo::DESCENDING</i> range index.  To remove the above index in the Rails console, you would
+                enter the following.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre>:<span class="i">002</span> &gt; <span class="co">Person</span>.collection.drop_index(<span class="s"><span class="dl">'</span><span class="k">birthday_-1</span><span class="dl">'</span></span>)</pre></div>
               </div>
             </div>
         <div class='footer'>

@@ -63,7 +63,53 @@
                 only ONE database request to validate, update & get updated vote data.
               </p>
               <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Post</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  include <span class="co">Mongo</span>::<span class="co">Voteable</span>&#x000A;  voteable <span class="pc">self</span>, <span class="sy">:up</span> =&gt; <span class="i">1</span>, <span class="sy">:down</span> =&gt; <span class="i">-2</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">User</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  include <span class="co">Mongo</span>::<span class="co">Voter</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="iv">@user</span>.vote(<span class="iv">@post</span>, <span class="sy">:down</span>)&#x000A;<span class="c"># =&gt; &lt;Post .. votes: {&quot;up&quot;=&gt;[], &quot;down&quot;=&gt;[..], &quot;count&quot;=&gt;1, &quot;point&quot;=&gt;-2, ..}&gt;</span>&#x000A;<span class="iv">@user</span>.voted?(<span class="iv">@post</span>)&#x000A;<span class="c"># =&gt; true</span>&#x000A;<span class="iv">@user</span>.vote_value(<span class="iv">@post</span>)&#x000A;<span class="c"># =&gt; :down</span></pre></div>
+                <div class="code"><pre><span class="r">class</span> <span class="cl">Post</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  include <span class="co">Mongo</span>::<span class="co">Voteable</span>&#x000A;  voteable <span class="pc">self</span>, <span class="sy">:up</span> =&gt; <span class="i">1</span>, <span class="sy">:down</span> =&gt; <span class="i">-2</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">User</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  include <span class="co">Mongo</span>::<span class="co">Voter</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="iv">@user</span>.vote(<span class="iv">@post</span>, <span class="sy">:down</span>)&#x000A;<span class="c"># =&gt; &lt;Post .. votes: {&quot;up&quot;=&gt;[], &quot;down&quot;=&gt;[..], &quot;count&quot;=&gt;1, &quot;point&quot;=&gt;-2, ..}&gt;</span>&#x000A;<span class="iv">@user</span>.voted?(<span class="iv">@post</span>)&#x000A;<span class="c"># =&gt; true</span>&#x000A;<span class="iv">@user</span>.vote_value(<span class="iv">@post</span>)&#x000A;<span class="c"># =&gt; :down</span>&#x000A;</pre></div>
+              </div>
+              <h3>Will Paginate Mongoid</h3>
+              <p>
+                Lucas Souza's
+                <a href="https://github.com/lucasas/will_paginate_mongoid">will_paginate_mongoid</a>
+                gem becomes possible use
+                <strong>skip</strong>
+                and
+                <strong>limit</strong>
+                methods from Mongoid with
+                <a href="https://github.com/mislav/will_paginate">will_paginate</a>
+              </p>
+              <p>
+                <strong>Why I should use will_paginate_mongoid?</strong>
+              </p>
+              <p>
+                Will Paginate does not support Mongoid pagination (skip and limit methods) and
+                this issue can cause performance problems.
+                For example: If you use just will_paginate to paginate a model called User,
+                in your controller you will call this:
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="co">User</span>.paginate <span class="sy">:page</span> =&gt; params[<span class="sy">:page</span>], <span class="sy">:per_page</span> =&gt; <span class="i">10</span>&#x000A;</pre></div>
+              </div>
+              <p>
+                The code above appears that will bring just 10 users from Mongodb, but
+                will bring all users from Mongodb.
+              </p>
+              <p>
+                With will_paginate_mongoid this issue is solved because it creates the
+                same pagination method but using
+                <a href="http://mongoid.org/docs/querying/criteria.html#skip">skip</a>
+                and
+                <a href="http://mongoid.org/docs/querying/criteria.html#limit">limit</a>
+                methods bringing just the needed objects from Mongodb.
+              </p>
+              <h3>Geo Spacial Search</h3>
+              <p>
+                Ryan Ong's
+                <a href="http://github.com/ryanong/mongoid_spacial">mongoid_spacial</a> gem
+                extends complex criteria options and simplifies geo spacial row creation,
+                search and return. It adds a few helpers and it also adds a wrapper around
+                the geoNear function that has support for pagination and automatic unit conversion.
+              </p>
+              <div class="CodeRay">
+                <div class="code"><pre><span class="r">class</span> <span class="cl">River</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Spacial</span>::<span class="co">Document</span>&#x000A;&#x000A;  field <span class="sy">:name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  field <span class="sy">:source</span>, <span class="ke">type</span>: <span class="co">Array</span>, <span class="ke">spacial</span>: <span class="pc">true</span>&#x000A;&#x000A;  <span class="c"># set return_array to true if you do not want a hash returned all the time</span>&#x000A;  field <span class="sy">:mouth</span>, <span class="ke">type</span>: <span class="co">Array</span>, <span class="ke">spacial</span>: {<span class="ke">lat</span>: <span class="sy">:latitude</span>, <span class="ke">lng</span>: <span class="sy">:longitude</span>, <span class="ke">return_array</span>: <span class="pc">true</span> }&#x000A;&#x000A;  spacial_index <span class="sy">:source</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;hudson = <span class="co">River</span>.create(&#x000A;  <span class="ke">name</span>: <span class="s"><span class="dl">'</span><span class="k">Hudson</span><span class="dl">'</span></span>,&#x000A;  <span class="c"># order agnostic</span>&#x000A;  <span class="ke">source</span>: {<span class="sy">:lat</span> =&gt; <span class="fl">44.106667</span>, <span class="sy">:lng</span> =&gt; <span class="fl">-73.935833</span>},&#x000A;  <span class="ke">mouth</span>: {<span class="sy">:latitude</span> =&gt; <span class="fl">40.703056</span>, <span class="sy">:longitude</span> =&gt; <span class="fl">-74.026667</span>}&#x000A;)&#x000A;&#x000A;hudson.distance_from(<span class="sy">:mouth</span>, [<span class="i">-74</span>,<span class="i">40</span>], <span class="sy">:mi</span>)&#x000A;&#x000A;<span class="c"># Automatic unit conversion for spherical query, support for $near and $within</span>&#x000A;<span class="co">River</span>.where(<span class="sy">:source</span>.near(<span class="sy">:sphere</span>) =&gt; {<span class="sy">:point</span> =&gt; [<span class="fl">-73.98</span>, <span class="fl">40.77</span>], <span class="sy">:max</span> =&gt; <span class="i">5</span>, <span class="sy">:unit</span> =&gt; <span class="sy">:km</span>})&#x000A;&#x000A;<span class="c"># Adds chainable paginatable geo_near finder.</span>&#x000A;<span class="c"># Returns paginated sorted by distance list of rivers where</span>&#x000A;<span class="c"># name = Hudson and skips the first row with pagination</span>&#x000A;<span class="co">River</span>.skip(<span class="i">1</span>).where(<span class="ke">name</span>: <span class="s"><span class="dl">'</span><span class="k">Hudson</span><span class="dl">'</span></span>).geo_near([<span class="fl">-73.99756</span>,<span class="fl">40.73083</span>], <span class="ke">page</span>: <span class="i">1</span>)</pre></div>
               </div>
             </div>
         <div class='footer'>
