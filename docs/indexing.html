@@ -61,8 +61,14 @@
                 You can index on multiple fields and provide direction.
               </p>
               <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:first_name</span>&#x000A;  field <span class="sy">:last_name</span>&#x000A;  index(&#x000A;    [&#x000A;      [ <span class="sy">:first_name</span>, <span class="co">Mongo</span>::<span class="co">ASCENDING</span> ],&#x000A;      [ <span class="sy">:last_name</span>, <span class="co">Mongo</span>::<span class="co">ASCENDING</span> ]&#x000A;    ],&#x000A;    <span class="ke">unique</span>: <span class="pc">true</span>&#x000A;  )&#x000A;<span class="r">end</span>&#x000A;&#x000A;%p&#x000A;  <span class="co">Indexes</span> can be sparse:&#x000A;&#x000A;<span class="sy">:coderay</span>&#x000A;  <span class="c">#!ruby</span>&#x000A;  <span class="r">class</span> <span class="cl">Person</span>&#x000A;    include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;    field <span class="sy">:ssn</span>&#x000A;    index <span class="sy">:ssn</span>, <span class="ke">sparse</span>: <span class="pc">true</span>&#x000A;  <span class="r">end</span>&#x000A;</pre></div>
+                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:first_name</span>&#x000A;  field <span class="sy">:last_name</span>&#x000A;  index(&#x000A;    [&#x000A;      [ <span class="sy">:first_name</span>, <span class="co">Mongo</span>::<span class="co">ASCENDING</span> ],&#x000A;      [ <span class="sy">:last_name</span>, <span class="co">Mongo</span>::<span class="co">ASCENDING</span> ]&#x000A;    ],&#x000A;    <span class="ke">unique</span>: <span class="pc">true</span>&#x000A;  )&#x000A;<span class="r">end</span>&#x000A;</pre></div>
               </div>
+              <p>
+                Indexes can be sparse:
+                <div class="CodeRay">
+                  <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:ssn</span>&#x000A;  index <span class="sy">:ssn</span>, <span class="ke">sparse</span>: <span class="pc">true</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
+                </div>
+              </p>
               <p>
                 Indexes can be run in the background in cases where they may take some time:
               </p>
