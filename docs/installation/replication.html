@@ -10,118 +10,118 @@
   <body>
     <div id='container'>
       <div class='navigation'>
-            <a href="/"><img src="/images/mongoid-logo-small.png" />
-            </a>
-            
-            <ul class='navigation'>
-              <li class='area'><a class="area" href="/">home</a></li>
-              <li class='area'><a class="area" href="/docs.html">docs</a></li>
-              <li><a class="section" href="/docs/installation.html">installation</a></li>
-              <li><a class="subsection" href="/docs/installation/configuration.html">configuration</a></li>
-              <li><a class="subsection" href="/docs/installation/languages.html">languages</a></li>
-              <li><a class="subsection active" href="/docs/installation/replication.html">replication</a></li>
-              <li><a class="section" href="/docs/documents.html">documents</a></li>
-              <li><a class="section" href="/docs/persistence.html">persistence</a></li>
-              <li><a class="section" href="/docs/querying.html">querying</a></li>
-              <li><a class="section" href="/docs/relations.html">relations</a></li>
-              <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
-              <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
-              <li><a class="section" href="/docs/validation.html">validation</a></li>
-              <li><a class="section" href="/docs/indexing.html">indexing</a></li>
-              <li><a class="section" href="/docs/extras.html">extras</a></li>
-              <li><a class="section" href="/docs/rails.html">rails</a></li>
-              <li><a class="section" href="/docs/extensions.html">extensions</a></li>
-              <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
-              <li><a class="section" href="/docs/contributing.html">contributing</a></li>
-              <li class='area'><a class="area" href="/performance.html">performance</a></li>
-              <li class='area'><a class="area" href="/credits.html">credits</a></li>
-              <li class='area'><a class="area" href="/links.html">links</a></li>
-            </ul>
-          </div>
+        <a href="/"><img src="/images/mongoid-logo-small.png" />
+        </a>
+        
+        <ul class='navigation'>
+          <li class='area'><a class="area" href="/">home</a></li>
+          <li class='area'><a class="area" href="/docs.html">docs</a></li>
+          <li><a class="section" href="/docs/installation.html">installation</a></li>
+          <li><a class="subsection" href="/docs/installation/configuration.html">configuration</a></li>
+          <li><a class="subsection" href="/docs/installation/languages.html">languages</a></li>
+          <li><a class="subsection active" href="/docs/installation/replication.html">replication</a></li>
+          <li><a class="section" href="/docs/documents.html">documents</a></li>
+          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+          <li><a class="section" href="/docs/querying.html">querying</a></li>
+          <li><a class="section" href="/docs/relations.html">relations</a></li>
+          <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
+          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+          <li><a class="section" href="/docs/validation.html">validation</a></li>
+          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+          <li><a class="section" href="/docs/extras.html">extras</a></li>
+          <li><a class="section" href="/docs/rails.html">rails</a></li>
+          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+          <li class='area'><a class="area" href="/performance.html">performance</a></li>
+          <li class='area'><a class="area" href="/credits.html">credits</a></li>
+          <li class='area'><a class="area" href="/links.html">links</a></li>
+        </ul>
+      </div>
       <div class='main'>
         <div class='header'>
-              <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
-              </a>
-              <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
-              </a>
-            </div>
+          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
+          </a>
+          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+          </a>
+        </div>
         <div class='content'>
-              <h1>replication</h1>
-              <h3>replica sets</h3>
-              <p>
-                Configuring Mongoid to use a replica set is easy. Simply add an array of
-                host/port pairs to your <tt>mongoid.yml</tt> with an optional
-                <tt>read_secondary</tt> option if you want to send reads to slaves. If
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre>hosts:&#x000A;  - - db1.mongoid.org&#x000A;    - <span class="i">27017</span>&#x000A;  - - db2.mongoid.org&#x000A;    - <span class="i">27018</span>&#x000A;<span class="ke">read_secondary</span>: <span class="pc">true</span>&#x000A;</pre></div>
-              </div>
-              <p>
-                If you use Sinatra (or anything other than rails) you need to do make a mongoid.yml like this:
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre>production:&#x000A;  <span class="ke">hosts</span>: [[db1.mongoid.org, <span class="i">27017</span>], [db2.mongoid.org, <span class="i">27017</span>]]&#x000A;  <span class="ke">database</span>: project_production&#x000A;development:&#x000A;  <span class="ke">hosts</span>: [[db1.mongoid.org, <span class="i">27017</span>], [db2.mongoid.org, <span class="i">27017</span>]]&#x000A;  <span class="ke">database</span>: project_development&#x000A;</pre></div>
-              </div>
-              <p>Then in your application load in the settings and configure the connection.</p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="co">Mongoid</span>.load!(<span class="s"><span class="dl">&quot;</span><span class="k">config/mongoid.yml</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
-              </div>
-              <p>To automagically have your models loaded you could do something like this as well:</p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="c"># load models</span>&#x000A;<span class="gv">$LOAD_PATH</span>.unshift(<span class="s"><span class="dl">&quot;</span><span class="il"><span class="idl">#{</span><span class="co">File</span>.dirname(<span class="pc">__FILE__</span>)<span class="idl">}</span></span><span class="k">/models</span><span class="dl">&quot;</span></span>)&#x000A;<span class="co">Dir</span>.glob(<span class="s"><span class="dl">&quot;</span><span class="il"><span class="idl">#{</span><span class="co">File</span>.dirname(<span class="pc">__FILE__</span>)<span class="idl">}</span></span><span class="k">/models/*.rb</span><span class="dl">&quot;</span></span>) <span class="r">do</span> |lib|&#x000A;  require <span class="co">File</span>.basename(lib, <span class="s"><span class="dl">'</span><span class="k">.*</span><span class="dl">'</span></span>)&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-              </div>
-              <p>
-                If you would also like Mongoid to retry operations if a
-                <tt>Mongo::ConnectionFailure</tt> occurs you may specify this option
-                in your config. Mongoid will retry the operation every half second up
-                to the limit that is set. This defaults to 0.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="ke">max_retries_on_connection_failure</span>: <span class="i">3</span>&#x000A;</pre></div>
-              </div>
-              <p>
-                Note that Mongoid does not handle reconnection at the time of this
-                documentation, so you'll have to catch the connection errors and retry
-                yourself in the meantime.
-              </p>
-              <h3>master/slave</h3>
-              <p>
-                You can configure Mongoid to do traditional master/slave replication,
-                where reads get round-robined to the slave databases. All is handled
-                through the <tt>mongoid.yml</tt> once again.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="ke">defaults</span>: &amp;defaults&#x000A;  <span class="ke">host</span>: localhost&#x000A;  slaves:&#x000A;    - <span class="ke">host</span>: localhost&#x000A;      <span class="ke">port</span>: <span class="i">27018</span>&#x000A;    - <span class="ke">host</span>: localhost&#x000A;      <span class="ke">port</span>: <span class="i">27019</span>&#x000A;</pre></div>
-              </div>
-              <h3>multiple databases</h3>
-              <p>
-                You can configure Mongoid to use multiple databases on separate servers
-                through the config as well as the model level.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="ke">defaults</span>: &amp;defaults&#x000A;  <span class="ke">host</span>: localhost&#x000A;  slaves:&#x000A;    - <span class="ke">host</span>: localhost&#x000A;      <span class="ke">port</span>: <span class="i">27018</span>&#x000A;    - <span class="ke">host</span>: localhost&#x000A;      <span class="ke">port</span>: <span class="i">27019</span>&#x000A;  databases:&#x000A;    secondary:&#x000A;      <span class="ke">database</span>: secondary_database&#x000A;      <span class="ke">host</span>: localhost&#x000A;      <span class="ke">port</span>: <span class="i">27020</span>&#x000A;      slaves:&#x000A;        - <span class="ke">host</span>: localhost&#x000A;          <span class="ke">port</span>: <span class="i">27021</span>&#x000A;        - <span class="ke">host</span>: localhost&#x000A;          <span class="ke">port</span>: <span class="i">27022</span>&#x000A;</pre></div>
-              </div>
-              <p>
-                To tell a model to use a secondary database, simple tell it at the class
-                level.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Business</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  set_database <span class="sy">:secondary</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-              </div>
-              <h3>sharding</h3>
-              <p>
-                If you are using Mongoid in a sharded MongoDB environment and want to tell
-                Mongoid to include the shard keys in it's updates, specify this at the
-                model class level.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;&#x000A;  field <span class="sy">:first_name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  field <span class="sy">:last_name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;&#x000A;  shard_key <span class="sy">:first_name</span>, <span class="sy">:last_name</span>&#x000A;<span class="r">end</span></pre></div>
-              </div>
-            </div>
+          <h1>replication</h1>
+          <h3>replica sets</h3>
+          <p>
+            Configuring Mongoid to use a replica set is easy. Simply add an array of
+            host/port pairs to your <tt>mongoid.yml</tt> with an optional
+            <tt>read_secondary</tt> option if you want to send reads to slaves. If
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>hosts:&#x000A;  - - db1.mongoid.org&#x000A;    - <span class="integer">27017</span>&#x000A;  - - db2.mongoid.org&#x000A;    - <span class="integer">27018</span>&#x000A;read_secondary: <span class="predefined-constant">true</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            If you use Sinatra (or anything other than rails) you need to do make a mongoid.yml like this:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>production:&#x000A;  hosts: [[db1.mongoid.org, <span class="integer">27017</span>], [db2.mongoid.org, <span class="integer">27017</span>]]&#x000A;  database: project_production&#x000A;development:&#x000A;  hosts: [[db1.mongoid.org, <span class="integer">27017</span>], [db2.mongoid.org, <span class="integer">27017</span>]]&#x000A;  database: project_development&#x000A;</pre></div>
+          </div>
+          <p>Then in your application load in the settings and configure the connection.</p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Mongoid</span>.load!(<span class="string"><span class="delimiter">&quot;</span><span class="content">config/mongoid.yml</span><span class="delimiter">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <p>To automagically have your models loaded you could do something like this as well:</p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># load models</span>&#x000A;<span class="global-variable">$LOAD_PATH</span>.unshift(<span class="string"><span class="delimiter">&quot;</span><span class="inline"><span class="inline-delimiter">#{</span><span class="constant">File</span>.dirname(<span class="predefined-constant">__FILE__</span>)<span class="inline-delimiter">}</span></span><span class="content">/models</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="constant">Dir</span>.glob(<span class="string"><span class="delimiter">&quot;</span><span class="inline"><span class="inline-delimiter">#{</span><span class="constant">File</span>.dirname(<span class="predefined-constant">__FILE__</span>)<span class="inline-delimiter">}</span></span><span class="content">/models/*.rb</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |lib|&#x000A;  require <span class="constant">File</span>.basename(lib, <span class="string"><span class="delimiter">'</span><span class="content">.*</span><span class="delimiter">'</span></span>)&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            If you would also like Mongoid to retry operations if a
+            <tt>Mongo::ConnectionFailure</tt> occurs you may specify this option
+            in your config. Mongoid will retry the operation every half second up
+            to the limit that is set. This defaults to 0.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>max_retries_on_connection_failure: <span class="integer">3</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            Note that Mongoid does not handle reconnection at the time of this
+            documentation, so you'll have to catch the connection errors and retry
+            yourself in the meantime.
+          </p>
+          <h3>master/slave</h3>
+          <p>
+            You can configure Mongoid to do traditional master/slave replication,
+            where reads get round-robined to the slave databases. All is handled
+            through the <tt>mongoid.yml</tt> once again.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>defaults: &amp;defaults&#x000A;  host: localhost&#x000A;  slaves:&#x000A;    - host: localhost&#x000A;      port: <span class="integer">27018</span>&#x000A;    - host: localhost&#x000A;      port: <span class="integer">27019</span>&#x000A;</pre></div>
+          </div>
+          <h3>multiple databases</h3>
+          <p>
+            You can configure Mongoid to use multiple databases on separate servers
+            through the config as well as the model level.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>defaults: &amp;defaults&#x000A;  host: localhost&#x000A;  slaves:&#x000A;    - host: localhost&#x000A;      port: <span class="integer">27018</span>&#x000A;    - host: localhost&#x000A;      port: <span class="integer">27019</span>&#x000A;  databases:&#x000A;    secondary:&#x000A;      database: secondary_database&#x000A;      host: localhost&#x000A;      port: <span class="integer">27020</span>&#x000A;      slaves:&#x000A;        - host: localhost&#x000A;          port: <span class="integer">27021</span>&#x000A;        - host: localhost&#x000A;          port: <span class="integer">27022</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            To tell a model to use a secondary database, simple tell it at the class
+            level.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Business</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  set_database <span class="symbol">:secondary</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <h3>sharding</h3>
+          <p>
+            If you are using Mongoid in a sharded MongoDB environment and want to tell
+            Mongoid to include the shard keys in it's updates, specify this at the
+            model class level.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;&#x000A;  field <span class="symbol">:first_name</span>, type: <span class="constant">String</span>&#x000A;  field <span class="symbol">:last_name</span>, type: <span class="constant">String</span>&#x000A;&#x000A;  shard_key <span class="symbol">:first_name</span>, <span class="symbol">:last_name</span>&#x000A;<span class="keyword">end</span></pre></div>
+          </div>
+        </div>
         <div class='footer'>
-              Mongoid, 2009-2011, written and maintained by
-              <a href="http://github.com/durran">Durran Jordan</a>.
-            </div>
+          Mongoid, 2009-2011, written and maintained by
+          <a href="http://github.com/durran">Durran Jordan</a>.
+        </div>
         <div class='clear'></div>
       </div>
     </div>

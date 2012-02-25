@@ -10,80 +10,80 @@
   <body>
     <div id='container'>
       <div class='navigation'>
-            <a href="/"><img src="/images/mongoid-logo-small.png" />
-            </a>
-            
-            <ul class='navigation'>
-              <li class='area'><a class="area" href="/">home</a></li>
-              <li class='area'><a class="area" href="/docs.html">docs</a></li>
-              <li><a class="section" href="/docs/installation.html">installation</a></li>
-              <li><a class="section" href="/docs/documents.html">documents</a></li>
-              <li><a class="section" href="/docs/persistence.html">persistence</a></li>
-              <li><a class="subsection" href="/docs/persistence/standard.html">standard</a></li>
-              <li><a class="subsection" href="/docs/persistence/atomic.html">atomic</a></li>
-              <li><a class="subsection active" href="/docs/persistence/safe_mode.html">safe mode</a></li>
-              <li><a class="section" href="/docs/querying.html">querying</a></li>
-              <li><a class="section" href="/docs/relations.html">relations</a></li>
-              <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
-              <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
-              <li><a class="section" href="/docs/validation.html">validation</a></li>
-              <li><a class="section" href="/docs/indexing.html">indexing</a></li>
-              <li><a class="section" href="/docs/extras.html">extras</a></li>
-              <li><a class="section" href="/docs/rails.html">rails</a></li>
-              <li><a class="section" href="/docs/extensions.html">extensions</a></li>
-              <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
-              <li><a class="section" href="/docs/contributing.html">contributing</a></li>
-              <li class='area'><a class="area" href="/performance.html">performance</a></li>
-              <li class='area'><a class="area" href="/credits.html">credits</a></li>
-              <li class='area'><a class="area" href="/links.html">links</a></li>
-            </ul>
-          </div>
+        <a href="/"><img src="/images/mongoid-logo-small.png" />
+        </a>
+        
+        <ul class='navigation'>
+          <li class='area'><a class="area" href="/">home</a></li>
+          <li class='area'><a class="area" href="/docs.html">docs</a></li>
+          <li><a class="section" href="/docs/installation.html">installation</a></li>
+          <li><a class="section" href="/docs/documents.html">documents</a></li>
+          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+          <li><a class="subsection" href="/docs/persistence/standard.html">standard</a></li>
+          <li><a class="subsection" href="/docs/persistence/atomic.html">atomic</a></li>
+          <li><a class="subsection active" href="/docs/persistence/safe_mode.html">safe mode</a></li>
+          <li><a class="section" href="/docs/querying.html">querying</a></li>
+          <li><a class="section" href="/docs/relations.html">relations</a></li>
+          <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
+          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+          <li><a class="section" href="/docs/validation.html">validation</a></li>
+          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+          <li><a class="section" href="/docs/extras.html">extras</a></li>
+          <li><a class="section" href="/docs/rails.html">rails</a></li>
+          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+          <li class='area'><a class="area" href="/performance.html">performance</a></li>
+          <li class='area'><a class="area" href="/credits.html">credits</a></li>
+          <li class='area'><a class="area" href="/links.html">links</a></li>
+        </ul>
+      </div>
       <div class='main'>
         <div class='header'>
-              <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
-              </a>
-              <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
-              </a>
-            </div>
+          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
+          </a>
+          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+          </a>
+        </div>
         <div class='content'>
-              <h1>safe mode</h1>
-              <p>
-                For cases when you want to persist with or without safe mode on a per-query
-                basis you can use Mongoid's provided <tt>#safely</tt> and <tt>#unsafely</tt>
-                methods. These can be prepended to any persistence operation Mongoid
-                provides.
-              </p>
-              <h2>persisting in safe mode</h2>
-              <p>
-                When you are using the default configuration settings and Mongoid's
-                <tt>persist_in_safe_mode</tt> option is false, you may persist a single
-                operation in safe mode by overriding it with <tt>#safely</tt>.
-              </p>
-              <p>
-                Using safely, you can have the following options:
-              </p>
-              <ul>
-                <li><tt>fsync</tt>: Whether to perform an fsync.</li>
-                <li><tt>w</tt>: The number of nodes to write to before returning.</li>
-                <li><tt>wtimeout</tt>: The timeout value for writing to multiple nodes.</li>
-              </ul>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="co">Person</span>.safely.create(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span>)&#x000A;<span class="co">Person</span>.safely(<span class="ke">w</span>: <span class="i">3</span>).create!(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">James</span><span class="dl">&quot;</span></span>)&#x000A;person.safely.save&#x000A;person.safely(<span class="ke">fsync</span>: <span class="pc">true</span>).save!&#x000A;person.safely(<span class="ke">w</span>: <span class="i">2</span>, <span class="ke">wtimeout</span>: <span class="i">5000</span>).update_attributes(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span>)&#x000A;person.safely.update_attributes!(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Madam</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
-              </div>
-              <h2>persisting without safe mode</h2>
-              <p>
-                When you override the default configuration settings and Mongoid's
-                <tt>persist_in_safe_mode</tt> option is true, you may persist a single
-                operation without safe mode by overriding it with <tt>#unsafely</tt>.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="co">Person</span>.unsafely.create(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Bond</span><span class="dl">&quot;</span></span>)&#x000A;<span class="co">Person</span>.unsafely.create!(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">James</span><span class="dl">&quot;</span></span>)&#x000A;person.unsafely.save&#x000A;person.unsafely.save!&#x000A;person.unsafely.update_attributes(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span>)&#x000A;person.unsafely.update_attributes!(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Madam</span><span class="dl">&quot;</span></span>)</pre></div>
-              </div>
-            </div>
+          <h1>safe mode</h1>
+          <p>
+            For cases when you want to persist with or without safe mode on a per-query
+            basis you can use Mongoid's provided <tt>#safely</tt> and <tt>#unsafely</tt>
+            methods. These can be prepended to any persistence operation Mongoid
+            provides.
+          </p>
+          <h2>persisting in safe mode</h2>
+          <p>
+            When you are using the default configuration settings and Mongoid's
+            <tt>persist_in_safe_mode</tt> option is false, you may persist a single
+            operation in safe mode by overriding it with <tt>#safely</tt>.
+          </p>
+          <p>
+            Using safely, you can have the following options:
+          </p>
+          <ul>
+            <li><tt>fsync</tt>: Whether to perform an fsync.</li>
+            <li><tt>w</tt>: The number of nodes to write to before returning.</li>
+            <li><tt>wtimeout</tt>: The timeout value for writing to multiple nodes.</li>
+          </ul>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Person</span>.safely.create(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Bond</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="constant">Person</span>.safely(w: <span class="integer">3</span>).create!(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">James</span><span class="delimiter">&quot;</span></span>)&#x000A;person.safely.save&#x000A;person.safely(fsync: <span class="predefined-constant">true</span>).save!&#x000A;person.safely(w: <span class="integer">2</span>, wtimeout: <span class="integer">5000</span>).update_attributes(title: <span class="string"><span class="delimiter">&quot;</span><span class="content">Sir</span><span class="delimiter">&quot;</span></span>)&#x000A;person.safely.update_attributes!(title: <span class="string"><span class="delimiter">&quot;</span><span class="content">Madam</span><span class="delimiter">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <h2>persisting without safe mode</h2>
+          <p>
+            When you override the default configuration settings and Mongoid's
+            <tt>persist_in_safe_mode</tt> option is true, you may persist a single
+            operation without safe mode by overriding it with <tt>#unsafely</tt>.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Person</span>.unsafely.create(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Bond</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="constant">Person</span>.unsafely.create!(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">James</span><span class="delimiter">&quot;</span></span>)&#x000A;person.unsafely.save&#x000A;person.unsafely.save!&#x000A;person.unsafely.update_attributes(title: <span class="string"><span class="delimiter">&quot;</span><span class="content">Sir</span><span class="delimiter">&quot;</span></span>)&#x000A;person.unsafely.update_attributes!(title: <span class="string"><span class="delimiter">&quot;</span><span class="content">Madam</span><span class="delimiter">&quot;</span></span>)</pre></div>
+          </div>
+        </div>
         <div class='footer'>
-              Mongoid, 2009-2011, written and maintained by
-              <a href="http://github.com/durran">Durran Jordan</a>.
-            </div>
+          Mongoid, 2009-2011, written and maintained by
+          <a href="http://github.com/durran">Durran Jordan</a>.
+        </div>
         <div class='clear'></div>
       </div>
     </div>

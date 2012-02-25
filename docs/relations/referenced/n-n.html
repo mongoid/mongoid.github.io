@@ -10,127 +10,127 @@
   <body>
     <div id='container'>
       <div class='navigation'>
-            <a href="/"><img src="/images/mongoid-logo-small.png" />
-            </a>
-            
-            <ul class='navigation'>
-              <li class='area'><a class="area" href="/">home</a></li>
-              <li class='area'><a class="area" href="/docs.html">docs</a></li>
-              <li><a class="section" href="/docs/installation.html">installation</a></li>
-              <li><a class="section" href="/docs/documents.html">documents</a></li>
-              <li><a class="section" href="/docs/persistence.html">persistence</a></li>
-              <li><a class="section" href="/docs/querying.html">querying</a></li>
-              <li><a class="section" href="/docs/relations.html">relations</a></li>
-              <li><a class="subsection" href="/docs/relations/embedded.html">embedded</a></li>
-              <li><a class="subsection" href="/docs/relations/referenced.html">referenced</a></li>
-              <li><a class="chapter" href="/docs/relations/referenced/1-n.html">1...n</a></li>
-              <li><a class="chapter" href="/docs/relations/referenced/1-1.html">1...1</a></li>
-              <li><a class="chapter active" href="/docs/relations/referenced/n-n.html">n...n</a></li>
-              <li><a class="subsection" href="/docs/relations/metadata.html">metadata</a></li>
-              <li><a class="subsection" href="/docs/relations/validations.html">validations</a></li>
-              <li><a class="subsection" href="/docs/relations/nested_attributes.html">nested attributes</a></li>
-              <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
-              <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
-              <li><a class="section" href="/docs/validation.html">validation</a></li>
-              <li><a class="section" href="/docs/indexing.html">indexing</a></li>
-              <li><a class="section" href="/docs/extras.html">extras</a></li>
-              <li><a class="section" href="/docs/rails.html">rails</a></li>
-              <li><a class="section" href="/docs/extensions.html">extensions</a></li>
-              <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
-              <li><a class="section" href="/docs/contributing.html">contributing</a></li>
-              <li class='area'><a class="area" href="/performance.html">performance</a></li>
-              <li class='area'><a class="area" href="/credits.html">credits</a></li>
-              <li class='area'><a class="area" href="/links.html">links</a></li>
-            </ul>
-          </div>
+        <a href="/"><img src="/images/mongoid-logo-small.png" />
+        </a>
+        
+        <ul class='navigation'>
+          <li class='area'><a class="area" href="/">home</a></li>
+          <li class='area'><a class="area" href="/docs.html">docs</a></li>
+          <li><a class="section" href="/docs/installation.html">installation</a></li>
+          <li><a class="section" href="/docs/documents.html">documents</a></li>
+          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+          <li><a class="section" href="/docs/querying.html">querying</a></li>
+          <li><a class="section" href="/docs/relations.html">relations</a></li>
+          <li><a class="subsection" href="/docs/relations/embedded.html">embedded</a></li>
+          <li><a class="subsection" href="/docs/relations/referenced.html">referenced</a></li>
+          <li><a class="chapter" href="/docs/relations/referenced/1-n.html">1...n</a></li>
+          <li><a class="chapter" href="/docs/relations/referenced/1-1.html">1...1</a></li>
+          <li><a class="chapter active" href="/docs/relations/referenced/n-n.html">n...n</a></li>
+          <li><a class="subsection" href="/docs/relations/metadata.html">metadata</a></li>
+          <li><a class="subsection" href="/docs/relations/validations.html">validations</a></li>
+          <li><a class="subsection" href="/docs/relations/nested_attributes.html">nested attributes</a></li>
+          <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
+          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+          <li><a class="section" href="/docs/validation.html">validation</a></li>
+          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+          <li><a class="section" href="/docs/extras.html">extras</a></li>
+          <li><a class="section" href="/docs/rails.html">rails</a></li>
+          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+          <li class='area'><a class="area" href="/performance.html">performance</a></li>
+          <li class='area'><a class="area" href="/credits.html">credits</a></li>
+          <li class='area'><a class="area" href="/links.html">links</a></li>
+        </ul>
+      </div>
       <div class='main'>
         <div class='header'>
-              <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
-              </a>
-              <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
-              </a>
-            </div>
+          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
+          </a>
+          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+          </a>
+        </div>
         <div class='content'>
-              <h1>referenced many to many</h1>
-              <p><img class="diagram" src="/images/referenced-n-n.png" /></p>
-              <p>
-                Many to many relationships where the inverse documents are stored in a
-                separate collection from the base document are defined using
-                Mongoid's <tt>has_and_belongs_to_many</tt> macro. This
-                exhibits similar behaviour to Active Record with the exception that
-                no join collection is needed, the foreign key ids are stored as
-                arrays on either side of the relation.
-              </p>
-              <h3>defining</h3>
-              <p>
-                Both sides of the relation use the same macro.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:title</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  has_and_belongs_to_many <span class="sy">:tags</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Tag</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:name</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  has_and_belongs_to_many <span class="sy">:people</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-              </div>
-              <p>
-                You can create a one sided many to many if you want to mimic a has_many
-                that stores the keys as an array on the parent.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Movie</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:title</span>, <span class="ke">type</span>: <span class="co">String</span>&#x000A;  has_and_belongs_to_many <span class="sy">:ratings</span>, <span class="ke">inverse_of</span>: <span class="pc">nil</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="r">class</span> <span class="cl">Rating</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-              </div>
-              <h3>storage</h3>
-              <p>
-                When defining a relation of this nature, each document is stored in it's
-                respective collection, and each document contains a "foreign key"
-                reference to the other in the form of an array.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="c"># The person document.</span>&#x000A;{&#x000A;  <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ObjectId(<span class="s"><span class="dl">&quot;</span><span class="k">4d3ed089fb60ab534684b7e9</span><span class="dl">&quot;</span></span>),&#x000A;  <span class="s"><span class="dl">&quot;</span><span class="k">tag_ids</span><span class="dl">&quot;</span></span> : [ ObjectId(<span class="s"><span class="dl">&quot;</span><span class="k">4d3ed089fb60ab534684b7f2</span><span class="dl">&quot;</span></span>) ]&#x000A;}&#x000A;&#x000A;<span class="c"># The tag document.</span>&#x000A;{&#x000A;  <span class="s"><span class="dl">&quot;</span><span class="k">_id</span><span class="dl">&quot;</span></span> : ObjectId(<span class="s"><span class="dl">&quot;</span><span class="k">4d3ed089fb60ab534684b7f2</span><span class="dl">&quot;</span></span>),&#x000A;  <span class="s"><span class="dl">&quot;</span><span class="k">person_ids</span><span class="dl">&quot;</span></span> : [ ObjectId(<span class="s"><span class="dl">&quot;</span><span class="k">4d3ed089fb60ab534684b7e9</span><span class="dl">&quot;</span></span>) ]&#x000A;}&#x000A;</pre></div>
-              </div>
-              <h3>accessors</h3>
-              <p>
-                Accessing the relations is handled through the methods created based on the
-                names of the relations. The following example shows basic access on both
-                sides of the relation.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="c"># Return the tags.</span>&#x000A;person.tags&#x000A;&#x000A;<span class="c"># Set the tags from the person.</span>&#x000A;person.tags = [ <span class="co">Tag</span>.new ]&#x000A;&#x000A;<span class="c"># Return the person from the tag.</span>&#x000A;tag.person&#x000A;&#x000A;<span class="c"># Set the person from the tag.</span>&#x000A;tag.person = <span class="co">Person</span>.new&#x000A;</pre></div>
-              </div>
-              <h3>building and creating</h3>
-              <p>
-                From either side, documents in the referenced inverse can be appended to using
-                traditional array syntax or the special association proxy methods.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="c"># Append one or many tags, saving them if the person is persisted.</span>&#x000A;person.tags &lt;&lt; <span class="co">Tag</span>.new&#x000A;person.tags.push(<span class="co">Tag</span>.new)&#x000A;person.tags.concat([ tag_one, tag_two ])&#x000A;&#x000A;<span class="c"># Appends and returns a new tag from the attributes.</span>&#x000A;person.tags.build(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Buch</span><span class="dl">&quot;</span></span>)&#x000A;person.tags.new(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Buch</span><span class="dl">&quot;</span></span>)&#x000A;&#x000A;<span class="c"># Appends, saves, and returns a new tag from the attributes.</span>&#x000A;person.tags.create(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Bar</span><span class="dl">&quot;</span></span>)&#x000A;&#x000A;<span class="c"># Appends, saves, and returns a new tag from the attributes,</span>&#x000A;<span class="c"># raising an error if validation fails.</span>&#x000A;person.tags.create!(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Bar</span><span class="dl">&quot;</span></span>)&#x000A;&#x000A;<span class="c"># Append one or many people, saving them if the tag is persisted.</span>&#x000A;tag.people &lt;&lt; <span class="co">Person</span>.new&#x000A;tag.people.push(<span class="co">Person</span>.new)&#x000A;tag.people.concat([ person_one, person_two ])&#x000A;&#x000A;<span class="c"># Appends and returns a new person from the attributes.</span>&#x000A;tag.people.build(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Mr</span><span class="dl">&quot;</span></span>)&#x000A;tag.people.new(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Mr</span><span class="dl">&quot;</span></span>)&#x000A;&#x000A;<span class="c"># Appends, saves, and returns a new person from the attributes.</span>&#x000A;tag.people.create(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Sire</span><span class="dl">&quot;</span></span>)&#x000A;&#x000A;<span class="c"># Appends, saves, and returns a new person from the attributes,</span>&#x000A;<span class="c"># raising an error if validation fails.</span>&#x000A;tag.people.create!(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Douchebag</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
-              </div>
-              <h3>removal</h3>
-              <p>
-                Documents in the relation can be removed in several different manners,
-                either through the relation, criteria, or accessors.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="c"># Delete all referenced documents</span>&#x000A;person.tags.delete_all&#x000A;person.tags.clear&#x000A;person.tags = []&#x000A;&#x000A;<span class="c"># Delete all matching referenced documents.</span>&#x000A;person.tags.delete_all(<span class="ke">conditions</span>: { <span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Ruby</span><span class="dl">&quot;</span></span> })&#x000A;person.tags.where(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Rails</span><span class="dl">&quot;</span></span>).delete_all&#x000A;&#x000A;<span class="c"># Destroy all referenced documents, running destroy callbacks.</span>&#x000A;person.tags.destroy_all&#x000A;&#x000A;<span class="c"># Destroy all matching referenced documents, running callbacks.</span>&#x000A;person.tags.destroy_all(<span class="ke">conditions</span>: { <span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Ruby</span><span class="dl">&quot;</span></span> })&#x000A;person.tags.where(<span class="ke">name</span>: <span class="s"><span class="dl">&quot;</span><span class="k">MongoDB</span><span class="dl">&quot;</span></span>).destroy_all&#x000A;&#x000A;<span class="c"># Delete all referenced documents</span>&#x000A;tag.people.delete_all&#x000A;tag.people.clear&#x000A;tag.people = []&#x000A;&#x000A;<span class="c"># Delete all matching referenced documents.</span>&#x000A;tag.people.delete_all(<span class="ke">conditions</span>: { <span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Sir</span><span class="dl">&quot;</span></span> })&#x000A;tag.people.where(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Grand Poobah</span><span class="dl">&quot;</span></span>).delete_all&#x000A;&#x000A;<span class="c"># Destroy all referenced documents, running destroy callbacks.</span>&#x000A;tag.people.destroy_all&#x000A;&#x000A;<span class="c"># Destroy all matching referenced documents, running callbacks.</span>&#x000A;tag.people.destroy_all(<span class="ke">conditions</span>: { <span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Marshall</span><span class="dl">&quot;</span></span> })&#x000A;tag.people.where(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Heiness</span><span class="dl">&quot;</span></span>).destroy_all&#x000A;</pre></div>
-              </div>
-              <h3>dependent behaviour</h3>
-              <p>
-                You can tell Mongoid what to do with inverse relations of a many to many
-                when unsetting the relation via the dependent option. This also applies
-                to calling <tt>#delete</tt> on the relation. The valid options are:
-              </p>
-              <ul>
-                <li><tt>:delete</tt>: Delete the inverse documents.</li>
-                <li><tt>:destroy</tt>: Destroy the inverse documents.</li>
-                <li><tt>:nullify</tt>: Orphan the inverse documents.</li>
-              </ul>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  has_and_belongs_to_many <span class="sy">:preferences</span>, <span class="ke">dependent</span>: <span class="sy">:nullify</span>&#x000A;<span class="r">end</span>&#x000A;&#x000A;<span class="c"># Orphan all the inverse relations:</span>&#x000A;person.preferences = []&#x000A;person.preferences = <span class="pc">nil</span>&#x000A;&#x000A;<span class="c"># Orphan a single child relation:</span>&#x000A;person.preferences.delete(preference)&#x000A;</pre></div>
-              </div>
-              <p>
-                If the dependent option is not defined, the default is to nullify.
-              </p>
-            </div>
+          <h1>referenced many to many</h1>
+          <p><img class="diagram" src="/images/referenced-n-n.png" /></p>
+          <p>
+            Many to many relationships where the inverse documents are stored in a
+            separate collection from the base document are defined using
+            Mongoid's <tt>has_and_belongs_to_many</tt> macro. This
+            exhibits similar behaviour to Active Record with the exception that
+            no join collection is needed, the foreign key ids are stored as
+            arrays on either side of the relation.
+          </p>
+          <h3>defining</h3>
+          <p>
+            Both sides of the relation use the same macro.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:title</span>, type: <span class="constant">String</span>&#x000A;  has_and_belongs_to_many <span class="symbol">:tags</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Tag</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, type: <span class="constant">String</span>&#x000A;  has_and_belongs_to_many <span class="symbol">:people</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            You can create a one sided many to many if you want to mimic a has_many
+            that stores the keys as an array on the parent.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Movie</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:title</span>, type: <span class="constant">String</span>&#x000A;  has_and_belongs_to_many <span class="symbol">:ratings</span>, inverse_of: <span class="predefined-constant">nil</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Rating</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <h3>storage</h3>
+          <p>
+            When defining a relation of this nature, each document is stored in it's
+            respective collection, and each document contains a "foreign key"
+            reference to the other in the form of an array.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># The person document.</span>&#x000A;{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">_id</span><span class="delimiter">&quot;</span></span> : ObjectId(<span class="string"><span class="delimiter">&quot;</span><span class="content">4d3ed089fb60ab534684b7e9</span><span class="delimiter">&quot;</span></span>),&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">tag_ids</span><span class="delimiter">&quot;</span></span> : [ ObjectId(<span class="string"><span class="delimiter">&quot;</span><span class="content">4d3ed089fb60ab534684b7f2</span><span class="delimiter">&quot;</span></span>) ]&#x000A;}&#x000A;&#x000A;<span class="comment"># The tag document.</span>&#x000A;{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">_id</span><span class="delimiter">&quot;</span></span> : ObjectId(<span class="string"><span class="delimiter">&quot;</span><span class="content">4d3ed089fb60ab534684b7f2</span><span class="delimiter">&quot;</span></span>),&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">person_ids</span><span class="delimiter">&quot;</span></span> : [ ObjectId(<span class="string"><span class="delimiter">&quot;</span><span class="content">4d3ed089fb60ab534684b7e9</span><span class="delimiter">&quot;</span></span>) ]&#x000A;}&#x000A;</pre></div>
+          </div>
+          <h3>accessors</h3>
+          <p>
+            Accessing the relations is handled through the methods created based on the
+            names of the relations. The following example shows basic access on both
+            sides of the relation.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Return the tags that belong to a person.</span>&#x000A;person.tags&#x000A;&#x000A;<span class="comment"># Set the tags from the person.</span>&#x000A;person.tags = [ <span class="constant">Tag</span>.new ]&#x000A;&#x000A;<span class="comment"># Return the people that belong to a tag.</span>&#x000A;tag.people&#x000A;&#x000A;<span class="comment"># Set the people from the tag.</span>&#x000A;tag.people = [ <span class="constant">Person</span>.new ]&#x000A;</pre></div>
+          </div>
+          <h3>building and creating</h3>
+          <p>
+            From either side, documents in the referenced inverse can be appended to using
+            traditional array syntax or the special association proxy methods.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Append one or many tags, saving them if the person is persisted.</span>&#x000A;person.tags &lt;&lt; <span class="constant">Tag</span>.new&#x000A;person.tags.push(<span class="constant">Tag</span>.new)&#x000A;person.tags.concat([ tag_one, tag_two ])&#x000A;&#x000A;<span class="comment"># Appends and returns a new tag from the attributes.</span>&#x000A;person.tags.build(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Buch</span><span class="delimiter">&quot;</span></span>)&#x000A;person.tags.new(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Buch</span><span class="delimiter">&quot;</span></span>)&#x000A;&#x000A;<span class="comment"># Appends, saves, and returns a new tag from the attributes.</span>&#x000A;person.tags.create(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Bar</span><span class="delimiter">&quot;</span></span>)&#x000A;&#x000A;<span class="comment"># Appends, saves, and returns a new tag from the attributes,</span>&#x000A;<span class="comment"># raising an error if validation fails.</span>&#x000A;person.tags.create!(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Bar</span><span class="delimiter">&quot;</span></span>)&#x000A;&#x000A;<span class="comment"># Append one or many people, saving them if the tag is persisted.</span>&#x000A;tag.people &lt;&lt; <span class="constant">Person</span>.new&#x000A;tag.people.push(<span class="constant">Person</span>.new)&#x000A;tag.people.concat([ person_one, person_two ])&#x000A;&#x000A;<span class="comment"># Appends and returns a new person from the attributes.</span>&#x000A;tag.people.build(title: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mr</span><span class="delimiter">&quot;</span></span>)&#x000A;tag.people.new(title: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mr</span><span class="delimiter">&quot;</span></span>)&#x000A;&#x000A;<span class="comment"># Appends, saves, and returns a new person from the attributes.</span>&#x000A;tag.people.create(title: <span class="string"><span class="delimiter">&quot;</span><span class="content">Sire</span><span class="delimiter">&quot;</span></span>)&#x000A;&#x000A;<span class="comment"># Appends, saves, and returns a new person from the attributes,</span>&#x000A;<span class="comment"># raising an error if validation fails.</span>&#x000A;tag.people.create!(title: <span class="string"><span class="delimiter">&quot;</span><span class="content">Douchebag</span><span class="delimiter">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <h3>removal</h3>
+          <p>
+            Documents in the relation can be removed in several different manners,
+            either through the relation, criteria, or accessors.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Delete all referenced documents</span>&#x000A;person.tags.delete_all&#x000A;person.tags.clear&#x000A;person.tags = []&#x000A;&#x000A;<span class="comment"># Delete all matching referenced documents.</span>&#x000A;person.tags.delete_all(conditions: { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Ruby</span><span class="delimiter">&quot;</span></span> })&#x000A;person.tags.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Rails</span><span class="delimiter">&quot;</span></span>).delete_all&#x000A;&#x000A;<span class="comment"># Destroy all referenced documents, running destroy callbacks.</span>&#x000A;person.tags.destroy_all&#x000A;&#x000A;<span class="comment"># Destroy all matching referenced documents, running callbacks.</span>&#x000A;person.tags.destroy_all(conditions: { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Ruby</span><span class="delimiter">&quot;</span></span> })&#x000A;person.tags.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">MongoDB</span><span class="delimiter">&quot;</span></span>).destroy_all&#x000A;&#x000A;<span class="comment"># Delete all referenced documents</span>&#x000A;tag.people.delete_all&#x000A;tag.people.clear&#x000A;tag.people = []&#x000A;&#x000A;<span class="comment"># Delete all matching referenced documents.</span>&#x000A;tag.people.delete_all(conditions: { title: <span class="string"><span class="delimiter">&quot;</span><span class="content">Sir</span><span class="delimiter">&quot;</span></span> })&#x000A;tag.people.where(title: <span class="string"><span class="delimiter">&quot;</span><span class="content">Grand Poobah</span><span class="delimiter">&quot;</span></span>).delete_all&#x000A;&#x000A;<span class="comment"># Destroy all referenced documents, running destroy callbacks.</span>&#x000A;tag.people.destroy_all&#x000A;&#x000A;<span class="comment"># Destroy all matching referenced documents, running callbacks.</span>&#x000A;tag.people.destroy_all(conditions: { title: <span class="string"><span class="delimiter">&quot;</span><span class="content">Marshall</span><span class="delimiter">&quot;</span></span> })&#x000A;tag.people.where(title: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heiness</span><span class="delimiter">&quot;</span></span>).destroy_all&#x000A;</pre></div>
+          </div>
+          <h3>dependent behaviour</h3>
+          <p>
+            You can tell Mongoid what to do with inverse relations of a many to many
+            when unsetting the relation via the dependent option. This also applies
+            to calling <tt>#delete</tt> on the relation. The valid options are:
+          </p>
+          <ul>
+            <li><tt>:delete</tt>: Delete the inverse documents.</li>
+            <li><tt>:destroy</tt>: Destroy the inverse documents.</li>
+            <li><tt>:nullify</tt>: Orphan the inverse documents.</li>
+          </ul>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  has_and_belongs_to_many <span class="symbol">:preferences</span>, dependent: <span class="symbol">:nullify</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="comment"># Orphan all the inverse relations:</span>&#x000A;person.preferences = []&#x000A;person.preferences = <span class="predefined-constant">nil</span>&#x000A;&#x000A;<span class="comment"># Orphan a single child relation:</span>&#x000A;person.preferences.delete(preference)&#x000A;</pre></div>
+          </div>
+          <p>
+            If the dependent option is not defined, the default is to nullify.
+          </p>
+        </div>
         <div class='footer'>
-              Mongoid, 2009-2011, written and maintained by
-              <a href="http://github.com/durran">Durran Jordan</a>.
-            </div>
+          Mongoid, 2009-2011, written and maintained by
+          <a href="http://github.com/durran">Durran Jordan</a>.
+        </div>
         <div class='clear'></div>
       </div>
     </div>

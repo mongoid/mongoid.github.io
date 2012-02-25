@@ -10,88 +10,88 @@
   <body>
     <div id='container'>
       <div class='navigation'>
-            <a href="/"><img src="/images/mongoid-logo-small.png" />
-            </a>
-            
-            <ul class='navigation'>
-              <li class='area'><a class="area" href="/">home</a></li>
-              <li class='area'><a class="area" href="/docs.html">docs</a></li>
-              <li><a class="section" href="/docs/installation.html">installation</a></li>
-              <li><a class="section" href="/docs/documents.html">documents</a></li>
-              <li><a class="section" href="/docs/persistence.html">persistence</a></li>
-              <li><a class="section" href="/docs/querying.html">querying</a></li>
-              <li><a class="section" href="/docs/relations.html">relations</a></li>
-              <li><a class="subsection" href="/docs/relations/embedded.html">embedded</a></li>
-              <li><a class="subsection" href="/docs/relations/referenced.html">referenced</a></li>
-              <li><a class="subsection active" href="/docs/relations/metadata.html">metadata</a></li>
-              <li><a class="subsection" href="/docs/relations/validations.html">validations</a></li>
-              <li><a class="subsection" href="/docs/relations/nested_attributes.html">nested attributes</a></li>
-              <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
-              <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
-              <li><a class="section" href="/docs/validation.html">validation</a></li>
-              <li><a class="section" href="/docs/indexing.html">indexing</a></li>
-              <li><a class="section" href="/docs/extras.html">extras</a></li>
-              <li><a class="section" href="/docs/rails.html">rails</a></li>
-              <li><a class="section" href="/docs/extensions.html">extensions</a></li>
-              <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
-              <li><a class="section" href="/docs/contributing.html">contributing</a></li>
-              <li class='area'><a class="area" href="/performance.html">performance</a></li>
-              <li class='area'><a class="area" href="/credits.html">credits</a></li>
-              <li class='area'><a class="area" href="/links.html">links</a></li>
-            </ul>
-          </div>
+        <a href="/"><img src="/images/mongoid-logo-small.png" />
+        </a>
+        
+        <ul class='navigation'>
+          <li class='area'><a class="area" href="/">home</a></li>
+          <li class='area'><a class="area" href="/docs.html">docs</a></li>
+          <li><a class="section" href="/docs/installation.html">installation</a></li>
+          <li><a class="section" href="/docs/documents.html">documents</a></li>
+          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+          <li><a class="section" href="/docs/querying.html">querying</a></li>
+          <li><a class="section" href="/docs/relations.html">relations</a></li>
+          <li><a class="subsection" href="/docs/relations/embedded.html">embedded</a></li>
+          <li><a class="subsection" href="/docs/relations/referenced.html">referenced</a></li>
+          <li><a class="subsection active" href="/docs/relations/metadata.html">metadata</a></li>
+          <li><a class="subsection" href="/docs/relations/validations.html">validations</a></li>
+          <li><a class="subsection" href="/docs/relations/nested_attributes.html">nested attributes</a></li>
+          <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
+          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+          <li><a class="section" href="/docs/validation.html">validation</a></li>
+          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+          <li><a class="section" href="/docs/extras.html">extras</a></li>
+          <li><a class="section" href="/docs/rails.html">rails</a></li>
+          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+          <li class='area'><a class="area" href="/performance.html">performance</a></li>
+          <li class='area'><a class="area" href="/credits.html">credits</a></li>
+          <li class='area'><a class="area" href="/links.html">links</a></li>
+        </ul>
+      </div>
       <div class='main'>
         <div class='header'>
-              <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
-              </a>
-              <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
-              </a>
-            </div>
+          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
+          </a>
+          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+          </a>
+        </div>
         <div class='content'>
-              <h1>metadata</h1>
-              <p>
-                All relations in Mongoid contain metadata that holds information
-                about the relation in question, and is a valuable tool for third
-                party developers to use to extend Mongoid.
-              </p>
-              <p>
-                You can access the metadata of the relation in a few different ways.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="c"># Get the metadata for a named relation from the class or document.</span>&#x000A;<span class="co">Model</span>.reflect_on_association(<span class="sy">:relation_name</span>)&#x000A;model.reflect_on_association(<span class="sy">:relation_name</span>)&#x000A;&#x000A;<span class="c"># Get the metadata that the current object has in its relation.</span>&#x000A;model.metadata&#x000A;&#x000A;<span class="c"># Get the metadata with a specific relation itself on a specific</span>&#x000A;<span class="c"># document.</span>&#x000A;person.addresses.metadata&#x000A;</pre></div>
-              </div>
-              <h3>the metadata object</h3>
-              <p>
-                The metadata object itself contains more information than one might
-                know what to do with.
-                <ul>
-                  <li><tt>Metadata#class_name</tt></li>
-                  <li><tt>Metadata#embedded?</tt></li>
-                  <li><tt>Metadata#extension</tt></li>
-                  <li><tt>Metadata#foreign_key</tt></li>
-                  <li><tt>Metadata#foreign_key_default</tt></li>
-                  <li><tt>Metadata#foreign_key_setter</tt></li>
-                  <li><tt>Metadata#indexed?</tt></li>
-                  <li><tt>Metadata#inverse</tt></li>
-                  <li><tt>Metadata#inverse_foreign_key</tt></li>
-                  <li><tt>Metadata#inverse_klass</tt></li>
-                  <li><tt>Metadata#inverse_setter</tt></li>
-                  <li><tt>Metadata#inverse_type</tt></li>
-                  <li><tt>Metadata#inverse_type_setter</tt></li>
-                  <li><tt>Metadata#key</tt></li>
-                  <li><tt>Metadata#klass</tt></li>
-                  <li><tt>Metadata#macro</tt></li>
-                  <li><tt>Metadata#polymorphic?</tt></li>
-                  <li><tt>Metadata#setter</tt></li>
-                  <li><tt>Metadata#stores_foreign_key?</tt></li>
-                  <li><tt>Metadata#validate?</tt></li>
-                </ul>
-              </p>
-            </div>
+          <h1>metadata</h1>
+          <p>
+            All relations in Mongoid contain metadata that holds information
+            about the relation in question, and is a valuable tool for third
+            party developers to use to extend Mongoid.
+          </p>
+          <p>
+            You can access the metadata of the relation in a few different ways.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Get the metadata for a named relation from the class or document.</span>&#x000A;<span class="constant">Model</span>.reflect_on_association(<span class="symbol">:relation_name</span>)&#x000A;model.reflect_on_association(<span class="symbol">:relation_name</span>)&#x000A;&#x000A;<span class="comment"># Get the metadata that the current object has in its relation.</span>&#x000A;model.metadata&#x000A;&#x000A;<span class="comment"># Get the metadata with a specific relation itself on a specific</span>&#x000A;<span class="comment"># document.</span>&#x000A;person.addresses.metadata&#x000A;</pre></div>
+          </div>
+          <h3>the metadata object</h3>
+          <p>
+            The metadata object itself contains more information than one might
+            know what to do with.
+            <ul>
+              <li><tt>Metadata#class_name</tt></li>
+              <li><tt>Metadata#embedded?</tt></li>
+              <li><tt>Metadata#extension</tt></li>
+              <li><tt>Metadata#foreign_key</tt></li>
+              <li><tt>Metadata#foreign_key_default</tt></li>
+              <li><tt>Metadata#foreign_key_setter</tt></li>
+              <li><tt>Metadata#indexed?</tt></li>
+              <li><tt>Metadata#inverse</tt></li>
+              <li><tt>Metadata#inverse_foreign_key</tt></li>
+              <li><tt>Metadata#inverse_klass</tt></li>
+              <li><tt>Metadata#inverse_setter</tt></li>
+              <li><tt>Metadata#inverse_type</tt></li>
+              <li><tt>Metadata#inverse_type_setter</tt></li>
+              <li><tt>Metadata#key</tt></li>
+              <li><tt>Metadata#klass</tt></li>
+              <li><tt>Metadata#macro</tt></li>
+              <li><tt>Metadata#polymorphic?</tt></li>
+              <li><tt>Metadata#setter</tt></li>
+              <li><tt>Metadata#stores_foreign_key?</tt></li>
+              <li><tt>Metadata#validate?</tt></li>
+            </ul>
+          </p>
+        </div>
         <div class='footer'>
-              Mongoid, 2009-2011, written and maintained by
-              <a href="http://github.com/durran">Durran Jordan</a>.
-            </div>
+          Mongoid, 2009-2011, written and maintained by
+          <a href="http://github.com/durran">Durran Jordan</a>.
+        </div>
         <div class='clear'></div>
       </div>
     </div>

@@ -10,125 +10,125 @@
   <body>
     <div id='container'>
       <div class='navigation'>
-            <a href="/"><img src="/images/mongoid-logo-small.png" />
-            </a>
-            
-            <ul class='navigation'>
-              <li class='area'><a class="area" href="/">home</a></li>
-              <li class='area'><a class="area" href="/docs.html">docs</a></li>
-              <li><a class="section" href="/docs/installation.html">installation</a></li>
-              <li><a class="section" href="/docs/documents.html">documents</a></li>
-              <li><a class="subsection" href="/docs/documents/fields.html">fields</a></li>
-              <li><a class="subsection" href="/docs/documents/dynamic.html">dynamic fields</a></li>
-              <li><a class="subsection active" href="/docs/documents/localized.html">localization</a></li>
-              <li><a class="subsection" href="/docs/documents/access.html">access</a></li>
-              <li><a class="subsection" href="/docs/documents/dirty.html">dirty tracking</a></li>
-              <li><a class="subsection" href="/docs/documents/inheritance.html">inheritance</a></li>
-              <li><a class="section" href="/docs/persistence.html">persistence</a></li>
-              <li><a class="section" href="/docs/querying.html">querying</a></li>
-              <li><a class="section" href="/docs/relations.html">relations</a></li>
-              <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
-              <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
-              <li><a class="section" href="/docs/validation.html">validation</a></li>
-              <li><a class="section" href="/docs/indexing.html">indexing</a></li>
-              <li><a class="section" href="/docs/extras.html">extras</a></li>
-              <li><a class="section" href="/docs/rails.html">rails</a></li>
-              <li><a class="section" href="/docs/extensions.html">extensions</a></li>
-              <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
-              <li><a class="section" href="/docs/contributing.html">contributing</a></li>
-              <li class='area'><a class="area" href="/performance.html">performance</a></li>
-              <li class='area'><a class="area" href="/credits.html">credits</a></li>
-              <li class='area'><a class="area" href="/links.html">links</a></li>
-            </ul>
-          </div>
+        <a href="/"><img src="/images/mongoid-logo-small.png" />
+        </a>
+        
+        <ul class='navigation'>
+          <li class='area'><a class="area" href="/">home</a></li>
+          <li class='area'><a class="area" href="/docs.html">docs</a></li>
+          <li><a class="section" href="/docs/installation.html">installation</a></li>
+          <li><a class="section" href="/docs/documents.html">documents</a></li>
+          <li><a class="subsection" href="/docs/documents/fields.html">fields</a></li>
+          <li><a class="subsection" href="/docs/documents/dynamic.html">dynamic fields</a></li>
+          <li><a class="subsection active" href="/docs/documents/localized.html">localization</a></li>
+          <li><a class="subsection" href="/docs/documents/access.html">access</a></li>
+          <li><a class="subsection" href="/docs/documents/dirty.html">dirty tracking</a></li>
+          <li><a class="subsection" href="/docs/documents/inheritance.html">inheritance</a></li>
+          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+          <li><a class="section" href="/docs/querying.html">querying</a></li>
+          <li><a class="section" href="/docs/relations.html">relations</a></li>
+          <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
+          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+          <li><a class="section" href="/docs/validation.html">validation</a></li>
+          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+          <li><a class="section" href="/docs/extras.html">extras</a></li>
+          <li><a class="section" href="/docs/rails.html">rails</a></li>
+          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+          <li class='area'><a class="area" href="/performance.html">performance</a></li>
+          <li class='area'><a class="area" href="/credits.html">credits</a></li>
+          <li class='area'><a class="area" href="/links.html">links</a></li>
+        </ul>
+      </div>
       <div class='main'>
         <div class='header'>
-              <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
-              </a>
-              <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
-              </a>
-            </div>
+          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
+          </a>
+          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+          </a>
+        </div>
         <div class='content'>
-              <h1>localized fields</h1>
-              <p>
-                From 2.4.0 Mongoid now supports localized fields without the need of any
-                external gem.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Product</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:description</span>, <span class="ke">localize</span>: <span class="pc">true</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-              </div>
-              <p>
-                By telling the field to <tt>localize</tt>, Mongoid will under the covers
-                store the field as a hash of locale/value pairs, but normal access to it will
-                behave like a string.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="c"># Using a default locale of en.</span>&#x000A;product = <span class="co">Product</span>.new&#x000A;product.description = <span class="s"><span class="dl">&quot;</span><span class="k">Marvelous!</span><span class="dl">&quot;</span></span>&#x000A;<span class="co">I18n</span>.locale = <span class="sy">:de</span>&#x000A;product.description = <span class="s"><span class="dl">&quot;</span><span class="k">Fantastisch!</span><span class="dl">&quot;</span></span>&#x000A;&#x000A;product.attributes&#x000A;<span class="c">#=&gt; { &quot;description&quot; =&gt; { &quot;en&quot; =&gt; &quot;Marvelous!&quot;, &quot;de&quot; =&gt; &quot;Fantastisch!&quot; }</span>&#x000A;</pre></div>
-              </div>
-              <p>
-                You can get and set all the translations at once by using the
-                corresponding <tt>_translations</tt> method.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre>product.description_translations&#x000A;<span class="c">#=&gt; { &quot;description&quot; =&gt; { &quot;en&quot; =&gt; &quot;Marvelous!&quot;, &quot;de&quot; =&gt; &quot;Fantastisch!&quot; }</span>&#x000A;product.description_translations =&#x000A;  { <span class="s"><span class="dl">&quot;</span><span class="k">description</span><span class="dl">&quot;</span></span> =&gt; { <span class="s"><span class="dl">&quot;</span><span class="k">en</span><span class="dl">&quot;</span></span> =&gt; <span class="s"><span class="dl">&quot;</span><span class="k">Marvelous!</span><span class="dl">&quot;</span></span>, <span class="s"><span class="dl">&quot;</span><span class="k">de</span><span class="dl">&quot;</span></span> =&gt; <span class="s"><span class="dl">&quot;</span><span class="k">Wunderbar!</span><span class="dl">&quot;</span></span> }&#x000A;</pre></div>
-              </div>
-              <h3>fallbacks</h3>
-              <p>
-                When using fallbacks, Mongoid will automatically use them when a translation
-                is not available.
-              </p>
-              <p>
-                For Rails applications, set the fallbacks configuration setting to true in
-                your environment.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre>config.i18n.fallbacks = <span class="pc">true</span>&#x000A;</pre></div>
-              </div>
-              <p>
-                For non-rails applications, you must include the fallbacks module straight
-                to the I18n gem.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre>require <span class="s"><span class="dl">&quot;</span><span class="k">i18n/backend/fallbacks</span><span class="dl">&quot;</span></span>&#x000A;<span class="co">I18n</span>::<span class="co">Backend</span>::<span class="co">Simple</span>.send(<span class="sy">:include</span>, <span class="co">I18n</span>::<span class="co">Backend</span>::<span class="co">Fallbacks</span>)&#x000A;</pre></div>
-              </div>
-              <p>
-                Then when the fallbacks are defined, if a translation is not present Mongoid
-                will fallback in order of the defined locales.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="c"># Using a default locale of en.</span>&#x000A;::<span class="co">I18n</span>.fallbacks[<span class="sy">:de</span>] = [ <span class="sy">:de</span>, <span class="sy">:en</span>, <span class="sy">:es</span> ]&#x000A;product = <span class="co">Product</span>.new&#x000A;product.description = <span class="s"><span class="dl">&quot;</span><span class="k">Marvelous!</span><span class="dl">&quot;</span></span>&#x000A;<span class="co">I18n</span>.locale = <span class="sy">:de</span>&#x000A;product.description <span class="c">#=&gt; &quot;Marvelous!&quot;</span>&#x000A;</pre></div>
-              </div>
-              <h3>querying</h3>
-              <p>
-                When querying for localized fields using Mongoid's criteria API, Mongoid
-                will automatically alter the criteria to match the current locale.
-              </p>
-              <mongoid>mongoid</mongoid>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="c"># Match all prodcucts with Marvelous as the description. Locale is en.</span>&#x000A;<span class="co">Product</span>.where(<span class="ke">description</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Marvelous!</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
-              </div>
-              <mongodb>mongodb query selector</mongodb>
-              <div class="CodeRay">
-                <div class="code"><pre>{ <span class="s"><span class="dl">&quot;</span><span class="k">description.en</span><span class="dl">&quot;</span></span> : <span class="s"><span class="dl">&quot;</span><span class="k">Marvelous!</span><span class="dl">&quot;</span></span> }&#x000A;</pre></div>
-              </div>
-              <h3>indexing</h3>
-              <p>
-                If you plan to be querying extensively on localized fields, you should index
-                each of the locales that you plan on searching on.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Product</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:description</span>, <span class="ke">localize</span>: <span class="pc">true</span>&#x000A;&#x000A;  index <span class="s"><span class="dl">&quot;</span><span class="k">description.de</span><span class="dl">&quot;</span></span>&#x000A;  index <span class="s"><span class="dl">&quot;</span><span class="k">description.en</span><span class="dl">&quot;</span></span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-              </div>
-              <h3>validation</h3>
-              <p>
-                Mongoid's presence validator will make sure that translations are present
-                for all locales that are in the underlying hash.
-              </p>
-            </div>
+          <h1>localized fields</h1>
+          <p>
+            From 2.4.0 Mongoid now supports localized fields without the need of any
+            external gem.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Product</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:description</span>, localize: <span class="predefined-constant">true</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            By telling the field to <tt>localize</tt>, Mongoid will under the covers
+            store the field as a hash of locale/value pairs, but normal access to it will
+            behave like a string.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Using a default locale of en.</span>&#x000A;product = <span class="constant">Product</span>.new&#x000A;product.description = <span class="string"><span class="delimiter">&quot;</span><span class="content">Marvelous!</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="constant">I18n</span>.locale = <span class="symbol">:de</span>&#x000A;product.description = <span class="string"><span class="delimiter">&quot;</span><span class="content">Fantastisch!</span><span class="delimiter">&quot;</span></span>&#x000A;&#x000A;product.attributes&#x000A;<span class="comment">#=&gt; { &quot;description&quot; =&gt; { &quot;en&quot; =&gt; &quot;Marvelous!&quot;, &quot;de&quot; =&gt; &quot;Fantastisch!&quot; }</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            You can get and set all the translations at once by using the
+            corresponding <tt>_translations</tt> method.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>product.description_translations&#x000A;<span class="comment">#=&gt; { &quot;description&quot; =&gt; { &quot;en&quot; =&gt; &quot;Marvelous!&quot;, &quot;de&quot; =&gt; &quot;Fantastisch!&quot; }</span>&#x000A;product.description_translations =&#x000A;  { <span class="string"><span class="delimiter">&quot;</span><span class="content">description</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">en</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Marvelous!</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">de</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Wunderbar!</span><span class="delimiter">&quot;</span></span> }&#x000A;</pre></div>
+          </div>
+          <h3>fallbacks</h3>
+          <p>
+            When using fallbacks, Mongoid will automatically use them when a translation
+            is not available.
+          </p>
+          <p>
+            For Rails applications, set the fallbacks configuration setting to true in
+            your environment.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>config.i18n.fallbacks = <span class="predefined-constant">true</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            For non-rails applications, you must include the fallbacks module straight
+            to the I18n gem.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>require <span class="string"><span class="delimiter">&quot;</span><span class="content">i18n/backend/fallbacks</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="constant">I18n</span>::<span class="constant">Backend</span>::<span class="constant">Simple</span>.send(<span class="symbol">:include</span>, <span class="constant">I18n</span>::<span class="constant">Backend</span>::<span class="constant">Fallbacks</span>)&#x000A;</pre></div>
+          </div>
+          <p>
+            Then when the fallbacks are defined, if a translation is not present Mongoid
+            will fallback in order of the defined locales.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Using a default locale of en.</span>&#x000A;::<span class="constant">I18n</span>.fallbacks[<span class="symbol">:de</span>] = [ <span class="symbol">:de</span>, <span class="symbol">:en</span>, <span class="symbol">:es</span> ]&#x000A;product = <span class="constant">Product</span>.new&#x000A;product.description = <span class="string"><span class="delimiter">&quot;</span><span class="content">Marvelous!</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="constant">I18n</span>.locale = <span class="symbol">:de</span>&#x000A;product.description <span class="comment">#=&gt; &quot;Marvelous!&quot;</span>&#x000A;</pre></div>
+          </div>
+          <h3>querying</h3>
+          <p>
+            When querying for localized fields using Mongoid's criteria API, Mongoid
+            will automatically alter the criteria to match the current locale.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Match all prodcucts with Marvelous as the description. Locale is en.</span>&#x000A;<span class="constant">Product</span>.where(description: <span class="string"><span class="delimiter">&quot;</span><span class="content">Marvelous!</span><span class="delimiter">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query selector</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">description.en</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">Marvelous!</span><span class="delimiter">&quot;</span></span> }&#x000A;</pre></div>
+          </div>
+          <h3>indexing</h3>
+          <p>
+            If you plan to be querying extensively on localized fields, you should index
+            each of the locales that you plan on searching on.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Product</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:description</span>, localize: <span class="predefined-constant">true</span>&#x000A;&#x000A;  index <span class="string"><span class="delimiter">&quot;</span><span class="content">description.de</span><span class="delimiter">&quot;</span></span>&#x000A;  index <span class="string"><span class="delimiter">&quot;</span><span class="content">description.en</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <h3>validation</h3>
+          <p>
+            Mongoid's presence validator will make sure that translations are present
+            for all locales that are in the underlying hash.
+          </p>
+        </div>
         <div class='footer'>
-              Mongoid, 2009-2011, written and maintained by
-              <a href="http://github.com/durran">Durran Jordan</a>.
-            </div>
+          Mongoid, 2009-2011, written and maintained by
+          <a href="http://github.com/durran">Durran Jordan</a>.
+        </div>
         <div class='clear'></div>
       </div>
     </div>

@@ -10,123 +10,131 @@
   <body>
     <div id='container'>
       <div class='navigation'>
-            <a href="/"><img src="/images/mongoid-logo-small.png" />
-            </a>
-            
-            <ul class='navigation'>
-              <li class='area'><a class="area" href="/">home</a></li>
-              <li class='area'><a class="area" href="/docs.html">docs</a></li>
-              <li><a class="section" href="/docs/installation.html">installation</a></li>
-              <li><a class="section" href="/docs/documents.html">documents</a></li>
-              <li><a class="section" href="/docs/persistence.html">persistence</a></li>
-              <li><a class="section" href="/docs/querying.html">querying</a></li>
-              <li><a class="section" href="/docs/relations.html">relations</a></li>
-              <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
-              <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
-              <li><a class="section" href="/docs/validation.html">validation</a></li>
-              <li><a class="section active" href="/docs/indexing.html">indexing</a></li>
-              <li><a class="section" href="/docs/extras.html">extras</a></li>
-              <li><a class="section" href="/docs/rails.html">rails</a></li>
-              <li><a class="section" href="/docs/extensions.html">extensions</a></li>
-              <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
-              <li><a class="section" href="/docs/contributing.html">contributing</a></li>
-              <li class='area'><a class="area" href="/performance.html">performance</a></li>
-              <li class='area'><a class="area" href="/credits.html">credits</a></li>
-              <li class='area'><a class="area" href="/links.html">links</a></li>
-            </ul>
-          </div>
+        <a href="/"><img src="/images/mongoid-logo-small.png" />
+        </a>
+        
+        <ul class='navigation'>
+          <li class='area'><a class="area" href="/">home</a></li>
+          <li class='area'><a class="area" href="/docs.html">docs</a></li>
+          <li><a class="section" href="/docs/installation.html">installation</a></li>
+          <li><a class="section" href="/docs/documents.html">documents</a></li>
+          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+          <li><a class="section" href="/docs/querying.html">querying</a></li>
+          <li><a class="section" href="/docs/relations.html">relations</a></li>
+          <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
+          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+          <li><a class="section" href="/docs/validation.html">validation</a></li>
+          <li><a class="section active" href="/docs/indexing.html">indexing</a></li>
+          <li><a class="section" href="/docs/extras.html">extras</a></li>
+          <li><a class="section" href="/docs/rails.html">rails</a></li>
+          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+          <li class='area'><a class="area" href="/performance.html">performance</a></li>
+          <li class='area'><a class="area" href="/credits.html">credits</a></li>
+          <li class='area'><a class="area" href="/links.html">links</a></li>
+        </ul>
+      </div>
       <div class='main'>
         <div class='header'>
-              <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
-              </a>
-              <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
-              </a>
-            </div>
+          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
+          </a>
+          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+          </a>
+        </div>
         <div class='content'>
-              <h1>indexing</h1>
-              <p>
-                You can define indexes on documents using the index macro. For unique indexes
-                provide a unique options, otherwise no option is necessary.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:ssn</span>&#x000A;  index <span class="sy">:ssn</span>, <span class="ke">unique</span>: <span class="pc">true</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-              </div>
-              <p>
-                You can define indexes on embedded document fields as well.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  embeds_many <span class="sy">:addresses</span>&#x000A;  index <span class="s"><span class="dl">&quot;</span><span class="k">addresses.street</span><span class="dl">&quot;</span></span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-              </div>
-              <p>
-                You can index on multiple fields and provide direction.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:first_name</span>&#x000A;  field <span class="sy">:last_name</span>&#x000A;  index(&#x000A;    [&#x000A;      [ <span class="sy">:first_name</span>, <span class="co">Mongo</span>::<span class="co">ASCENDING</span> ],&#x000A;      [ <span class="sy">:last_name</span>, <span class="co">Mongo</span>::<span class="co">ASCENDING</span> ]&#x000A;    ],&#x000A;    <span class="ke">unique</span>: <span class="pc">true</span>&#x000A;  )&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-              </div>
-              <p>
-                Indexes can be sparse:
-                <div class="CodeRay">
-                  <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:ssn</span>&#x000A;  index <span class="sy">:ssn</span>, <span class="ke">sparse</span>: <span class="pc">true</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-                </div>
-              </p>
-              <p>
-                Indexes can be run in the background in cases where they may take some time:
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:ssn</span>&#x000A;  index <span class="sy">:ssn</span>, <span class="ke">unique</span>: <span class="pc">true</span>, <span class="ke">background</span>: <span class="pc">true</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-              </div>
-              <p>
-                For geospacial indexes, make sure the field you are indexing is an <tt>Array</tt>.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  field <span class="sy">:location</span>, <span class="ke">type</span>: <span class="co">Array</span>&#x000A;  index [[ <span class="sy">:location</span>, <span class="co">Mongo</span>::<span class="co">GEO2D</span> ]], <span class="ke">min</span>: <span class="i">200</span>, <span class="ke">max</span>: <span class="i">200</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-              </div>
-              <p>
-                You can have Mongoid define indexes for you on "foreign key" fields for
-                relational associations. This only works on the relation macro that the
-                foreign key is stored on.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Comment</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;  belongs_to <span class="sy">:post</span>, <span class="ke">index</span>: <span class="pc">true</span>&#x000A;  has_and_belongs_to_many <span class="sy">:preferences</span>, <span class="ke">index</span>: <span class="pc">true</span>&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-              </div>
-              <p>
-                When you want to create the indexes in the database, use the provided rake task:
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre>rake db<span class="sy">:mongoid</span><span class="sy">:create_indexes</span>&#x000A;</pre></div>
-              </div>
-              <p>
-                If you want indexes autocreated when the model classes are loaded, add this
-                configuration option to your mongoid.yml. Note this is <i>NOT</i> recommended for any
-                production environment.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="ke">defaults</span>: &amp;defaults&#x000A;  <span class="ke">autocreate_indexes</span>: <span class="pc">true</span>&#x000A;&#x000A;</pre></div>
-              </div>
-              <h3>dropping indexes</h3>
-              <p>
-                When you want to remove an index, it must be done using the MongoDB index name.
-                Therefore if you create a range index on the <i>birthday</i> date coluumn in the Person
-                model in the Rails console, you would do it like this.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre>:<span class="i">001</span> &gt; <span class="co">Person</span>.collection.ensure_index([[<span class="s"><span class="dl">'</span><span class="k">birthday</span><span class="dl">'</span></span>,<span class="co">Mongo</span>::<span class="co">DESCENDING</span>]])&#x000A;</pre></div>
-              </div>
-              <p>
-                In order to delete that same index, you need to use the index name, not the index definition.
-                The index name is <i>birthday</i>, but the index definition according to MongoDB will include
-                an <i>_1</i> for an <i>Mongo::ASCENDING</i> range index and a <i>_-1</i> for a
-                <i>Mongo::DESCENDING</i> range index.  To remove the above index in the Rails console, you would
-                enter the following.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre>:<span class="i">002</span> &gt; <span class="co">Person</span>.collection.drop_index(<span class="s"><span class="dl">'</span><span class="k">birthday_-1</span><span class="dl">'</span></span>)</pre></div>
-              </div>
+          <h1>indexing</h1>
+          <p>
+            You can define indexes on documents using the index macro. For unique indexes
+            provide a unique options, otherwise no option is necessary.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:ssn</span>&#x000A;  index <span class="symbol">:ssn</span>, unique: <span class="predefined-constant">true</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            You can define indexes on embedded document fields as well.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  embeds_many <span class="symbol">:addresses</span>&#x000A;  index <span class="string"><span class="delimiter">&quot;</span><span class="content">addresses.street</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            You can index on multiple fields and provide direction.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:first_name</span>&#x000A;  field <span class="symbol">:last_name</span>&#x000A;  index(&#x000A;    [&#x000A;      [ <span class="symbol">:first_name</span>, <span class="constant">Mongo</span>::<span class="constant">ASCENDING</span> ],&#x000A;      [ <span class="symbol">:last_name</span>, <span class="constant">Mongo</span>::<span class="constant">ASCENDING</span> ]&#x000A;    ],&#x000A;    unique: <span class="predefined-constant">true</span>&#x000A;  )&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            Indexes can be sparse:
+            <div class="CodeRay">
+              <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:ssn</span>&#x000A;  index <span class="symbol">:ssn</span>, sparse: <span class="predefined-constant">true</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
             </div>
+          </p>
+          <p>
+            Indexes can be run in the background in cases where they may take some time:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:ssn</span>&#x000A;  index <span class="symbol">:ssn</span>, unique: <span class="predefined-constant">true</span>, background: <span class="predefined-constant">true</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            For geospacial indexes, make sure the field you are indexing is an <tt>Array</tt>.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:location</span>, type: <span class="constant">Array</span>&#x000A;  index [[ <span class="symbol">:location</span>, <span class="constant">Mongo</span>::<span class="constant">GEO2D</span> ]], min: <span class="integer">200</span>, max: <span class="integer">200</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            You can have Mongoid define indexes for you on "foreign key" fields for
+            relational associations. This only works on the relation macro that the
+            foreign key is stored on.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Comment</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  belongs_to <span class="symbol">:post</span>, index: <span class="predefined-constant">true</span>&#x000A;  has_and_belongs_to_many <span class="symbol">:preferences</span>, index: <span class="predefined-constant">true</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            When you want to create the indexes in the database, use the provided rake task.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>rake db<span class="symbol">:mongoid</span><span class="symbol">:create_indexes</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            Note that you must following standard Rails class and module naming and
+            organization patterns in order for this to work properly with respect to
+            namespacing and camel-casing.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Model</span> <span class="comment"># must reside in /app/models/model.rb</span>&#x000A;<span class="constant">MyModel</span> <span class="comment"># must be in /app/models/my_model.rb</span>&#x000A;<span class="constant">MYModel</span> <span class="comment"># must be in /app/models/m_y_model.rb</span>&#x000A;<span class="constant">Namespaced</span>::<span class="constant">Model</span> <span class="comment"># must be in /app/models/namespaced/model.rb</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            If you want indexes autocreated when the model classes are loaded, add this
+            configuration option to your mongoid.yml. Note this is <i>NOT</i> recommended for any
+            production environment.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>defaults: &amp;defaults&#x000A;  autocreate_indexes: <span class="predefined-constant">true</span>&#x000A;&#x000A;</pre></div>
+          </div>
+          <h3>dropping indexes</h3>
+          <p>
+            When you want to remove an index, it must be done using the MongoDB index name.
+            Therefore if you create a range index on the <i>birthday</i> date coluumn in the Person
+            model in the Rails console, you would do it like this.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>:<span class="integer">001</span> &gt; <span class="constant">Person</span>.collection.ensure_index([[<span class="string"><span class="delimiter">'</span><span class="content">birthday</span><span class="delimiter">'</span></span>,<span class="constant">Mongo</span>::<span class="constant">DESCENDING</span>]])&#x000A;</pre></div>
+          </div>
+          <p>
+            In order to delete that same index, you need to use the index name, not the index definition.
+            The index name is <i>birthday</i>, but the index definition according to MongoDB will include
+            an <i>_1</i> for an <i>Mongo::ASCENDING</i> range index and a <i>_-1</i> for a
+            <i>Mongo::DESCENDING</i> range index.  To remove the above index in the Rails console, you would
+            enter the following.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>:<span class="integer">002</span> &gt; <span class="constant">Person</span>.collection.drop_index(<span class="string"><span class="delimiter">'</span><span class="content">birthday_-1</span><span class="delimiter">'</span></span>)</pre></div>
+          </div>
+        </div>
         <div class='footer'>
-              Mongoid, 2009-2011, written and maintained by
-              <a href="http://github.com/durran">Durran Jordan</a>.
-            </div>
+          Mongoid, 2009-2011, written and maintained by
+          <a href="http://github.com/durran">Durran Jordan</a>.
+        </div>
         <div class='clear'></div>
       </div>
     </div>

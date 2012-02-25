@@ -10,114 +10,114 @@
   <body>
     <div id='container'>
       <div class='navigation'>
-            <a href="/"><img src="/images/mongoid-logo-small.png" />
-            </a>
-            
-            <ul class='navigation'>
-              <li class='area'><a class="area" href="/">home</a></li>
-              <li class='area'><a class="area" href="/docs.html">docs</a></li>
-              <li><a class="section" href="/docs/installation.html">installation</a></li>
-              <li><a class="section" href="/docs/documents.html">documents</a></li>
-              <li><a class="section" href="/docs/persistence.html">persistence</a></li>
-              <li><a class="section" href="/docs/querying.html">querying</a></li>
-              <li><a class="section" href="/docs/relations.html">relations</a></li>
-              <li><a class="section active" href="/docs/identity_map.html">identity map</a></li>
-              <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
-              <li><a class="section" href="/docs/validation.html">validation</a></li>
-              <li><a class="section" href="/docs/indexing.html">indexing</a></li>
-              <li><a class="section" href="/docs/extras.html">extras</a></li>
-              <li><a class="section" href="/docs/rails.html">rails</a></li>
-              <li><a class="section" href="/docs/extensions.html">extensions</a></li>
-              <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
-              <li><a class="section" href="/docs/contributing.html">contributing</a></li>
-              <li class='area'><a class="area" href="/performance.html">performance</a></li>
-              <li class='area'><a class="area" href="/credits.html">credits</a></li>
-              <li class='area'><a class="area" href="/links.html">links</a></li>
-            </ul>
-          </div>
+        <a href="/"><img src="/images/mongoid-logo-small.png" />
+        </a>
+        
+        <ul class='navigation'>
+          <li class='area'><a class="area" href="/">home</a></li>
+          <li class='area'><a class="area" href="/docs.html">docs</a></li>
+          <li><a class="section" href="/docs/installation.html">installation</a></li>
+          <li><a class="section" href="/docs/documents.html">documents</a></li>
+          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+          <li><a class="section" href="/docs/querying.html">querying</a></li>
+          <li><a class="section" href="/docs/relations.html">relations</a></li>
+          <li><a class="section active" href="/docs/identity_map.html">identity map</a></li>
+          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+          <li><a class="section" href="/docs/validation.html">validation</a></li>
+          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+          <li><a class="section" href="/docs/extras.html">extras</a></li>
+          <li><a class="section" href="/docs/rails.html">rails</a></li>
+          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+          <li class='area'><a class="area" href="/performance.html">performance</a></li>
+          <li class='area'><a class="area" href="/credits.html">credits</a></li>
+          <li class='area'><a class="area" href="/links.html">links</a></li>
+        </ul>
+      </div>
       <div class='main'>
         <div class='header'>
-              <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
-              </a>
-              <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
-              </a>
-            </div>
+          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
+          </a>
+          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+          </a>
+        </div>
         <div class='content'>
-              <h1>identity map</h1>
-              <p>
-                The identity map in Mongoid is a current aid to assist with excessive
-                database queries in relations, and is necessary for eager loading to
-                work. It's functionality will be extended in future releases.
-              </p>
-              <p>
-                To enable the identity map, simply change the configuration option in
-                your mongoid.yml.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="ke">identity_map_enabled</span>: <span class="pc">true</span>&#x000A;</pre></div>
-              </div>
-              <p>
-                When a document is now loaded from the database, is is automatically
-                added to the identity map by it's class and id. Subsequent request for
-                that document by it's id will not hit the database, but rather pull
-                the document back from the identity map itself. It's primary function
-                in this capacity is to aid in cutting down queries for belongs_to
-                relations when iterating over the parents.
-              </p>
-              <h2>access</h2>
-              <p>
-                You can access documents in the map directly via the <tt>get</tt> method.
-                It requires the class of the document you want and an id.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="co">Mongoid</span>::<span class="co">IdentityMap</span>.get(<span class="co">Person</span>, id)&#x000A;</pre></div>
-              </div>
-              <p>
-                Note in future releases the Mongoid finders will hook directly into the
-                map so you don't have to access it directly.
-              </p>
-              <h2>the unit of work</h2>
-              <p>
-                To prevent database objects from becoming stale, the documents in the
-                identity map should only exist in a single unit of work, which is
-                usually a single request to the application.
-              </p>
-              <h3>rails</h3>
-              <p>
-                No extra work is needed for Rails users, Mongoid will automatically
-                clear out the identity map after each request.
-              </p>
-              <h3>sinatra</h3>
-              <p>
-                You can require the Mongoid identity map middleware in your application
-                to clear out the map with each request:
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre>use <span class="co">Rack</span>::<span class="co">Mongoid</span>::<span class="co">Middleware</span>::<span class="co">IdentityMap</span>&#x000A;</pre></div>
-              </div>
-              <h3>non rack based applications</h3>
-              <p>
-                For users not using rack based apps, you will need to wrap your requests
-                or application defined unit of work in a <tt>Mongoid.unit_of_work</tt>
-                block:
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="co">Mongoid</span>.unit_of_work <span class="r">do</span>&#x000A;  <span class="co">Person</span>.create(<span class="ke">title</span>: <span class="s"><span class="dl">&quot;</span><span class="k">Grand Poobah</span><span class="dl">&quot;</span></span>)&#x000A;<span class="r">end</span>&#x000A;</pre></div>
-              </div>
-              <h2>testing</h2>
-              <p>
-                If you have the identity map enabled in your application, you should set up
-                a global hook to clear out the map before each test so the test suite does
-                not create memory bloat. For example in RSpec in <tt>spec_helper.rb</tt>.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="co">RSpec</span>.configure <span class="r">do</span> |config|&#x000A;  config.before(<span class="sy">:each</span>) { <span class="co">Mongoid</span>::<span class="co">IdentityMap</span>.clear }&#x000A;<span class="r">end</span></pre></div>
-              </div>
-            </div>
+          <h1>identity map</h1>
+          <p>
+            The identity map in Mongoid is a current aid to assist with excessive
+            database queries in relations, and is necessary for eager loading to
+            work. It's functionality will be extended in future releases.
+          </p>
+          <p>
+            To enable the identity map, simply change the configuration option in
+            your mongoid.yml.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>identity_map_enabled: <span class="predefined-constant">true</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            When a document is now loaded from the database, is is automatically
+            added to the identity map by it's class and id. Subsequent request for
+            that document by it's id will not hit the database, but rather pull
+            the document back from the identity map itself. It's primary function
+            in this capacity is to aid in cutting down queries for belongs_to
+            relations when iterating over the parents.
+          </p>
+          <h2>access</h2>
+          <p>
+            You can access documents in the map directly via the <tt>get</tt> method.
+            It requires the class of the document you want and an id.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Mongoid</span>::<span class="constant">IdentityMap</span>.get(<span class="constant">Person</span>, id)&#x000A;</pre></div>
+          </div>
+          <p>
+            Note in future releases the Mongoid finders will hook directly into the
+            map so you don't have to access it directly.
+          </p>
+          <h2>the unit of work</h2>
+          <p>
+            To prevent database objects from becoming stale, the documents in the
+            identity map should only exist in a single unit of work, which is
+            usually a single request to the application.
+          </p>
+          <h3>rails</h3>
+          <p>
+            No extra work is needed for Rails users, Mongoid will automatically
+            clear out the identity map after each request.
+          </p>
+          <h3>sinatra</h3>
+          <p>
+            You can require the Mongoid identity map middleware in your application
+            to clear out the map with each request:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>use <span class="constant">Rack</span>::<span class="constant">Mongoid</span>::<span class="constant">Middleware</span>::<span class="constant">IdentityMap</span>&#x000A;</pre></div>
+          </div>
+          <h3>non rack based applications</h3>
+          <p>
+            For users not using rack based apps, you will need to wrap your requests
+            or application defined unit of work in a <tt>Mongoid.unit_of_work</tt>
+            block:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Mongoid</span>.unit_of_work <span class="keyword">do</span>&#x000A;  <span class="constant">Person</span>.create(title: <span class="string"><span class="delimiter">&quot;</span><span class="content">Grand Poobah</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <h2>testing</h2>
+          <p>
+            If you have the identity map enabled in your application, you should set up
+            a global hook to clear out the map before each test so the test suite does
+            not create memory bloat. For example in RSpec in <tt>spec_helper.rb</tt>.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">RSpec</span>.configure <span class="keyword">do</span> |config|&#x000A;  config.before(<span class="symbol">:each</span>) { <span class="constant">Mongoid</span>::<span class="constant">IdentityMap</span>.clear }&#x000A;<span class="keyword">end</span></pre></div>
+          </div>
+        </div>
         <div class='footer'>
-              Mongoid, 2009-2011, written and maintained by
-              <a href="http://github.com/durran">Durran Jordan</a>.
-            </div>
+          Mongoid, 2009-2011, written and maintained by
+          <a href="http://github.com/durran">Durran Jordan</a>.
+        </div>
         <div class='clear'></div>
       </div>
     </div>

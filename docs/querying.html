@@ -10,61 +10,61 @@
   <body>
     <div id='container'>
       <div class='navigation'>
-            <a href="/"><img src="/images/mongoid-logo-small.png" />
-            </a>
-            
-            <ul class='navigation'>
-              <li class='area'><a class="area" href="/">home</a></li>
-              <li class='area'><a class="area" href="/docs.html">docs</a></li>
-              <li><a class="section" href="/docs/installation.html">installation</a></li>
-              <li><a class="section" href="/docs/documents.html">documents</a></li>
-              <li><a class="section" href="/docs/persistence.html">persistence</a></li>
-              <li><a class="section active" href="/docs/querying.html">querying</a></li>
-              <li><a class="subsection" href="/docs/querying/criteria.html">criteria</a></li>
-              <li><a class="subsection" href="/docs/querying/modification.html">criteria + mod</a></li>
-              <li><a class="subsection" href="/docs/querying/finders.html">finders</a></li>
-              <li><a class="subsection" href="/docs/querying/scopes.html">scopes</a></li>
-              <li><a class="section" href="/docs/relations.html">relations</a></li>
-              <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
-              <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
-              <li><a class="section" href="/docs/validation.html">validation</a></li>
-              <li><a class="section" href="/docs/indexing.html">indexing</a></li>
-              <li><a class="section" href="/docs/extras.html">extras</a></li>
-              <li><a class="section" href="/docs/rails.html">rails</a></li>
-              <li><a class="section" href="/docs/extensions.html">extensions</a></li>
-              <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
-              <li><a class="section" href="/docs/contributing.html">contributing</a></li>
-              <li class='area'><a class="area" href="/performance.html">performance</a></li>
-              <li class='area'><a class="area" href="/credits.html">credits</a></li>
-              <li class='area'><a class="area" href="/links.html">links</a></li>
-            </ul>
-          </div>
+        <a href="/"><img src="/images/mongoid-logo-small.png" />
+        </a>
+        
+        <ul class='navigation'>
+          <li class='area'><a class="area" href="/">home</a></li>
+          <li class='area'><a class="area" href="/docs.html">docs</a></li>
+          <li><a class="section" href="/docs/installation.html">installation</a></li>
+          <li><a class="section" href="/docs/documents.html">documents</a></li>
+          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+          <li><a class="section active" href="/docs/querying.html">querying</a></li>
+          <li><a class="subsection" href="/docs/querying/criteria.html">criteria</a></li>
+          <li><a class="subsection" href="/docs/querying/modification.html">criteria + mod</a></li>
+          <li><a class="subsection" href="/docs/querying/finders.html">finders</a></li>
+          <li><a class="subsection" href="/docs/querying/scopes.html">scopes</a></li>
+          <li><a class="section" href="/docs/relations.html">relations</a></li>
+          <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
+          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+          <li><a class="section" href="/docs/validation.html">validation</a></li>
+          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+          <li><a class="section" href="/docs/extras.html">extras</a></li>
+          <li><a class="section" href="/docs/rails.html">rails</a></li>
+          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+          <li class='area'><a class="area" href="/performance.html">performance</a></li>
+          <li class='area'><a class="area" href="/credits.html">credits</a></li>
+          <li class='area'><a class="area" href="/links.html">links</a></li>
+        </ul>
+      </div>
       <div class='main'>
         <div class='header'>
-              <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
-              </a>
-              <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
-              </a>
-            </div>
+          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
+          </a>
+          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+          </a>
+        </div>
         <div class='content'>
-              <h1>querying</h1>
-              <p>
-                One of MongoDB's greatest features is its ability to execute dynamic
-                queries, which Mongoid abstracts in a familiar Arel-style DSL.
-              </p>
-              <h3>mongoid queries</h3>
-              <p>
-                All queries in Mongoid are <tt>Criteria</tt>, which is a chainable and
-                lazily evaluated wrapper to a MongoDB dynamic query. Criteria only
-                touch the database when they need to, for example on iteration of the
-                results, and when executed wrap a cursor in order to keep memory
-                management and performance predictable.
-              </p>
-            </div>
+          <h1>querying</h1>
+          <p>
+            One of MongoDB's greatest features is its ability to execute dynamic
+            queries, which Mongoid abstracts in a familiar Arel-style DSL.
+          </p>
+          <h3>mongoid queries</h3>
+          <p>
+            All queries in Mongoid are <tt>Criteria</tt>, which is a chainable and
+            lazily evaluated wrapper to a MongoDB dynamic query. Criteria only
+            touch the database when they need to, for example on iteration of the
+            results, and when executed wrap a cursor in order to keep memory
+            management and performance predictable.
+          </p>
+        </div>
         <div class='footer'>
-              Mongoid, 2009-2011, written and maintained by
-              <a href="http://github.com/durran">Durran Jordan</a>.
-            </div>
+          Mongoid, 2009-2011, written and maintained by
+          <a href="http://github.com/durran">Durran Jordan</a>.
+        </div>
         <div class='clear'></div>
       </div>
     </div>

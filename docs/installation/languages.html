@@ -10,86 +10,86 @@
   <body>
     <div id='container'>
       <div class='navigation'>
-            <a href="/"><img src="/images/mongoid-logo-small.png" />
-            </a>
-            
-            <ul class='navigation'>
-              <li class='area'><a class="area" href="/">home</a></li>
-              <li class='area'><a class="area" href="/docs.html">docs</a></li>
-              <li><a class="section" href="/docs/installation.html">installation</a></li>
-              <li><a class="subsection" href="/docs/installation/configuration.html">configuration</a></li>
-              <li><a class="subsection active" href="/docs/installation/languages.html">languages</a></li>
-              <li><a class="subsection" href="/docs/installation/replication.html">replication</a></li>
-              <li><a class="section" href="/docs/documents.html">documents</a></li>
-              <li><a class="section" href="/docs/persistence.html">persistence</a></li>
-              <li><a class="section" href="/docs/querying.html">querying</a></li>
-              <li><a class="section" href="/docs/relations.html">relations</a></li>
-              <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
-              <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
-              <li><a class="section" href="/docs/validation.html">validation</a></li>
-              <li><a class="section" href="/docs/indexing.html">indexing</a></li>
-              <li><a class="section" href="/docs/extras.html">extras</a></li>
-              <li><a class="section" href="/docs/rails.html">rails</a></li>
-              <li><a class="section" href="/docs/extensions.html">extensions</a></li>
-              <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
-              <li><a class="section" href="/docs/contributing.html">contributing</a></li>
-              <li class='area'><a class="area" href="/performance.html">performance</a></li>
-              <li class='area'><a class="area" href="/credits.html">credits</a></li>
-              <li class='area'><a class="area" href="/links.html">links</a></li>
-            </ul>
-          </div>
+        <a href="/"><img src="/images/mongoid-logo-small.png" />
+        </a>
+        
+        <ul class='navigation'>
+          <li class='area'><a class="area" href="/">home</a></li>
+          <li class='area'><a class="area" href="/docs.html">docs</a></li>
+          <li><a class="section" href="/docs/installation.html">installation</a></li>
+          <li><a class="subsection" href="/docs/installation/configuration.html">configuration</a></li>
+          <li><a class="subsection active" href="/docs/installation/languages.html">languages</a></li>
+          <li><a class="subsection" href="/docs/installation/replication.html">replication</a></li>
+          <li><a class="section" href="/docs/documents.html">documents</a></li>
+          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+          <li><a class="section" href="/docs/querying.html">querying</a></li>
+          <li><a class="section" href="/docs/relations.html">relations</a></li>
+          <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
+          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+          <li><a class="section" href="/docs/validation.html">validation</a></li>
+          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+          <li><a class="section" href="/docs/extras.html">extras</a></li>
+          <li><a class="section" href="/docs/rails.html">rails</a></li>
+          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+          <li class='area'><a class="area" href="/performance.html">performance</a></li>
+          <li class='area'><a class="area" href="/credits.html">credits</a></li>
+          <li class='area'><a class="area" href="/links.html">links</a></li>
+        </ul>
+      </div>
       <div class='main'>
         <div class='header'>
-              <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
-              </a>
-              <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
-              </a>
-            </div>
+          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
+          </a>
+          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+          </a>
+        </div>
         <div class='content'>
-              <h1>languages</h1>
-              <p>
-                By default Mongoid adds the I18n translation file for English. However
-                adding new languages is easy. In your application initializer
-                (for Rails 3 it can be in <tt>config/initializers/mongoid.rb</tt>),
-                just add the code:
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="c"># Add the Spanish exception translations.</span>&#x000A;<span class="co">Mongoid</span>.add_language(<span class="s"><span class="dl">&quot;</span><span class="k">es</span><span class="dl">&quot;</span></span>)&#x000A;</pre></div>
-              </div>
-              <p>
-                Available languages for Mongoid are:
-                <ul>
-                  <li><tt>bg</tt>: Bulgarian</li>
-                  <li><tt>de</tt>: German</li>
-                  <li><tt>en</tt>: English</li>
-                  <li><tt>es</tt>: Spanish</li>
-                  <li><tt>fr</tt>: French</li>
-                  <li><tt>hi</tt>: Hindi</li>
-                  <li><tt>hu</tt>: Hungarian</li>
-                  <li><tt>id</tt>: Indonesian</li>
-                  <li><tt>it</tt>: Italian</li>
-                  <li><tt>ja</tt>: Japan</li>
-                  <li><tt>kr</tt>: Korean</li>
-                  <li><tt>nl</tt>: Dutch</li>
-                  <li><tt>pl</tt>: Polish</li>
-                  <li><tt>pt-br</tt>: Brazilian Portuguese</li>
-                  <li><tt>pt</tt>: Portuguese</li>
-                  <li><tt>ro</tt>: Romanian</li>
-                  <li><tt>ru</tt>: Russian</li>
-                  <li><tt>sv</tt>: Swedish</li>
-                  <li><tt>vi</tt>: Vietnamese</li>
-                  <li><tt>zh-CN</tt>: Chinese</li>
-                </ul>
-              </p>
-              <p>You can also just include them all by:</p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="co">Mongoid</span>.add_language(<span class="s"><span class="dl">&quot;</span><span class="k">*</span><span class="dl">&quot;</span></span>)</pre></div>
-              </div>
-            </div>
+          <h1>languages</h1>
+          <p>
+            By default Mongoid adds the I18n translation file for English. However
+            adding new languages is easy. In your application initializer
+            (for Rails 3 it can be in <tt>config/initializers/mongoid.rb</tt>),
+            just add the code:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Add the Spanish exception translations.</span>&#x000A;<span class="constant">Mongoid</span>.add_language(<span class="string"><span class="delimiter">&quot;</span><span class="content">es</span><span class="delimiter">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <p>
+            Available languages for Mongoid are:
+            <ul>
+              <li><tt>bg</tt>: Bulgarian</li>
+              <li><tt>de</tt>: German</li>
+              <li><tt>en</tt>: English</li>
+              <li><tt>es</tt>: Spanish</li>
+              <li><tt>fr</tt>: French</li>
+              <li><tt>hi</tt>: Hindi</li>
+              <li><tt>hu</tt>: Hungarian</li>
+              <li><tt>id</tt>: Indonesian</li>
+              <li><tt>it</tt>: Italian</li>
+              <li><tt>ja</tt>: Japan</li>
+              <li><tt>kr</tt>: Korean</li>
+              <li><tt>nl</tt>: Dutch</li>
+              <li><tt>pl</tt>: Polish</li>
+              <li><tt>pt-br</tt>: Brazilian Portuguese</li>
+              <li><tt>pt</tt>: Portuguese</li>
+              <li><tt>ro</tt>: Romanian</li>
+              <li><tt>ru</tt>: Russian</li>
+              <li><tt>sv</tt>: Swedish</li>
+              <li><tt>vi</tt>: Vietnamese</li>
+              <li><tt>zh-CN</tt>: Chinese</li>
+            </ul>
+          </p>
+          <p>You can also just include them all by:</p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Mongoid</span>.add_language(<span class="string"><span class="delimiter">&quot;</span><span class="content">*</span><span class="delimiter">&quot;</span></span>)</pre></div>
+          </div>
+        </div>
         <div class='footer'>
-              Mongoid, 2009-2011, written and maintained by
-              <a href="http://github.com/durran">Durran Jordan</a>.
-            </div>
+          Mongoid, 2009-2011, written and maintained by
+          <a href="http://github.com/durran">Durran Jordan</a>.
+        </div>
         <div class='clear'></div>
       </div>
     </div>

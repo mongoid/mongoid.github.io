@@ -10,69 +10,69 @@
   <body>
     <div id='container'>
       <div class='navigation'>
-            <a href="/"><img src="/images/mongoid-logo-small.png" />
-            </a>
-            
-            <ul class='navigation'>
-              <li class='area'><a class="area" href="/">home</a></li>
-              <li class='area'><a class="area" href="/docs.html">docs</a></li>
-              <li><a class="section" href="/docs/installation.html">installation</a></li>
-              <li><a class="section" href="/docs/documents.html">documents</a></li>
-              <li><a class="section" href="/docs/persistence.html">persistence</a></li>
-              <li><a class="section" href="/docs/querying.html">querying</a></li>
-              <li><a class="section" href="/docs/relations.html">relations</a></li>
-              <li><a class="subsection" href="/docs/relations/embedded.html">embedded</a></li>
-              <li><a class="subsection" href="/docs/relations/referenced.html">referenced</a></li>
-              <li><a class="subsection" href="/docs/relations/metadata.html">metadata</a></li>
-              <li><a class="subsection active" href="/docs/relations/validations.html">validations</a></li>
-              <li><a class="subsection" href="/docs/relations/nested_attributes.html">nested attributes</a></li>
-              <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
-              <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
-              <li><a class="section" href="/docs/validation.html">validation</a></li>
-              <li><a class="section" href="/docs/indexing.html">indexing</a></li>
-              <li><a class="section" href="/docs/extras.html">extras</a></li>
-              <li><a class="section" href="/docs/rails.html">rails</a></li>
-              <li><a class="section" href="/docs/extensions.html">extensions</a></li>
-              <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
-              <li><a class="section" href="/docs/contributing.html">contributing</a></li>
-              <li class='area'><a class="area" href="/performance.html">performance</a></li>
-              <li class='area'><a class="area" href="/credits.html">credits</a></li>
-              <li class='area'><a class="area" href="/links.html">links</a></li>
-            </ul>
-          </div>
+        <a href="/"><img src="/images/mongoid-logo-small.png" />
+        </a>
+        
+        <ul class='navigation'>
+          <li class='area'><a class="area" href="/">home</a></li>
+          <li class='area'><a class="area" href="/docs.html">docs</a></li>
+          <li><a class="section" href="/docs/installation.html">installation</a></li>
+          <li><a class="section" href="/docs/documents.html">documents</a></li>
+          <li><a class="section" href="/docs/persistence.html">persistence</a></li>
+          <li><a class="section" href="/docs/querying.html">querying</a></li>
+          <li><a class="section" href="/docs/relations.html">relations</a></li>
+          <li><a class="subsection" href="/docs/relations/embedded.html">embedded</a></li>
+          <li><a class="subsection" href="/docs/relations/referenced.html">referenced</a></li>
+          <li><a class="subsection" href="/docs/relations/metadata.html">metadata</a></li>
+          <li><a class="subsection active" href="/docs/relations/validations.html">validations</a></li>
+          <li><a class="subsection" href="/docs/relations/nested_attributes.html">nested attributes</a></li>
+          <li><a class="section" href="/docs/identity_map.html">identity map</a></li>
+          <li><a class="section" href="/docs/callbacks.html">callbacks</a></li>
+          <li><a class="section" href="/docs/validation.html">validation</a></li>
+          <li><a class="section" href="/docs/indexing.html">indexing</a></li>
+          <li><a class="section" href="/docs/extras.html">extras</a></li>
+          <li><a class="section" href="/docs/rails.html">rails</a></li>
+          <li><a class="section" href="/docs/extensions.html">extensions</a></li>
+          <li><a class="section" href="/docs/upgrading.html">upgrading</a></li>
+          <li><a class="section" href="/docs/contributing.html">contributing</a></li>
+          <li class='area'><a class="area" href="/performance.html">performance</a></li>
+          <li class='area'><a class="area" href="/credits.html">credits</a></li>
+          <li class='area'><a class="area" href="/links.html">links</a></li>
+        </ul>
+      </div>
       <div class='main'>
         <div class='header'>
-              <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
-              </a>
-              <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
-              </a>
-            </div>
+          <a href="http://twitter.com/mongoid/"><img src="/images/twitter-logo.png" />
+          </a>
+          <a href="http://github.com/mongoid/"><img src="/images/github-logo.png" />
+          </a>
+        </div>
         <div class='content'>
-              <h1>validations</h1>
-              <p>
-                It is important to note that by default, Mongoid will validate the
-                children of any relation that are loaded into memory. The relations that
-                this applies to are:
-                <ul>
-                  <li><tt>embeds_many</tt></li>
-                  <li><tt>embeds_one</tt></li>
-                  <li><tt>has_many</tt></li>
-                  <li><tt>has_one</tt></li>
-                  <li><tt>has_and_belongs_to_many</tt></li>
-                </ul>
-              </p>
-              <p>
-                If you do not want this behaviour, you may turn it off when defining
-                the relation.
-              </p>
-              <div class="CodeRay">
-                <div class="code"><pre><span class="r">class</span> <span class="cl">Person</span>&#x000A;  include <span class="co">Mongoid</span>::<span class="co">Document</span>&#x000A;&#x000A;  embeds_many <span class="sy">:addresses</span>, <span class="ke">validate</span>: <span class="pc">false</span>&#x000A;  has_many <span class="sy">:posts</span>, <span class="ke">validate</span>: <span class="pc">false</span>&#x000A;<span class="r">end</span></pre></div>
-              </div>
-            </div>
+          <h1>validations</h1>
+          <p>
+            It is important to note that by default, Mongoid will validate the
+            children of any relation that are loaded into memory. The relations that
+            this applies to are:
+            <ul>
+              <li><tt>embeds_many</tt></li>
+              <li><tt>embeds_one</tt></li>
+              <li><tt>has_many</tt></li>
+              <li><tt>has_one</tt></li>
+              <li><tt>has_and_belongs_to_many</tt></li>
+            </ul>
+          </p>
+          <p>
+            If you do not want this behaviour, you may turn it off when defining
+            the relation.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;&#x000A;  embeds_many <span class="symbol">:addresses</span>, validate: <span class="predefined-constant">false</span>&#x000A;  has_many <span class="symbol">:posts</span>, validate: <span class="predefined-constant">false</span>&#x000A;<span class="keyword">end</span></pre></div>
+          </div>
+        </div>
         <div class='footer'>
-              Mongoid, 2009-2011, written and maintained by
-              <a href="http://github.com/durran">Durran Jordan</a>.
-            </div>
+          Mongoid, 2009-2011, written and maintained by
+          <a href="http://github.com/durran">Durran Jordan</a>.
+        </div>
         <div class='clear'></div>
       </div>
     </div>
