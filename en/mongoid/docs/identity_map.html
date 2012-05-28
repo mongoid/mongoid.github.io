@@ -1,0 +1,194 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta content='A Ruby ODM for MongoDB' name='description' />
+    <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
+    <link href="/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/jquery-1.7.2.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
+    <script src="/javascripts/mongoid.js" type="text/javascript"></script>
+    <title>Mongoid: IdentityMap</title>
+  </head>
+  <body data-offset='100' data-spy='scroll' data-target='.page-nav'>
+    <div class='mongoid' id='header'>
+      <div class='navbar navbar-fixed-top'>
+        <div class='navbar-inner'>
+          <div class='container'>
+            <ul class='nav'>
+              <li class='dropdown link' id='project'>
+                            <a title="Mongoid" href="/en/mongoid/index.html"><img src="/images/mongoid-logo-small-green.png" />
+                </a>
+    
+              </li>
+              <li class='link'>
+                            <a title="Origin" href="/en/origin/index.html"><img src="/images/origin-logo-small-white.png" />
+                </a>
+    
+              </li>
+              <li class='link'>
+                            <a title="Moped" href="/en/moped/index.html"><img src="/images/moped-logo-small-white.png" />
+                </a>
+    
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id='navigation'>
+      <div class='subnav'>
+        <div class='container'>
+          <ul class='nav nav-pills'>
+            <li><a href="/en/mongoid/index.html">HOME</a></li>
+            <li class='dropdown' id='docs'>
+              <a class='dropdown-toggle' data-toggle='dropdown' href='#docs'>
+                DOCS
+                <b class='caret'></b>
+              </a>
+              <ul class='dropdown-menu'>
+                <li><a href="/en/mongoid/docs/installation.html">Installation</a></li>
+                <li><a href="/en/mongoid/docs/documents.html">Documents</a></li>
+                <li><a href="/en/mongoid/docs/persistence.html">Persistence</a></li>
+                <li><a href="/en/mongoid/docs/querying.html">Querying</a></li>
+                <li><a href="/en/mongoid/docs/relations.html">Relations</a></li>
+                <li><a href="/en/mongoid/docs/nested_attributes.html">Nested Attributes</a></li>
+                <li><a href="/en/mongoid/docs/identity_map.html">Identity Map</a></li>
+                <li><a href="/en/mongoid/docs/callbacks.html">Callbacks</a></li>
+                <li><a href="/en/mongoid/docs/validation.html">Validation</a></li>
+                <li><a href="/en/mongoid/docs/indexing.html">Indexing</a></li>
+                <li><a href="/en/mongoid/docs/rails.html">Rails</a></li>
+                <li><a href="/en/mongoid/docs/extras.html">Extras</a></li>
+                <li><a href="/en/mongoid/docs/upgrading.html">Upgrading</a></li>
+                <li><a href="/en/mongoid/docs/contributing.html">Contributing</a></li>
+                <li><a href="/en/mongoid/docs/performance.html">Performance</a></li>
+              </ul>
+            </li>
+            <li><a href="/en/mongoid/links.html">LINKS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id='content'>
+      <div class='container'>
+        <h1>Identity Map</h1>
+        <div class='page-nav'>
+          <div class='container'>
+            <ul class='nav nav-pills'>
+              <li><a href="#usage">Usage</a></li>
+              <li><a href="#unit_of_work">Unit of Work</a></li>
+              <li><a href="#testing">Testing</a></li>
+            </ul>
+          </div>
+        </div>
+        <section id='usage'>
+          <h2>Usage</h2>
+          <p>
+            The identity map in Mongoid is a current aid to assist with excessive
+            database queries in relations, and is necessary for eager loading to
+            work.
+          </p>
+          <p>
+            To enable the identity map, simply change the configuration option in
+            your <code>mongoid.yml</code>.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="key">identity_map_enabled</span>: <span class="string"><span class="content">true</span></span>&#x000A;</pre></div>
+          </div>
+          <p>
+            When a document is now loaded from the database, is is automatically
+            added to the identity map by it's class and id. Subsequent request for
+            that document by it's id will not hit the database, but rather pull
+            the document back from the identity map itself. It's primary function
+            in this capacity is to aid in cutting down queries for belongs_to
+            relations when iterating over the parents.
+          </p>
+          <p>
+            You can access documents in the map directly via the <tt>get</tt> method.
+            It requires the class of the document you want and an id.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Mongoid</span>::<span class="constant">IdentityMap</span>.get(<span class="constant">Person</span>, id)&#x000A;</pre></div>
+          </div>
+          <p>
+            When performing <code>Model.find</code> queries with the identity map
+            enabled, Mongoid will automatically look for the document in the
+            identity map first and return it if it exists before hitting the database.
+          </p>
+        </section>
+        <section id='unit_of_work'>
+          <h2>The Unit of Work</h2>
+          <p>
+            To prevent database objects from becoming stale, the documents in the
+            identity map should only exist in a single unit of work, which is
+            usually a single request to the application.
+          </p>
+          <h3>Rails</h3>
+          <p>
+            No extra work is needed for Rails users, Mongoid will automatically
+            clear out the identity map after each request.
+          </p>
+          <h3>Sinatra</h3>
+          <p>
+            You can require the Mongoid identity map middleware in your application
+            to clear out the map with each request:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>use <span class="constant">Rack</span>::<span class="constant">Mongoid</span>::<span class="constant">Middleware</span>::<span class="constant">IdentityMap</span>&#x000A;</pre></div>
+          </div>
+          <h3>Non Rack Based Applications</h3>
+          <p>
+            For users not using rack based apps, you will need to wrap your requests
+            or application defined unit of work in a <code>Mongoid.unit_of_work</code>
+            block:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Mongoid</span>.unit_of_work <span class="keyword">do</span>&#x000A;  <span class="constant">Person</span>.create(title: <span class="string"><span class="delimiter">&quot;</span><span class="content">Grand Poobah</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <div class='well'>
+            <table>
+              <tr>
+                <td class='samurai'><img src="/images/samurai.png" /></td>
+                <td class='note'>
+                  <p>
+                    The unit of work can also be used to temporarily disable the
+                    identity map and force documents to load from the database.
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Disable the identity map for the current thread only.</span>&#x000A;<span class="constant">Mongoid</span>.unit_of_work(disable: <span class="symbol">:current</span>) <span class="keyword">do</span>&#x000A;  <span class="constant">Band</span>.find(<span class="integer">1</span>)&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="comment"># Disable the identity map for all threads.</span>&#x000A;<span class="constant">Mongoid</span>.unit_of_work(disable: <span class="symbol">:all</span>) <span class="keyword">do</span>&#x000A;  <span class="constant">Band</span>.find(<span class="integer">1</span>)&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <h3>Rake Tasks and Background Jobs</h3>
+          <p>
+            It is important to note that you should never be using the identity map
+            when executing background jobs, rake tasks, etc. unless you really know
+            that not many documents will be loaded and memory consumption will be
+            low. Otherwise it's a server takedown waiting to happen.
+            In these cases it's best to wrap your task or job in a unit of work.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>desc <span class="string"><span class="delimiter">&quot;</span><span class="content">A long running rake task</span><span class="delimiter">&quot;</span></span>&#x000A;task <span class="string"><span class="delimiter">&quot;</span><span class="content">db:migrate_data</span><span class="delimiter">&quot;</span></span> =&gt; <span class="symbol">:environment</span> <span class="keyword">do</span>&#x000A;  <span class="constant">Mongoid</span>.unit_of_work(disable: <span class="symbol">:all</span>) <span class="keyword">do</span>&#x000A;    <span class="comment"># Do my work here.</span>&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">BackgroundJob</span>&#x000A;  <span class="instance-variable">@queue</span> = <span class="symbol">:background</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="predefined-constant">self</span>.<span class="function">perform</span>(id)&#x000A;    <span class="constant">Mongoid</span>.unit_of_work(disable: <span class="symbol">:all</span>) <span class="keyword">do</span>&#x000A;      <span class="comment"># Do work here.</span>&#x000A;    <span class="keyword">end</span>&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+        </section>
+        <section id='testing'>
+          <h2>Testing</h2>
+          <p>
+            If you have the identity map enabled in your application, you should set up
+            a global hook to clear out the map before each test so the test suite does
+            not create memory bloat. For example in RSpec in <code>spec_helper.rb</code>.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">RSpec</span>.configure <span class="keyword">do</span> |config|&#x000A;  config.before(<span class="symbol">:each</span>) { <span class="constant">Mongoid</span>::<span class="constant">IdentityMap</span>.clear }&#x000A;<span class="keyword">end</span></pre></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>

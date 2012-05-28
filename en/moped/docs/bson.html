@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta content='A MongoDB driver for Ruby ' name='description' />
+    <meta content='mongoid, moped, mongodb, ruby, rails, odm, bernerd schaefer' name='keywords' />
+    <link href="/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/jquery-1.7.2.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
+    <script src="/javascripts/mongoid.js" type="text/javascript"></script>
+    <title>Moped: BSON</title>
+  </head>
+  <body data-offset='100' data-spy='scroll' data-target='.page-nav'>
+    <div class='moped' id='header'>
+      <div class='navbar navbar-fixed-top'>
+        <div class='navbar-inner'>
+          <div class='container'>
+            <ul class='nav'>
+              <li class='dropdown link' id='project'>
+                            <a title="Mongoid" href="/en/mongoid/index.html"><img src="/images/mongoid-logo-small-white.png" />
+                </a>
+    
+              </li>
+              <li class='link'>
+                            <a title="Origin" href="/en/origin/index.html"><img src="/images/origin-logo-small-white.png" />
+                </a>
+    
+              </li>
+              <li class='link'>
+                            <a title="Moped" href="/en/moped/index.html"><img src="/images/moped-logo-small-green.png" />
+                </a>
+    
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id='navigation'>
+      <div class='subnav'>
+        <div class='container'>
+          <ul class='nav nav-pills'>
+            <li><a href="/en/moped/index.html">HOME</a></li>
+            <li class='dropdown' id='docs'>
+              <a class='dropdown-toggle' data-toggle='dropdown' href='#docs'>
+                DOCS
+                <b class='caret'></b>
+              </a>
+              <ul class='dropdown-menu'>
+                <li><a href="/en/moped/docs/installation.html">Installation</a></li>
+                <li><a href="/en/moped/docs/bson.html">BSON</a></li>
+                <li><a href="/en/moped/docs/driver.html">Driver</a></li>
+                <li><a href="/en/moped/docs/replication.html">Replication</a></li>
+              </ul>
+            </li>
+            <li><a href="/en/moped/links.html">LINKS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id='content'>
+      <div class='container'>
+        <h1>BSON</h1>
+        <p>
+          <code>Moped::BSON</code> is the namespace for Moped's BSON implementation.
+          It's implemented in pure (but fast) ruby. The public entry point into the
+          <code>BSON</code> module is <code>BSON::Document</code>, which is just a
+          subclass of Hash, but exposes two class methods: <code>serialize</code>
+          and <code>deserialize</code>. <code>serialize</code> accepts a
+          <code>BSON::Document</code> (or Hash) and returns the serialized BSON
+          representation. <code>deserialize</code> does the opposite: it reads data
+          from an IO-like input and returns a deserialized <code>BSON::Document</code>.
+        </p>
+        <div class='page-nav'>
+          <div class='container'>
+            <ul class='nav nav-pills'>
+              <li><a href="#types">Types</a></li>
+            </ul>
+          </div>
+        </div>
+        <section id='types'>
+          <h2>Types</h2>
+          <h3>Object Ids</h3>
+          <p>
+            The <code>Moped::BSON::ObjectId</code> class is used for generating and
+            interacting with Mongo's ids.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>id = <span class="constant">Moped</span>::<span class="constant">BSON</span>::<span class="constant">ObjectId</span>.new <span class="comment"># =&gt; 4f8583b5e5a4e46a64000002</span>&#x000A;id.generation_time <span class="comment"># =&gt; 2012-04-11 13:14:29 UTC</span>&#x000A;id == <span class="constant">Moped</span>::<span class="constant">BSON</span>::<span class="constant">ObjectId</span>.from_string(id.to_s) <span class="comment"># =&gt; true</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            The following is a table of the object id API.
+          </p>
+          <table class='table table-bordered table-striped'>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Syntax</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class='doc'>
+                  <code>ObjectId.new</code>
+                  <p class='doc'>
+                    <i>
+                      Instantiate a new object id.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Moped</span>::<span class="constant">BSON</span>::<span class="constant">ObjectId</span>.new</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>ObjectId.from_string</code>
+                  <p class='doc'>
+                    <i>
+                      Instantiate a new object id from a string.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Moped</span>::<span class="constant">BSON</span>::<span class="constant">ObjectId</span>.from_string(<span class="string"><span class="delimiter">&quot;</span><span class="content">4f8d8c66e5a4e45396000009</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>ObjectId.from_time</code>
+                  <p class='doc'>
+                    <i>
+                      Instantiate a new object id from a time.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Moped</span>::<span class="constant">BSON</span>::<span class="constant">ObjectId</span>.from_time(<span class="constant">Time</span>.new)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>ObjectId.legal?</code>
+                  <p class='doc'>
+                    <i>
+                      Checks if a string is a valid object id.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Moped</span>::<span class="constant">BSON</span>::<span class="constant">ObjectId</span>.legal?(<span class="string"><span class="delimiter">&quot;</span><span class="content">4f8d8c66e5a4e45396000009</span><span class="delimiter">&quot;</span></span>)&#x000A;</pre></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h3>Code</h3>
+          <p>
+            The <code>Moped::BSON::Code</code> class is used for working with
+            javascript on the server.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Moped</span>::<span class="constant">BSON</span>::<span class="constant">Code</span>.new(<span class="string"><span class="delimiter">&quot;</span><span class="content">function () { return this.name }</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="constant">Moped</span>::<span class="constant">BSON</span>::<span class="constant">Code</span>.new(<span class="string"><span class="delimiter">&quot;</span><span class="content">function (s) { return s.prefix + this.name }</span><span class="delimiter">&quot;</span></span>, prefix: <span class="string"><span class="delimiter">&quot;</span><span class="content">_</span><span class="delimiter">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <h3>Binary Data</h3>
+          <p>
+            The <code>Moped::BSON::Binary</code> class allows you to persist binary
+            data to the server, and supports the following types: <code>:generic</code>,
+            <code>:function</code>, <code>:old</code>, <code>:uuid</code>,
+            <code>:md5</code>, and <code>:user</code>. Note that <code>:old</code>
+            is deprecated, but still present to support legacy data.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Moped</span>::<span class="constant">BSON</span>::<span class="constant">Binary</span>.new(<span class="symbol">:md5</span>, <span class="constant">Digest</span>::<span class="constant">MD5</span>.digest(<span class="predefined-constant">__FILE__</span>))</pre></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>

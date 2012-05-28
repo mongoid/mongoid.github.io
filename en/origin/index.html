@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta content='A Ruby DSL for building MongoDB queries' name='description' />
+    <meta content='mongoid, origin, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
+    <link href="/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/jquery-1.7.2.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
+    <script src="/javascripts/mongoid.js" type="text/javascript"></script>
+    <title>Origin: Home</title>
+  </head>
+  <body data-offset='100' data-spy='scroll' data-target='.page-nav'>
+    <div class='origin' id='header'>
+      <div class='navbar navbar-fixed-top'>
+        <div class='navbar-inner'>
+          <div class='container'>
+            <ul class='nav'>
+              <li class='dropdown link' id='project'>
+                            <a title="Mongoid" href="/en/mongoid/index.html"><img src="/images/mongoid-logo-small-white.png" />
+                </a>
+    
+              </li>
+              <li class='link'>
+                            <a title="Origin" href="/en/origin/index.html"><img src="/images/origin-logo-small-green.png" />
+                </a>
+    
+              </li>
+              <li class='link'>
+                            <a title="Moped" href="/en/moped/index.html"><img src="/images/moped-logo-small-white.png" />
+                </a>
+    
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id='navigation'>
+      <div class='subnav'>
+        <div class='container'>
+          <ul class='nav nav-pills'>
+            <li><a href="/en/origin/index.html">HOME</a></li>
+            <li class='dropdown' id='docs'>
+              <a class='dropdown-toggle' data-toggle='dropdown' href='#docs'>
+                DOCS
+                <b class='caret'></b>
+              </a>
+              <ul class='dropdown-menu'>
+                <li><a href="/en/origin/docs/installation.html">Installation</a></li>
+                <li><a href="/en/origin/docs/selection.html">Selection</a></li>
+                <li><a href="/en/origin/docs/options.html">Options</a></li>
+                <li><a href="/en/origin/docs/serialization.html">Serialization</a></li>
+                <li><a href="/en/origin/docs/aliases.html">Aliases</a></li>
+              </ul>
+            </li>
+            <li><a href="/en/origin/links.html">LINKS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id='content'>
+      <div class='container'>
+        <h1>Origin</h1>
+        <p>
+          Origin provides a DSL to mix in to any object to give it the ability
+          to build MongoDB queries easily. It was extracted from
+          <a href="/mongoid/index.html">Mongoid</a> in an attempt to allow
+          others to leverage the DSL in their own applications without needing
+          a mapper.
+        </p>
+        <h2>Sample Syntax</h2>
+        <div class='well'>
+          <table>
+            <tr>
+              <td class='samurai'><img src="/images/samurai.png" /></td>
+              <td class='note'>
+                Origin only supports MRI 1.9.2, 1.9.3, and HEAD, Rubinius 2 in 1.9 mode,
+                and JRuby 1.6.0+ in 1.9 mode. All code samples will use 1.9 syntax.
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="CodeRay">
+          <div class="code"><pre><span class="keyword">class</span> <span class="class">Criteria</span>&#x000A;  include <span class="constant">Origin</span>::<span class="constant">Queryable</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;criteria = <span class="constant">Criteria</span>.new&#x000A;criteria.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>).gt(age: <span class="integer">10</span>).desc(<span class="symbol">:created_at</span>)&#x000A;&#x000A;criteria.selector <span class="comment">#=&gt; { name: &quot;Syd&quot;, age: { &quot;$gt&quot; =&gt; 10 }}</span>&#x000A;criteria.option <span class="comment">#=&gt; { sort: { created_at: -1 }}</span></pre></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

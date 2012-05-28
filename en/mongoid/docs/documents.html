@@ -1,0 +1,565 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta content='A Ruby ODM for MongoDB' name='description' />
+    <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
+    <link href="/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/jquery-1.7.2.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
+    <script src="/javascripts/mongoid.js" type="text/javascript"></script>
+    <title>Mongoid: Documents</title>
+  </head>
+  <body data-offset='100' data-spy='scroll' data-target='.page-nav'>
+    <div class='mongoid' id='header'>
+      <div class='navbar navbar-fixed-top'>
+        <div class='navbar-inner'>
+          <div class='container'>
+            <ul class='nav'>
+              <li class='dropdown link' id='project'>
+                            <a title="Mongoid" href="/en/mongoid/index.html"><img src="/images/mongoid-logo-small-green.png" />
+                </a>
+    
+              </li>
+              <li class='link'>
+                            <a title="Origin" href="/en/origin/index.html"><img src="/images/origin-logo-small-white.png" />
+                </a>
+    
+              </li>
+              <li class='link'>
+                            <a title="Moped" href="/en/moped/index.html"><img src="/images/moped-logo-small-white.png" />
+                </a>
+    
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id='navigation'>
+      <div class='subnav'>
+        <div class='container'>
+          <ul class='nav nav-pills'>
+            <li><a href="/en/mongoid/index.html">HOME</a></li>
+            <li class='dropdown' id='docs'>
+              <a class='dropdown-toggle' data-toggle='dropdown' href='#docs'>
+                DOCS
+                <b class='caret'></b>
+              </a>
+              <ul class='dropdown-menu'>
+                <li><a href="/en/mongoid/docs/installation.html">Installation</a></li>
+                <li><a href="/en/mongoid/docs/documents.html">Documents</a></li>
+                <li><a href="/en/mongoid/docs/persistence.html">Persistence</a></li>
+                <li><a href="/en/mongoid/docs/querying.html">Querying</a></li>
+                <li><a href="/en/mongoid/docs/relations.html">Relations</a></li>
+                <li><a href="/en/mongoid/docs/nested_attributes.html">Nested Attributes</a></li>
+                <li><a href="/en/mongoid/docs/identity_map.html">Identity Map</a></li>
+                <li><a href="/en/mongoid/docs/callbacks.html">Callbacks</a></li>
+                <li><a href="/en/mongoid/docs/validation.html">Validation</a></li>
+                <li><a href="/en/mongoid/docs/indexing.html">Indexing</a></li>
+                <li><a href="/en/mongoid/docs/rails.html">Rails</a></li>
+                <li><a href="/en/mongoid/docs/extras.html">Extras</a></li>
+                <li><a href="/en/mongoid/docs/upgrading.html">Upgrading</a></li>
+                <li><a href="/en/mongoid/docs/contributing.html">Contributing</a></li>
+                <li><a href="/en/mongoid/docs/performance.html">Performance</a></li>
+              </ul>
+            </li>
+            <li><a href="/en/mongoid/links.html">LINKS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id='content'>
+      <div class='container'>
+        <h1>Documents</h1>
+        <p>
+          Documents are the core objects in Mongoid and any object that is to be
+          persisted to the database must include <code>Mongoid::Document</code>. The
+          representation of a Document in MongoDB is a BSON object that is very similar
+          to a Ruby hash or JSON object. Documents can be stored in their own
+          collections in the database, or can be embedded in other Documents n levels
+          deep.
+        </p>
+        <div class='page-nav'>
+          <div class='container'>
+            <ul class='nav nav-pills'>
+              <li><a href="#storage">Storage</a></li>
+              <li><a href="#fields">Fields</a></li>
+              <li><a href="#dynamic_fields">Dynamic Fields</a></li>
+              <li><a href="#localized_fields">Localized Fields</a></li>
+              <li><a href="#dirty">Dirty Tracking</a></li>
+              <li><a href="#security">Security</a></li>
+              <li><a href="#readonly">Readonly Attributes</a></li>
+              <li><a href="#inheritance">Inheritance</a></li>
+            </ul>
+          </div>
+        </div>
+        <section id='storage'>
+          <h2>Storage</h2>
+          <p>
+            Mongoid by default stores documents in a collection that is the pluralized
+            form of the class name. For the following <code>Person</code> class, the
+            collection the document would get stored in would be named <code>people</code>.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            Model class name cannot end with "s", because it will be considered as
+            the pluralized form of the word. For example <code>Status</code> would be considered
+            as the plural form of <code>Statu</code>, which will cause a few known problems.
+          </p>
+          <p>
+            This is a limitation of the <code>ActiveSupport::Inflector#classify</code> which
+            Mongoid uses to convert from filenames and collection names to class names.
+            You can overcome this by specifying a custom inflection rule for your model class.
+            For example, the following code will take care of the model named <code>Status</code>
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">ActiveSupport</span>::<span class="constant">Inflector</span>.inflections <span class="keyword">do</span> |inflect|&#x000A;  inflect.singular(<span class="string"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">status</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            The collection for the model's documents can be changed at the class level
+            if you would like them persisted elsewhere. You can also change the database
+            and session the model gets persisted in from the defaults.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  store_in collection: <span class="string"><span class="delimiter">&quot;</span><span class="content">citizens</span><span class="delimiter">&quot;</span></span>, database: <span class="string"><span class="delimiter">&quot;</span><span class="content">other</span><span class="delimiter">&quot;</span></span>, session: <span class="string"><span class="delimiter">&quot;</span><span class="content">secondary</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            When a document is stored in the database the ruby object will get
+            serialized into BSON and have a structure like so:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>{&#x000A;  <span class="key"><span class="delimiter">&quot;</span><span class="content">_id</span><span class="delimiter">&quot;</span></span> : ObjectId(<span class="string"><span class="delimiter">&quot;</span><span class="content">4d3ed089fb60ab534684b7e9</span><span class="delimiter">&quot;</span></span>),&#x000A;  <span class="key"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">Sir</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> : {&#x000A;    <span class="key"><span class="delimiter">&quot;</span><span class="content">_id</span><span class="delimiter">&quot;</span></span> : ObjectId(<span class="string"><span class="delimiter">&quot;</span><span class="content">4d3ed089fb60ab534684b7ff</span><span class="delimiter">&quot;</span></span>),&#x000A;    <span class="key"><span class="delimiter">&quot;</span><span class="content">first_name</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">Durran</span><span class="delimiter">&quot;</span></span>&#x000A;  },&#x000A;  <span class="key"><span class="delimiter">&quot;</span><span class="content">addresses</span><span class="delimiter">&quot;</span></span> : [&#x000A;    {&#x000A;      <span class="key"><span class="delimiter">&quot;</span><span class="content">_id</span><span class="delimiter">&quot;</span></span> : ObjectId(<span class="string"><span class="delimiter">&quot;</span><span class="content">4d3ed089fb60ab534684b7e0</span><span class="delimiter">&quot;</span></span>),&#x000A;      <span class="key"><span class="delimiter">&quot;</span><span class="content">city</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">Berlin</span><span class="delimiter">&quot;</span></span>,&#x000A;      <span class="key"><span class="delimiter">&quot;</span><span class="content">country</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">Deutschland</span><span class="delimiter">&quot;</span></span>&#x000A;    }&#x000A;  ]&#x000A;}&#x000A;</pre></div>
+          </div>
+        </section>
+        <section id='fields'>
+          <h2>Fields</h2>
+          <p>
+            Even though MongoDB is a schemaless database, most uses will be with
+            web applications where form parameters always come to the server as strings.
+            Mongoid provides an easy mechanism for transforming these strings into
+            their appropriate types through the definition of fields in a
+            <code>Mongoid::Document</code>.
+          </p>
+          <p>
+            Consider a simple class for modeling a person in an application. A person may
+            have a first name, last name, and middle name. We can define these
+            attributes on a person by using the fields macro.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:first_name</span>, type: <span class="constant">String</span>&#x000A;  field <span class="symbol">:middle_name</span>, type: <span class="constant">String</span>&#x000A;  field <span class="symbol">:last_name</span>, type: <span class="constant">String</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            Below is a list of valid types for fields.
+            <ul>
+              <li><code>Array</code></li>
+              <li><code>BigDecimal</code></li>
+              <li><code>Boolean</code></li>
+              <li><code>BSON::ObjectId</code></li>
+              <li><code>Date</code></li>
+              <li><code>DateTime</code></li>
+              <li><code>Float</code></li>
+              <li><code>Hash</code></li>
+              <li><code>Integer</code></li>
+              <li><code>Range</code></li>
+              <li><code>Regexp</code></li>
+              <li><code>String</code></li>
+              <li><code>Symbol</code></li>
+              <li><code>Time</code></li>
+              <li><code>TimeWithZone</code></li>
+            </ul>
+          </p>
+          <p>
+            If you decide not to specify the type of field with the definition, Mongoid
+            will treat it as an object and not try to typecast it when sending the
+            values to the database. This can be advantageous in 2 places, since
+            the lack of attempted conversion will yield a slight performance gain. However
+            some fields are not supported if not defined as fields. A note of thumb for
+            what fields you can use are:
+            <ul>
+              <li>You're not using a web front end and values are already properly cast.</li>
+              <li>All of your fields are strings.</li>
+            </ul>
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:first_name</span>&#x000A;  field <span class="symbol">:middle_name</span>&#x000A;  field <span class="symbol">:last_name</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            Types that are not supported as dynamic attributes since they cannot be cast
+            are:
+            <ul>
+              <li><code>BigDecimal</code></li>
+              <li><code>Date</code></li>
+              <li><code>DateTime</code></li>
+              <li><code>Range</code></li>
+            </ul>
+          </p>
+          <h3>Getting and setting field values</h3>
+          <p>
+            When a field is defined, Mongoid provides several different ways of
+            accessing the field.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Get the value of the first name field.</span>&#x000A;person.first_name&#x000A;person[<span class="symbol">:first_name</span>]&#x000A;person.read_attribute(<span class="symbol">:first_name</span>)&#x000A;&#x000A;<span class="comment"># Set the value for the first name field.</span>&#x000A;person.first_name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean</span><span class="delimiter">&quot;</span></span>&#x000A;person[<span class="symbol">:first_name</span>] = <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean</span><span class="delimiter">&quot;</span></span>&#x000A;person.write_attribute(<span class="symbol">:first_name</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean</span><span class="delimiter">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <p>
+            In cases where you want to set multiple field values at once, there are a
+            few different ways of handling this as well.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Get the field values as a hash.</span>&#x000A;person.attributes&#x000A;&#x000A;<span class="comment"># Set the field values in the document.</span>&#x000A;<span class="constant">Person</span>.new(first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean-Baptiste</span><span class="delimiter">&quot;</span></span>, middle_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Emmanuel</span><span class="delimiter">&quot;</span></span>)&#x000A;person.attributes = { first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean-Baptiste</span><span class="delimiter">&quot;</span></span>, middle_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Emmanuel</span><span class="delimiter">&quot;</span></span> }&#x000A;person.write_attributes(&#x000A;  first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean-Baptiste</span><span class="delimiter">&quot;</span></span>,&#x000A;  middle_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Emmanuel</span><span class="delimiter">&quot;</span></span>&#x000A;)&#x000A;</pre></div>
+          </div>
+          <h3>Defaults</h3>
+          <p>
+            You can tell a field in Mongoid to always have a default value if nothing
+            has been provided. Defaults are either static values or lambdas.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:blood_alcohol_level</span>, type: <span class="constant">Float</span>, default: <span class="float">0.40</span>&#x000A;  field <span class="symbol">:last_drink</span>, type: <span class="constant">Time</span>, default: -&gt;{ <span class="integer">10</span>.minutes.ago }&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            Be wary that default values that are not defined as lambdas or procs are
+            evaluated at class load time, so the following 2 definitions are not
+            equivalent. (You probably would prefer the second, which is at document
+            creation time.)
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>field <span class="symbol">:dob</span>, type: <span class="constant">Time</span>, default: <span class="constant">Time</span>.now&#x000A;field <span class="symbol">:dob</span>, type: <span class="constant">Time</span>, default: -&gt;{ <span class="constant">Time</span>.now }&#x000A;</pre></div>
+          </div>
+          <p>
+            If you want to set a default with a dependency on the document's state,
+            <code>self</code> inside a lambda or proc evaluates to the document instance.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>field <span class="symbol">:wasted_at</span>, type: <span class="constant">Time</span>, default: -&gt;{ new_record? ? <span class="integer">2</span>.hours.ago : <span class="constant">Time</span>.now }&#x000A;</pre></div>
+          </div>
+          <div class='well'>
+            <table>
+              <tr>
+                <td class='samurai'><img src="/images/samurai.png" /></td>
+                <td class='note'>
+                  When defining a default value as a proc, Mongoid will apply the default
+                  after all other attributes are set. If you want this to happen before
+                  the other attributes, set <code>pre_processed: true</code>.
+                </td>
+              </tr>
+            </table>
+          </div>
+          <h3>Field Aliasing</h3>
+          <p>
+            One of the drawbacks of having a schemaless database is that MongoDB must
+            store all field information along with every document, meaning that it takes
+            up a lot of storage space in RAM and on disk. A common pattern to limit this
+            is to alias fields to a small number of characters, while keeping the
+            domain in the application expressive. Mongoid allows you to do this and
+            reference the fields in the domain via their long names in getters, setters,
+            and criteria while performing the conversion for you.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:n</span>, as: <span class="symbol">:name</span>, type: <span class="constant">String</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;band = <span class="constant">Band</span>.new(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Placebo</span><span class="delimiter">&quot;</span></span>)&#x000A;band.attributes <span class="comment">#=&gt; { &quot;n&quot; =&gt; &quot;Placebo&quot; }</span>&#x000A;&#x000A;criteria = <span class="constant">Band</span>.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Placebo</span><span class="delimiter">&quot;</span></span>)&#x000A;criteria.selector <span class="comment">#=&gt; { &quot;n&quot; =&gt; &quot;Placebo&quot; }</span>&#x000A;</pre></div>
+          </div>
+          <h3>Custom field serialization</h3>
+          <p>
+            You can define custom types in Mongoid and determine how they are
+            serialized and deserialized. You simply need to define the class, include
+            <code>Mongoid::Fields::Serializable</code>, and override the
+            <code>serialize</code> and <code>deserialize</code> methods as needed.
+            Deserialization is used to convert from the value that is stored in the
+            database to a value that is used when accessed. Serialization is used to
+            convert the object to a MongoDB friendly value.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Profile</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:location</span>, type: <span class="constant">Point</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Point</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Fields</span>::<span class="constant">Serializable</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="function">deserialize</span>(object)&#x000A;    [ object[<span class="string"><span class="delimiter">&quot;</span><span class="content">x</span><span class="delimiter">&quot;</span></span>], object[<span class="string"><span class="delimiter">&quot;</span><span class="content">y</span><span class="delimiter">&quot;</span></span>] ]&#x000A;  <span class="keyword">end</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="function">serialize</span>(object)&#x000A;    { <span class="string"><span class="delimiter">&quot;</span><span class="content">x</span><span class="delimiter">&quot;</span></span> =&gt; object[<span class="integer">0</span>], <span class="string"><span class="delimiter">&quot;</span><span class="content">y</span><span class="delimiter">&quot;</span></span> =&gt; object[<span class="integer">1</span>] }&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <h3>Reserved names</h3>
+          <p>
+            If you define a field on your document that conflicts with a reserved method
+            name in Mongoid, the configuration will raise an error. For a list of these
+            you may look at <code>Mongoid.destructive_fields</code>.
+          </p>
+          <h3>Creating Custom Ids</h3>
+          <p>
+            For cases when you do not want to have <code>BSON::ObjectId</code> ids, you
+            can override Mongoid's <code>_id</code> field and set them to whatever you
+            like.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, type: <span class="constant">String</span>&#x000A;  field <span class="symbol">:_id</span>, type: <span class="constant">String</span>, default -&gt;{ name }&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+        </section>
+        <section id='dynamic_fields'>
+          <h2>Dynamic fields</h2>
+          <p>
+            By default Mongoid supports dynamic fields - that is it will allow
+            attributes to get set and persisted on the document even if a field was not
+            defined for them. There is a slight 'gotcha' however when dealing with
+            dynamic attributes in that Mongoid is not completely lenient about the use of
+            <code>method_missing</code> and breaking the public interface of the Document
+            class.
+          </p>
+          <p>
+            When dealing with dynamic attributes the following rules apply:
+          </p>
+          <p>
+            If the attribute exists in the document, Mongoid will provide you with your
+            standard getter and setter methods. For example, consider a person who has an
+            attribute of "gender" set on the document:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Set the person's gender to male.</span>&#x000A;person[<span class="symbol">:gender</span>] = <span class="string"><span class="delimiter">&quot;</span><span class="content">Male</span><span class="delimiter">&quot;</span></span>&#x000A;person.gender = <span class="string"><span class="delimiter">&quot;</span><span class="content">Male</span><span class="delimiter">&quot;</span></span>&#x000A;&#x000A;<span class="comment"># Get the person's gender.</span>&#x000A;person.gender&#x000A;</pre></div>
+          </div>
+          <p>
+            If the attribute does not already exist on the document, Mongoid will not
+            provide you with the getters and setters and will enforce normal
+            <code>method_missing</code> behavior. In this case you must use the other
+            provided accessor methods: (<code>[]</code> and <code>[]=</code>) or
+            (<code>read_attribute</code> and <code>write_attribute</code>).
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Raise a NoMethodError if value isn't set.</span>&#x000A;person.gender&#x000A;person.gender = <span class="string"><span class="delimiter">&quot;</span><span class="content">Male</span><span class="delimiter">&quot;</span></span>&#x000A;&#x000A;<span class="comment"># Retrieve a dynamic field safely.</span>&#x000A;person[<span class="symbol">:gender</span>]&#x000A;person.read_attribute(<span class="symbol">:gender</span>)&#x000A;&#x000A;<span class="comment"># Write a dynamic field safely.</span>&#x000A;person[<span class="symbol">:gender</span>] = <span class="string"><span class="delimiter">&quot;</span><span class="content">Male</span><span class="delimiter">&quot;</span></span>&#x000A;person.write_attribute(<span class="symbol">:gender</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Male</span><span class="delimiter">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <p>
+            Dynamic attributes can be completely turned off by setting the Mongoid
+            configuration option <code>allow_dynamic_fields</code> to <code>false</code>.
+          </p>
+        </section>
+        <section id='localized_fields'>
+          <h2>Localized fields</h2>
+          <p>
+            From 2.4.0 Mongoid now supports localized fields without the need of any
+            external gem.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Product</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:description</span>, localize: <span class="predefined-constant">true</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            By telling the field to <code>localize</code>, Mongoid will under the covers
+            store the field as a hash of locale/value pairs, but normal access to it will
+            behave like a string.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Using a default locale of en.</span>&#x000A;product = <span class="constant">Product</span>.new&#x000A;product.description = <span class="string"><span class="delimiter">&quot;</span><span class="content">Marvelous!</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="constant">I18n</span>.locale = <span class="symbol">:de</span>&#x000A;product.description = <span class="string"><span class="delimiter">&quot;</span><span class="content">Fantastisch!</span><span class="delimiter">&quot;</span></span>&#x000A;&#x000A;product.attributes&#x000A;<span class="comment">#=&gt; { &quot;description&quot; =&gt; { &quot;en&quot; =&gt; &quot;Marvelous!&quot;, &quot;de&quot; =&gt; &quot;Fantastisch!&quot; }</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            You can get and set all the translations at once by using the
+            corresponding <code>_translations</code> method.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>product.description_translations&#x000A;<span class="comment">#=&gt; { &quot;description&quot; =&gt; { &quot;en&quot; =&gt; &quot;Marvelous!&quot;, &quot;de&quot; =&gt; &quot;Fantastisch!&quot; }</span>&#x000A;product.description_translations =&#x000A;  { <span class="string"><span class="delimiter">&quot;</span><span class="content">description</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">en</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Marvelous!</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">de</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Wunderbar!</span><span class="delimiter">&quot;</span></span> }&#x000A;</pre></div>
+          </div>
+          <h3>Fallbacks</h3>
+          <p>
+            When using fallbacks, Mongoid will automatically use them when a translation
+            is not available.
+          </p>
+          <p>
+            For Rails applications, set the fallbacks configuration setting to true in
+            your environment.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>config.i18n.fallbacks = <span class="predefined-constant">true</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            For non-rails applications, you must include the fallbacks module straight
+            to the I18n gem.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>require <span class="string"><span class="delimiter">&quot;</span><span class="content">i18n/backend/fallbacks</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="constant">I18n</span>::<span class="constant">Backend</span>::<span class="constant">Simple</span>.send(<span class="symbol">:include</span>, <span class="constant">I18n</span>::<span class="constant">Backend</span>::<span class="constant">Fallbacks</span>)&#x000A;</pre></div>
+          </div>
+          <p>
+            Then when the fallbacks are defined, if a translation is not present Mongoid
+            will fallback in order of the defined locales.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Using a default locale of en.</span>&#x000A;::<span class="constant">I18n</span>.fallbacks[<span class="symbol">:de</span>] = [ <span class="symbol">:de</span>, <span class="symbol">:en</span>, <span class="symbol">:es</span> ]&#x000A;product = <span class="constant">Product</span>.new&#x000A;product.description = <span class="string"><span class="delimiter">&quot;</span><span class="content">Marvelous!</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="constant">I18n</span>.locale = <span class="symbol">:de</span>&#x000A;product.description <span class="comment">#=&gt; &quot;Marvelous!&quot;</span>&#x000A;</pre></div>
+          </div>
+          <h3>Querying</h3>
+          <p>
+            When querying for localized fields using Mongoid's criteria API, Mongoid
+            will automatically alter the criteria to match the current locale.
+          </p>
+          <mongoid>mongoid</mongoid>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Match all prodcucts with Marvelous as the description. Locale is en.</span>&#x000A;<span class="constant">Product</span>.where(description: <span class="string"><span class="delimiter">&quot;</span><span class="content">Marvelous!</span><span class="delimiter">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <mongodb>mongodb query selector</mongodb>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">description.en</span><span class="delimiter">&quot;</span></span> : <span class="string"><span class="delimiter">&quot;</span><span class="content">Marvelous!</span><span class="delimiter">&quot;</span></span> }&#x000A;</pre></div>
+          </div>
+          <h3>Indexing</h3>
+          <p>
+            If you plan to be querying extensively on localized fields, you should index
+            each of the locales that you plan on searching on.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Product</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:description</span>, localize: <span class="predefined-constant">true</span>&#x000A;&#x000A;  index <span class="string"><span class="delimiter">&quot;</span><span class="content">description.de</span><span class="delimiter">&quot;</span></span>&#x000A;  index <span class="string"><span class="delimiter">&quot;</span><span class="content">description.en</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <h3>Validation</h3>
+          <p>
+            Mongoid's presence validator will make sure that translations are present
+            for all locales that are in the underlying hash.
+          </p>
+        </section>
+        <section id='dirty'>
+          <h2>Dirty Tracking</h2>
+          <p>
+            Mongoid supports tracking of changed or "dirty" fields with an API that
+            mirrors that of Active Model. If a defined field has been modified in
+            a model the model will be marked as dirty and some additional behavior
+            comes into play.
+          </p>
+          <h3>Viewing changes</h3>
+          <p>
+            There are various ways to view what has been altered on a model. Changes
+            are recorded from the time a document is instantiated, either as a
+            new document or via loading from the database up to the time it is
+            saved. Any persistence operation clears the changes.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, type: <span class="constant">String</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;person = <span class="constant">Person</span>.first&#x000A;person.name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Alan Garner</span><span class="delimiter">&quot;</span></span>&#x000A;&#x000A;<span class="comment"># Check to see if the document has changed.</span>&#x000A;person.changed? <span class="comment">#=&gt; true</span>&#x000A;&#x000A;<span class="comment"># Get an array of the names of the changed fields.</span>&#x000A;person.changed <span class="comment">#=&gt; [ :name ]</span>&#x000A;&#x000A;<span class="comment"># Get a hash of the old and changed values for each field.</span>&#x000A;person.changes <span class="comment">#=&gt; { &quot;name&quot; =&gt; [ &quot;Alan Parsons&quot;, &quot;Alan Garner&quot; ] }</span>&#x000A;&#x000A;<span class="comment"># Check if a specific field has changed.</span>&#x000A;person.name_changed? <span class="comment">#=&gt; true</span>&#x000A;&#x000A;<span class="comment"># Get the changes for a specific field.</span>&#x000A;person.name_change <span class="comment">#=&gt; [ &quot;Alan Parsons&quot;, &quot;Alan Garner&quot; ]</span>&#x000A;&#x000A;<span class="comment"># Get the previous value for a field.</span>&#x000A;person.name_was <span class="comment">#=&gt; &quot;Alan Parsons&quot;</span>&#x000A;</pre></div>
+          </div>
+          <h3>Resetting changes</h3>
+          <p>
+            You can reset changes of a field to it's previous value by calling the
+            reset method.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>person = <span class="constant">Person</span>.first&#x000A;person.name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Alan Garner</span><span class="delimiter">&quot;</span></span>&#x000A;&#x000A;<span class="comment"># Reset the changed name back to the original</span>&#x000A;person.reset_name!&#x000A;person.name <span class="comment">#=&gt; &quot;Alan Parsons&quot;</span>&#x000A;</pre></div>
+          </div>
+          <h3>Notes on persistence</h3>
+          <p>
+            Mongoid uses dirty tracking as the core of its persistence operations.
+            It looks at the changes on a document and atomically updates only what
+            has changed unlike other frameworks that write the entire document on
+            each save. If no changes have been made, Mongoid will not hit the database
+            on a call to <code>Model#save</code>.
+          </p>
+          <h3>Viewing previous changes</h3>
+          <p>
+            After a document has been persisted, you can see what the changes were
+            previously by calling <code>Model#previous_changes</code>
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>person = <span class="constant">Person</span>.first&#x000A;person.name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Alan Garner</span><span class="delimiter">&quot;</span></span>&#x000A;person.save <span class="comment">#=&gt; Clears out current changes.</span>&#x000A;&#x000A;<span class="comment"># View the previous changes.</span>&#x000A;person.previous_changes <span class="comment">#=&gt; { &quot;name&quot; =&gt; [ &quot;Alan Parsons&quot;, &quot;Alan Garner&quot; ] }</span>&#x000A;</pre></div>
+          </div>
+        </section>
+        <section id='security'>
+          <h2>Security</h2>
+          <p>
+            There are cases where you don't want Mongoid to allow attributes to be
+            set through mass assignment, like passwords. This is a common event when
+            submitting forms, and fields can be protected by using Mongoid's
+            <code>attr_protected</code> or <code>attr_accessible</code> thanks to the
+            wonders of Active Model.
+          </p>
+          <div class='well'>
+            <table>
+              <tr>
+                <td class='samurai'><img src="/images/samurai.png" /></td>
+                <td class='note'>
+                  Mongoid auto-protects the <code>_id</code> and <code>_type</code>
+                  attributes by default.
+                </td>
+              </tr>
+            </table>
+          </div>
+          <h3>Protected</h3>
+          <p>
+            When defining a list of fields as protected, all other fields in the
+            document will NOT be able to be set through mass assignment.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">User</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:first_name</span>, type: <span class="constant">String</span>&#x000A;  field <span class="symbol">:password</span>, type: <span class="constant">String</span>&#x000A;  attr_protected <span class="symbol">:password</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="comment"># Set attributes on a person properly.</span>&#x000A;<span class="constant">Person</span>.new(first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Corbin</span><span class="delimiter">&quot;</span></span>)&#x000A;person.attributes = { first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Corbin</span><span class="delimiter">&quot;</span></span> }&#x000A;person.write_attributes(first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Corbin</span><span class="delimiter">&quot;</span></span>)&#x000A;&#x000A;<span class="comment"># Attempt to set attributes a person, logging an error.</span>&#x000A;<span class="constant">Person</span>.new(first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Corbin</span><span class="delimiter">&quot;</span></span>, password: <span class="string"><span class="delimiter">&quot;</span><span class="content">password</span><span class="delimiter">&quot;</span></span>)&#x000A;person.attributes = { first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Corbin</span><span class="delimiter">&quot;</span></span>, password: <span class="string"><span class="delimiter">&quot;</span><span class="content">password</span><span class="delimiter">&quot;</span></span> }&#x000A;person.write_attributes(first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Corbin</span><span class="delimiter">&quot;</span></span>, password: <span class="string"><span class="delimiter">&quot;</span><span class="content">password</span><span class="delimiter">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <h3>Accessible</h3>
+          <p>
+            Providing a list of fields as accessible is simply the inverse of
+            protecting them. Anything not defined as accessible will cause the
+            error.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">User</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:first_name</span>, type: <span class="constant">String</span>&#x000A;  field <span class="symbol">:password</span>, type: <span class="constant">String</span>&#x000A;  attr_accessible <span class="symbol">:first_name</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="comment"># Set attributes on a user properly.</span>&#x000A;<span class="constant">User</span>.new(first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Corbin</span><span class="delimiter">&quot;</span></span>)&#x000A;user.attributes = { first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Corbin</span><span class="delimiter">&quot;</span></span> }&#x000A;user.write_attributes(first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Corbin</span><span class="delimiter">&quot;</span></span>)&#x000A;&#x000A;<span class="comment"># Attempt to set attributes on a user, will silently ignore protected ones.</span>&#x000A;<span class="constant">User</span>.new(first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Corbin</span><span class="delimiter">&quot;</span></span>, password: <span class="string"><span class="delimiter">&quot;</span><span class="content">password</span><span class="delimiter">&quot;</span></span>)&#x000A;user.attributes = { first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Corbin</span><span class="delimiter">&quot;</span></span>, password: <span class="string"><span class="delimiter">&quot;</span><span class="content">password</span><span class="delimiter">&quot;</span></span> }&#x000A;user.write_attributes(first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Corbin</span><span class="delimiter">&quot;</span></span>, password: <span class="string"><span class="delimiter">&quot;</span><span class="content">password</span><span class="delimiter">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <p>
+            You can scope the mass assignment by role by providing the role as an
+            option to the constructor or create methods.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">User</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:first_name</span>, type: <span class="constant">String</span>&#x000A;  field <span class="symbol">:password</span>, type: <span class="constant">String</span>&#x000A;  attr_accessible <span class="symbol">:first_name</span>, as: [ <span class="symbol">:default</span>, <span class="symbol">:admin</span> ]&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="comment"># Set attributes on a person for the admin role</span>&#x000A;<span class="constant">Person</span>.new({ first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Corbin</span><span class="delimiter">&quot;</span></span> }, as: <span class="symbol">:admin</span>)&#x000A;<span class="constant">Person</span>.create({ first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Corbin</span><span class="delimiter">&quot;</span></span> }, as: <span class="symbol">:default</span>)&#x000A;<span class="constant">Person</span>.create!({ first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Corbin</span><span class="delimiter">&quot;</span></span> }, as: <span class="symbol">:admin</span>)&#x000A;</pre></div>
+          </div>
+          <h3>Overriding</h3>
+          <p>
+            In the case you want to override the security in a single call,
+            you can pass a block to the document constructor to set fields manually.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Person</span>.new(first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Corbin</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |person|&#x000A;  person.password = <span class="string"><span class="delimiter">&quot;</span><span class="content">password</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+        </section>
+        <section id='readonly'>
+          <h2>Readonly Attributes</h2>
+          <p>
+            You can tell Mongoid that certain attributes are readonly. This will
+            allow documents to be created with theses attributes, but changes to
+            them will be filtered out.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, type: <span class="constant">String</span>&#x000A;  field <span class="symbol">:origin</span>, type: <span class="constant">String</span>&#x000A;&#x000A;  attr_readonly <span class="symbol">:name</span>, origin&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;band = <span class="constant">Band</span>.create(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Placebo</span><span class="delimiter">&quot;</span></span>)&#x000A;band.update_attributes(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>) <span class="comment"># Filters out the name change.</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            If you explicitly try to update or remove the attribute by itself, then
+            a <code>ReadonlyAttribute</code> error will be raised.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>band.update_attribute(<span class="symbol">:name</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>) <span class="comment"># Raises the error.</span>&#x000A;band.remove_attribute(<span class="symbol">:name</span>) <span class="comment"># Raises the error.</span>&#x000A;</pre></div>
+          </div>
+        </section>
+        <section id='inheritance'>
+          <h2>Inheritance</h2>
+          <p>
+            Mongoid supports inheritance in both root and embedded documents. In
+            scenarios where documents are inherited from their fields, relations,
+            validations and scopes get copied down into their child documents, but
+            not vise-versa.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Canvas</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, type: <span class="constant">String</span>&#x000A;  embeds_many <span class="symbol">:shapes</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Browser</span> &lt; <span class="constant">Canvas</span>&#x000A;  field <span class="symbol">:version</span>, type: <span class="constant">Integer</span>&#x000A;  scope <span class="symbol">:recent</span>, where(<span class="symbol">:version</span>.gt =&gt; <span class="integer">3</span>)&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Firefox</span> &lt; <span class="constant">Browser</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Shape</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:x</span>, type: <span class="constant">Integer</span>&#x000A;  field <span class="symbol">:y</span>, type: <span class="constant">Integer</span>&#x000A;  embedded_in <span class="symbol">:canvas</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Circle</span> &lt; <span class="constant">Shape</span>&#x000A;  field <span class="symbol">:radius</span>, type: <span class="constant">Float</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Rectangle</span> &lt; <span class="constant">Shape</span>&#x000A;  field <span class="symbol">:width</span>, type: <span class="constant">Float</span>&#x000A;  field <span class="symbol">:height</span>, type: <span class="constant">Float</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            In the above example, <code>Canvas</code>, <code>Browser</code> and
+            <code>Firefox</code> will all save in the <code>canvases</code> collection.
+            An additional attribute <code>_type</code> is stored in order
+            to make sure when loaded from the database the correct document is
+            returned. This also holds true for the embedded documents <code>Circle</code>,
+            <code>Rectangle</code>, and <code>Shape</code>.
+          </p>
+          <h3>Querying for Subclasses</h3>
+          <p>
+            Querying for subclasses is handled in the normal manner, and although
+            the documents are all in the same collection, queries will only return
+            documents of the correct type, similar to Single Table Inheritance in
+            ActiveRecord.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Returns Canvas documents and subclasses</span>&#x000A;<span class="constant">Canvas</span>.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Paper</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="comment"># Returns only Firefox documents</span>&#x000A;<span class="constant">Firefox</span>.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Window 1</span><span class="delimiter">&quot;</span></span>)&#x000A;</pre></div>
+          </div>
+          <h3>Associations</h3>
+          <p>
+            You can add any type of subclass to a has one or has many association,
+            through either normal setting or through the build and create methods
+            on the association:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>firefox = <span class="constant">Firefox</span>.new&#x000A;<span class="comment"># Builds a Shape object</span>&#x000A;firefox.shapes.build({ x: <span class="integer">0</span>, y: <span class="integer">0</span> })&#x000A;<span class="comment"># Builds a Circle object</span>&#x000A;firefox.shapes.build({ x: <span class="integer">0</span>, y: <span class="integer">0</span> }, <span class="constant">Circle</span>)&#x000A;<span class="comment"># Creates a Rectangle object</span>&#x000A;firefox.shapes.create({ x: <span class="integer">0</span>, y: <span class="integer">0</span> }, <span class="constant">Rectangle</span>)&#x000A;&#x000A;rect = <span class="constant">Rectangle</span>.new(width: <span class="integer">100</span>, height: <span class="integer">200</span>)&#x000A;firefox.shapes</pre></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>

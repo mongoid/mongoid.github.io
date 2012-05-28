@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta content='A Ruby ODM for MongoDB' name='description' />
+    <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
+    <link href="/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/jquery-1.7.2.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
+    <script src="/javascripts/mongoid.js" type="text/javascript"></script>
+    <title>Mongoid: Indexing</title>
+  </head>
+  <body data-offset='100' data-spy='scroll' data-target='.page-nav'>
+    <div class='mongoid' id='header'>
+      <div class='navbar navbar-fixed-top'>
+        <div class='navbar-inner'>
+          <div class='container'>
+            <ul class='nav'>
+              <li class='dropdown link' id='project'>
+                            <a title="Mongoid" href="/en/mongoid/index.html"><img src="/images/mongoid-logo-small-green.png" />
+                </a>
+    
+              </li>
+              <li class='link'>
+                            <a title="Origin" href="/en/origin/index.html"><img src="/images/origin-logo-small-white.png" />
+                </a>
+    
+              </li>
+              <li class='link'>
+                            <a title="Moped" href="/en/moped/index.html"><img src="/images/moped-logo-small-white.png" />
+                </a>
+    
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id='navigation'>
+      <div class='subnav'>
+        <div class='container'>
+          <ul class='nav nav-pills'>
+            <li><a href="/en/mongoid/index.html">HOME</a></li>
+            <li class='dropdown' id='docs'>
+              <a class='dropdown-toggle' data-toggle='dropdown' href='#docs'>
+                DOCS
+                <b class='caret'></b>
+              </a>
+              <ul class='dropdown-menu'>
+                <li><a href="/en/mongoid/docs/installation.html">Installation</a></li>
+                <li><a href="/en/mongoid/docs/documents.html">Documents</a></li>
+                <li><a href="/en/mongoid/docs/persistence.html">Persistence</a></li>
+                <li><a href="/en/mongoid/docs/querying.html">Querying</a></li>
+                <li><a href="/en/mongoid/docs/relations.html">Relations</a></li>
+                <li><a href="/en/mongoid/docs/nested_attributes.html">Nested Attributes</a></li>
+                <li><a href="/en/mongoid/docs/identity_map.html">Identity Map</a></li>
+                <li><a href="/en/mongoid/docs/callbacks.html">Callbacks</a></li>
+                <li><a href="/en/mongoid/docs/validation.html">Validation</a></li>
+                <li><a href="/en/mongoid/docs/indexing.html">Indexing</a></li>
+                <li><a href="/en/mongoid/docs/rails.html">Rails</a></li>
+                <li><a href="/en/mongoid/docs/extras.html">Extras</a></li>
+                <li><a href="/en/mongoid/docs/upgrading.html">Upgrading</a></li>
+                <li><a href="/en/mongoid/docs/contributing.html">Contributing</a></li>
+                <li><a href="/en/mongoid/docs/performance.html">Performance</a></li>
+              </ul>
+            </li>
+            <li><a href="/en/mongoid/links.html">LINKS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id='content'>
+      <div class='container'>
+        <h1>Indexing</h1>
+        <p>
+          You can define indexes on documents using the index macro. Provide the key
+          for the index along with a direction. For additional options, supply them
+          in a second options hash paramter.
+        </p>
+        <div class="CodeRay">
+          <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:ssn</span>&#x000A;&#x000A;  index({ ssn: <span class="integer">1</span> }, { unique: <span class="predefined-constant">true</span>, name: <span class="string"><span class="delimiter">&quot;</span><span class="content">ssn_index</span><span class="delimiter">&quot;</span></span> })&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+        </div>
+        <p>
+          You can define indexes on embedded document fields as well.
+        </p>
+        <div class="CodeRay">
+          <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  embeds_many <span class="symbol">:addresses</span>&#x000A;  index <span class="string"><span class="delimiter">&quot;</span><span class="content">addresses.street</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">1</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+        </div>
+        <p>
+          You can index on multiple fields and provide direction.
+        </p>
+        <div class="CodeRay">
+          <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:first_name</span>&#x000A;  field <span class="symbol">:last_name</span>&#x000A;&#x000A;  index({ first_name: <span class="integer">1</span>, last_name: <span class="integer">1</span> }, { unique: <span class="predefined-constant">true</span> })&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+        </div>
+        <p>
+          Indexes can be sparse:
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:ssn</span>&#x000A;&#x000A;  index({ ssn: <span class="integer">-1</span> }, { sparse: <span class="predefined-constant">true</span> })&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+        </p>
+        <p>
+          Indexes can be run in the background in cases where they may take some time:
+        </p>
+        <div class="CodeRay">
+          <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:ssn</span>&#x000A;&#x000A;  index({ ssn: <span class="integer">1</span> }, { unique: <span class="predefined-constant">true</span>, background: <span class="predefined-constant">true</span> })&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+        </div>
+        <p>
+          For geospacial indexes, make sure the field you are indexing is an <tt>Array</tt>.
+        </p>
+        <div class="CodeRay">
+          <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:location</span>, type: <span class="constant">Array</span>&#x000A;&#x000A;  index({ location: <span class="string"><span class="delimiter">&quot;</span><span class="content">2d</span><span class="delimiter">&quot;</span></span> }, { min: <span class="integer">-200</span>, max: <span class="integer">200</span> })&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+        </div>
+        <p>
+          You can have Mongoid define indexes for you on "foreign key" fields for
+          relational associations. This only works on the relation macro that the
+          foreign key is stored on.
+        </p>
+        <div class="CodeRay">
+          <div class="code"><pre><span class="keyword">class</span> <span class="class">Comment</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  belongs_to <span class="symbol">:post</span>, index: <span class="predefined-constant">true</span>&#x000A;  has_and_belongs_to_many <span class="symbol">:preferences</span>, index: <span class="predefined-constant">true</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+        </div>
+        <p>
+          When you want to create the indexes in the database, use the provided rake task.
+        </p>
+        <div class="CodeRay">
+          <div class="code"><pre>rake db<span class="symbol">:mongoid</span><span class="symbol">:create_indexes</span>&#x000A;</pre></div>
+        </div>
+        <p>
+          Mongoid also provides a rake task to delete non-defined indexes.
+        </p>
+        <div class="CodeRay">
+          <div class="code"><pre>rake db<span class="symbol">:mongoid</span><span class="symbol">:remove_indexes</span></pre></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

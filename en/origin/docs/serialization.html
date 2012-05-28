@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+  <head>
+    <meta content='A Ruby DSL for building MongoDB queries' name='description' />
+    <meta content='mongoid, origin, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
+    <link href="/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/jquery-1.7.2.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
+    <script src="/javascripts/mongoid.js" type="text/javascript"></script>
+    <title>Origin: Serialization</title>
+  </head>
+  <body data-offset='100' data-spy='scroll' data-target='.page-nav'>
+    <div class='origin' id='header'>
+      <div class='navbar navbar-fixed-top'>
+        <div class='navbar-inner'>
+          <div class='container'>
+            <ul class='nav'>
+              <li class='dropdown link' id='project'>
+                            <a title="Mongoid" href="/en/mongoid/index.html"><img src="/images/mongoid-logo-small-white.png" />
+                </a>
+    
+              </li>
+              <li class='link'>
+                            <a title="Origin" href="/en/origin/index.html"><img src="/images/origin-logo-small-green.png" />
+                </a>
+    
+              </li>
+              <li class='link'>
+                            <a title="Moped" href="/en/moped/index.html"><img src="/images/moped-logo-small-white.png" />
+                </a>
+    
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id='navigation'>
+      <div class='subnav'>
+        <div class='container'>
+          <ul class='nav nav-pills'>
+            <li><a href="/en/origin/index.html">HOME</a></li>
+            <li class='dropdown' id='docs'>
+              <a class='dropdown-toggle' data-toggle='dropdown' href='#docs'>
+                DOCS
+                <b class='caret'></b>
+              </a>
+              <ul class='dropdown-menu'>
+                <li><a href="/en/origin/docs/installation.html">Installation</a></li>
+                <li><a href="/en/origin/docs/selection.html">Selection</a></li>
+                <li><a href="/en/origin/docs/options.html">Options</a></li>
+                <li><a href="/en/origin/docs/serialization.html">Serialization</a></li>
+                <li><a href="/en/origin/docs/aliases.html">Aliases</a></li>
+              </ul>
+            </li>
+            <li><a href="/en/origin/links.html">LINKS</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id='content'>
+      <div class='container'>
+        <h1>Serialization</h1>
+        <p>
+          Not all of our beloved Ruby objects can be serialized and set to the
+          database in our queries. For these cases, Origin provides the means
+          to define custom serializers for Ruby types that need translation
+          to Mongo compatible forms. To get custom serialization for your
+          objects, you need to do 1 of 2 things to "evolve" your objects into
+          Mongo friendly values.
+        </p>
+        <div class='page-nav'>
+          <div class='container'>
+            <ul class='nav nav-pills'>
+              <li><a href="#class_methods">Class Method Evolution</a></li>
+              <li><a href="#serializer">Key Based Evolution</a></li>
+            </ul>
+          </div>
+        </div>
+        <section id='class_methods'>
+          <h2>Class Method Evolution</h2>
+          <p>
+            Your first option is to provide a class method named
+            <code>evolve</code> that takes a object on your object's class. A
+            good example of this is Ruby's <code>Date</code>, which MongoDB
+            cannot handle - it only accepts times.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Date</span>&#x000A;  <span class="keyword">def</span> <span class="predefined-constant">self</span>.<span class="function">evolve</span>(date)&#x000A;    <span class="constant">Time</span>.utc(date.year, date.month, date.day, <span class="integer">0</span>, <span class="integer">0</span>, <span class="integer">0</span>, <span class="integer">0</span>)&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            In the above case, everytime you create a query that has a <code>Date</code>
+            object in it, Origin would convert the date to a UTC time for you. Note
+            that Origin already handles this for you, this is just an example of how it
+            was done.
+          </p>
+        </section>
+        <section id='serializer'>
+          <h2>Key Based Evolution</h2>
+          <p>
+            There may be cases that you want custom serialization based on the name of
+            the field that you are querying on, not the type you passed in. An example
+            of this are named fields in Mongoid - they use a class named
+            <code>Field</code> to handle all of Mongoid's behaviour, but they need to
+            also serialize to the appropriate type when queries are made. Custom named
+            serializers need just to respond to an instance method <code>evolve</code>.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">DateSerializer</span>&#x000A;  <span class="keyword">def</span> <span class="function">evolve</span>(date)&#x000A;    <span class="constant">Time</span>.utc(date.year, date.month, date.day, <span class="integer">0</span>, <span class="integer">0</span>, <span class="integer">0</span>, <span class="integer">0</span>)&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            Then when instantiating your queryable, you need to provide it a hash of
+            field name/serializer pairs as it's second argument.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Query</span>&#x000A;  include <span class="constant">Origin</span>::<span class="constant">Queryable</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;queryable = <span class="constant">Query</span>.new({}, { <span class="string"><span class="delimiter">&quot;</span><span class="content">date</span><span class="delimiter">&quot;</span></span> =&gt; <span class="constant">DateSerializer</span>.new })&#x000A;</pre></div>
+          </div>
+          <p>
+            After this, any queries made with the field <code>date</code> in the
+            criteria will use the serializer to convert the value.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(date: <span class="constant">Date</span>.new) <span class="comment">#=&gt; Will convert the date to a time.</span></pre></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>
