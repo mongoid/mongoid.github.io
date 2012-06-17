@@ -267,16 +267,39 @@
           <h3>Custom field serialization</h3>
           <p>
             You can define custom types in Mongoid and determine how they are
-            serialized and deserialized. You simply need to define the class, include
-            <code>Mongoid::Fields::Serializable</code>, and override the
-            <code>serialize</code> and <code>deserialize</code> methods as needed.
-            Deserialization is used to convert from the value that is stored in the
-            database to a value that is used when accessed. Serialization is used to
-            convert the object to a MongoDB friendly value.
+            serialized and deserialized. You simply need to provide 3 methods on it
+            for Mongoid to call to convert your object to and from MongoDB friendly
+            values.
           </p>
           <div class="CodeRay">
-            <div class="code"><pre><span class="keyword">class</span> <span class="class">Profile</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:location</span>, type: <span class="constant">Point</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Point</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Fields</span>::<span class="constant">Serializable</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="function">deserialize</span>(object)&#x000A;    [ object[<span class="string"><span class="delimiter">&quot;</span><span class="content">x</span><span class="delimiter">&quot;</span></span>], object[<span class="string"><span class="delimiter">&quot;</span><span class="content">y</span><span class="delimiter">&quot;</span></span>] ]&#x000A;  <span class="keyword">end</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="function">serialize</span>(object)&#x000A;    { <span class="string"><span class="delimiter">&quot;</span><span class="content">x</span><span class="delimiter">&quot;</span></span> =&gt; object[<span class="integer">0</span>], <span class="string"><span class="delimiter">&quot;</span><span class="content">y</span><span class="delimiter">&quot;</span></span> =&gt; object[<span class="integer">1</span>] }&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Profile</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:location</span>, type: <span class="constant">Point</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Point</span>&#x000A;&#x000A;  attr_reader <span class="symbol">:x</span>, <span class="symbol">:y</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="function">initialize</span>(x, y)&#x000A;    <span class="instance-variable">@x</span>, <span class="instance-variable">@y</span> = x, y&#x000A;  <span class="keyword">end</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="function">mongoize</span>&#x000A;    [ x, y ]&#x000A;  <span class="keyword">end</span>&#x000A;&#x000A;  <span class="keyword">class</span> &lt;&lt; <span class="class">self</span>&#x000A;&#x000A;    <span class="keyword">def</span> <span class="function">demongoize</span>(object)&#x000A;      <span class="constant">Point</span>.new(object[<span class="integer">0</span>], object[<span class="integer">1</span>])&#x000A;    <span class="keyword">end</span>&#x000A;&#x000A;    <span class="keyword">def</span> <span class="function">evolve</span>(object)&#x000A;      <span class="keyword">if</span> object.is_a?(<span class="constant">Point</span>)&#x000A;        [ object.x, object.y ]&#x000A;      <span class="keyword">else</span>&#x000A;        object&#x000A;      <span class="keyword">end</span>&#x000A;    <span class="keyword">end</span>&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
           </div>
+          <p>
+            The instance method <code>mongoize</code> take an instance of your object,
+            and converts it into how it will be stored in the database. In our example
+            above, we want to store our point object as an array in the form
+            <code>[ x, y ]</code>.
+          </p>
+          <p>
+            The class method <code>demongoize</code> takes an object as how it was
+            stored in the database, and is responsible for instantiating an object of
+            your custom type. In this case, we take an array and instantiate a
+            <code>Point</code> from it.
+          </p>
+          <p>
+            The class method <code>evolve</code> takes an object, and determines how it
+            is to be transformed for use in criteria. For example we may want to write
+            a query like so:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>point = <span class="constant">Point</span>.new(<span class="integer">12</span>, <span class="integer">24</span>)&#x000A;<span class="constant">Venue</span>.where(location: point)&#x000A;</pre></div>
+          </div>
+          <p>
+            We need the point object in the criteria to be transformed to a Mongo
+            friendly value when it is not as well, and <code>evolve</code> is the method
+            that takes care of this. We check if the passed in object is a <code>Point</code>
+            first, in case we also want to be able to pass in ordinary arrays instead.
+          </p>
           <h3>Reserved names</h3>
           <p>
             If you define a field on your document that conflicts with a reserved method

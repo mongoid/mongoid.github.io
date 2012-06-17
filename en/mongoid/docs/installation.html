@@ -145,6 +145,17 @@
           <div class="CodeRay">
             <div class="code"><pre><span class="error">$</span> gem install mongoid&#x000A;</pre></div>
           </div>
+          <div class='well'>
+            <table>
+              <tr>
+                <td class='samurai'><img src="/images/samurai.png" /></td>
+                <td class='note'>
+                  The minimum version of MongoDB that is required for you to run Mongoid 3
+                  is <code>2.0.0</code>.
+                </td>
+              </tr>
+            </table>
+          </div>
         </section>
         <section id='configuration'>
           <h2>Configuration</h2>
@@ -251,7 +262,7 @@
           <h3>Getting Rid of Active Record</h3>
           <p>
             Now that you have a <code>mongoid.yml</code> you can't wait to delete that
-            pesky <code>database.yml</code>, right? Do it and you'll start gecodeing
+            pesky <code>database.yml</code>, right? Do it and you'll start getting
             <code>ActiveRecord</code> errors all over the place.
             You don't need ActiveRecord unless you're trying to use Mongo in concert
             with a SQL database. Here's how you remove ActiveRecord from the most
@@ -293,7 +304,7 @@
           <h2>Logging</h2>
           <p>
             Changing logging options is done simply by telling Mongoid or Moped's
-            logger to have a different level.
+            logger to have a different level. Logging is turned off by default.
           </p>
           <div class="CodeRay">
             <div class="code"><pre><span class="keyword">module</span> <span class="class">MyApplication</span>&#x000A;  <span class="keyword">class</span> <span class="class">Application</span> &lt;&lt; <span class="constant">Rails</span>::<span class="constant">Application</span>&#x000A;    <span class="constant">Mongoid</span>.logger.level = <span class="constant">Logger</span>::<span class="constant">DEBUG</span>&#x000A;    <span class="constant">Moped</span>.logger.level = <span class="constant">Logger</span>::<span class="constant">DEBUG</span>&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>

@@ -102,6 +102,11 @@
         <ul class='incompatible'>
           <li>
             <i class='icon-warning-sign'></i>
+            bson and bson_ext gems are no longer compatible. Please remove both from
+            your Gemfile and any other dependencies. They have been replaced by Moped.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
             GridFS support no longer exists. If you are using GridFS, you cannot
             upgrade.
           </li>
@@ -192,7 +197,7 @@
             <code>Model.identity</code> and <code>Model.key</code> have been removed.
             For custom ids, users must now override the _id field.
             <p>
-              When the default value is a proc, the default is applied *after%li all
+              When the default value is a proc, the default is applied *after* all
               other attributes are set.
             </p>
             <div class="CodeRay">
@@ -252,8 +257,9 @@
             <i class='icon-warning-sign'></i>
             <a href="http://github.com/mongoid/mongoid/issues/1342">#1342</a>
             <code>Model.find</code> and <code>model.relation.find</code> now only
-            take a single or multiple ids. The first/last/all with a conditions hash
-            has been removed.
+            take a single or multiple ids. <code>Model.first</code>, <code>Model.last</code>
+            also no longer take arguments. For these use <code>Model.find_by</code>
+            instead.
           </li>
           <li>
             <i class='icon-warning-sign'></i>
