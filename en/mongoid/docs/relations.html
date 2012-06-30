@@ -66,6 +66,7 @@
                 <li><a href="/en/mongoid/docs/upgrading.html">Upgrading</a></li>
                 <li><a href="/en/mongoid/docs/contributing.html">Contributing</a></li>
                 <li><a href="/en/mongoid/docs/performance.html">Performance</a></li>
+                <li><a href="/en/mongoid/docs/tips.html">Tips/FAQs</a></li>
               </ul>
             </li>
             <li><a href="/en/mongoid/links.html">LINKS</a></li>
@@ -846,9 +847,10 @@
                   <code>Model#{name}.concat</code>
                   <p class='doc'>
                     <i>
-                      Push multiplpe document onto the relation. If the parent is
+                      Push multiple documents onto the relation. If the parent is
                       persisted, then the child documents will be automatically
-                      saved.
+                      saved. <b>This is a batch operation that runs validations, but
+                      no other callbacks.</b>
                     </i>
                   </p>
                 </td>
@@ -1404,9 +1406,10 @@
                   <code>Model#{name}.concat</code>
                   <p class='doc'>
                     <i>
-                      Push multiplpe document onto the relation. If the parent is
+                      Push multiple documents onto the relation. If the parent is
                       persisted, then the child documents will be automatically
-                      saved in a single batch.
+                      saved in a single batch. <b>This is a batch operation that runs
+                      validations, but no other callbacks.</b>
                     </i>
                   </p>
                 </td>
@@ -1760,9 +1763,10 @@
                   <code>Model#{name}.concat</code>
                   <p class='doc'>
                     <i>
-                      Push multiplpe document onto the relation. If the parent is
+                      Push multiple documents onto the relation. If the parent is
                       persisted, then the child documents will be automatically
-                      saved in a single batch.
+                      saved in a single batch. <b>This is a batch operation that
+                      runs validations, but no other callbacks.</b>
                     </i>
                   </p>
                 </td>

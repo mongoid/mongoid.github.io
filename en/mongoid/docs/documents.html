@@ -66,6 +66,7 @@
                 <li><a href="/en/mongoid/docs/upgrading.html">Upgrading</a></li>
                 <li><a href="/en/mongoid/docs/contributing.html">Contributing</a></li>
                 <li><a href="/en/mongoid/docs/performance.html">Performance</a></li>
+                <li><a href="/en/mongoid/docs/tips.html">Tips/FAQs</a></li>
               </ul>
             </li>
             <li><a href="/en/mongoid/links.html">LINKS</a></li>
@@ -161,12 +162,12 @@
               <li><code>Array</code></li>
               <li><code>BigDecimal</code></li>
               <li><code>Boolean</code></li>
-              <li><code>BSON::ObjectId</code></li>
               <li><code>Date</code></li>
               <li><code>DateTime</code></li>
               <li><code>Float</code></li>
               <li><code>Hash</code></li>
               <li><code>Integer</code></li>
+              <li><code>Moped::BSON::ObjectId</code></li>
               <li><code>Range</code></li>
               <li><code>Regexp</code></li>
               <li><code>String</code></li>
@@ -308,7 +309,7 @@
           </p>
           <h3>Creating Custom Ids</h3>
           <p>
-            For cases when you do not want to have <code>BSON::ObjectId</code> ids, you
+            For cases when you do not want to have <code>Moped::BSON::ObjectId</code> ids, you
             can override Mongoid's <code>_id</code> field and set them to whatever you
             like.
           </p>
