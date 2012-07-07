@@ -77,6 +77,10 @@
     <div id='content'>
       <div class='container'>
         <h1>Identity Map</h1>
+        <p>
+          Mongoid's identity map is an implementation of the
+          <a href="http://martinfowler.com/eaaCatalog/identityMap.html">Identity Map Pattern</a>.
+        </p>
         <div class='page-nav'>
           <div class='container'>
             <ul class='nav nav-pills'>
@@ -101,24 +105,30 @@
             <div class="code"><pre><span class="key">identity_map_enabled</span>: <span class="string"><span class="content">true</span></span>&#x000A;</pre></div>
           </div>
           <p>
+            You can enable the identity map programatically as well.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Mongoid</span>.identity_map_enabled = <span class="predefined-constant">true</span>&#x000A;</pre></div>
+          </div>
+          <p>
             When a document is now loaded from the database, is is automatically
             added to the identity map by it's class and id. Subsequent request for
             that document by it's id will not hit the database, but rather pull
-            the document back from the identity map itself. It's primary function
-            in this capacity is to aid in cutting down queries for belongs_to
-            relations when iterating over the parents.
+            the document back from the identity map itself.
           </p>
-          <p>
-            You can access documents in the map directly via the <tt>get</tt> method.
-            It requires the class of the document you want and an id.
-          </p>
-          <div class="CodeRay">
-            <div class="code"><pre><span class="constant">Mongoid</span>::<span class="constant">IdentityMap</span>.get(<span class="constant">Person</span>, id)&#x000A;</pre></div>
-          </div>
           <p>
             When performing <code>Model.find</code> queries with the identity map
             enabled, Mongoid will automatically look for the document in the
             identity map first and return it if it exists before hitting the database.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Band</span>.find(id) <span class="comment">#=&gt; Fetch the document from the database.</span>&#x000A;<span class="constant">Band</span>.find(id) <span class="comment">#=&gt; Gets the document from the identity map.</span>&#x000A;&#x000A;<span class="constant">Band</span>.find([ id_one, id_two ]) <span class="comment">#=&gt; Fetch the documents from the database.</span>&#x000A;<span class="constant">Band</span>.find([ id_one, id_two ]) <span class="comment">#=&gt; Gets the documents from the identity map.</span>&#x000A;<span class="constant">Band</span>.find([ id_one, id_three ])&#x000A;  <span class="comment">#=&gt; Gets the first document from the identity map, the second from the db.</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            Note the identity map does not store <code>nil</code> values if the
+            query to the database did not return any results. So subsequent
+            finds for the same id will hit the database again. This also includes
+            eager loading.
           </p>
         </section>
         <section id='unit_of_work'>
