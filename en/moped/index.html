@@ -4,15 +4,15 @@
     <meta content='A MongoDB driver for Ruby ' name='description' />
     <meta content='mongoid, moped, mongodb, ruby, rails, odm, bernerd schaefer' name='keywords' />
     <link href="/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
-    <script src="/javascripts/jquery-1.7.2.js" type="text/javascript"></script>
-    <script src="/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
-    <script src="/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
-    <script src="/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
-    <script src="/javascripts/mongoid.js" type="text/javascript"></script>
-    <title>Moped: Home</title>
+<link href="/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="/javascripts/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
+<script src="/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
+<script src="/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
+<script src="/javascripts/mongoid.js" type="text/javascript"></script>
+<title>Moped: Home</title>
   </head>
   <body data-offset='100' data-spy='scroll' data-target='.page-nav'>
     <div class='moped' id='header'>
@@ -68,31 +68,31 @@
     <div id='content'>
       <div class='container'>
         <h1>Moped</h1>
-        <p>
-          Moped is a MongoDB driver for Ruby, which exposes a simple, elegant, and fast
-          API. Moped is the supported driver for Mongoid from version 3 and higher.
-        </p>
-        <p>
-          Moped is composed of three parts: an implementation of the
-          <a href="http://bsonspec.org">BSON specification</a>, an implementation of the
-          <a href="http://www.mongodb.org/display/DOCS/Mongo+Wire+Protocol">
-          Mongo Wire Protocol</a>, and the driver itself.
-        </p>
-        <h2>Sample Syntax</h2>
-        <div class='well'>
-          <table>
-            <tr>
-              <td class='achtung'><img src="/images/achtung.png" /></td>
-              <td class='note'>
-                Moped only supports MRI 1.9.3, and HEAD, and JRuby 1.6.0+ in 1.9 mode.
-                All code samples will use 1.9 syntax.
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="CodeRay">
-          <div class="code"><pre>session = <span class="constant">Moped</span>::<span class="constant">Session</span>.new([ <span class="string"><span class="delimiter">&quot;</span><span class="content">127.0.0.1:27017</span><span class="delimiter">&quot;</span></span> ])&#x000A;session.use <span class="string"><span class="delimiter">&quot;</span><span class="content">echo_test</span><span class="delimiter">&quot;</span></span>&#x000A;&#x000A;session.with(safe: <span class="predefined-constant">true</span>) <span class="keyword">do</span> |safe|&#x000A;  safe[<span class="symbol">:artists</span>].insert(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd Vicious</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;session[<span class="symbol">:artists</span>].find(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd Vicious</span><span class="delimiter">&quot;</span></span>).update(<span class="symbol">:$push</span> =&gt; { instruments: { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Bass</span><span class="delimiter">&quot;</span></span> }})</pre></div>
-        </div>
+<p>
+  Moped is a MongoDB driver for Ruby, which exposes a simple, elegant, and fast
+  API. Moped is the supported driver for Mongoid from version 3 and higher.
+</p>
+<p>
+  Moped is composed of three parts: an implementation of the
+  <a href="http://bsonspec.org">BSON specification</a>, an implementation of the
+  <a href="http://www.mongodb.org/display/DOCS/Mongo+Wire+Protocol">
+  Mongo Wire Protocol</a>, and the driver itself.
+</p>
+<h2>Sample Syntax</h2>
+<div class='well'>
+  <table>
+    <tr>
+      <td class='achtung'><img src="/images/achtung.png" /></td>
+      <td class='note'>
+        Moped only supports MRI 1.9.3, and HEAD, and JRuby 1.6.0+ in 1.9 mode.
+        All code samples will use 1.9 syntax.
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="CodeRay">
+  <div class="code"><pre>session = <span class="constant">Moped</span>::<span class="constant">Session</span>.new([ <span class="string"><span class="delimiter">&quot;</span><span class="content">127.0.0.1:27017</span><span class="delimiter">&quot;</span></span> ])&#x000A;session.use <span class="string"><span class="delimiter">&quot;</span><span class="content">echo_test</span><span class="delimiter">&quot;</span></span>&#x000A;&#x000A;session.with(safe: <span class="predefined-constant">true</span>) <span class="keyword">do</span> |safe|&#x000A;  safe[<span class="symbol">:artists</span>].insert(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd Vicious</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;session[<span class="symbol">:artists</span>].find(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd Vicious</span><span class="delimiter">&quot;</span></span>).update(<span class="symbol">:$push</span> =&gt; { instruments: { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Bass</span><span class="delimiter">&quot;</span></span> }})</pre></div>
+</div>
       </div>
     </div>
   </body>

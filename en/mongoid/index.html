@@ -4,15 +4,15 @@
     <meta content='A Ruby ODM for MongoDB' name='description' />
     <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
     <link href="/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
-    <script src="/javascripts/jquery-1.7.2.js" type="text/javascript"></script>
-    <script src="/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
-    <script src="/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
-    <script src="/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
-    <script src="/javascripts/mongoid.js" type="text/javascript"></script>
-    <title>Mongoid: Home</title>
+<link href="/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="/javascripts/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
+<script src="/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
+<script src="/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
+<script src="/javascripts/mongoid.js" type="text/javascript"></script>
+<title>Mongoid: Home</title>
   </head>
   <body data-offset='100' data-spy='scroll' data-target='.page-nav'>
     <div class='mongoid' id='header'>
@@ -80,39 +80,39 @@
     <div id='content'>
       <div class='container'>
         <h1>Mongoid</h1>
-        <p>
-          Mongoid (pronounced mann-goyd) is an Object-Document-Mapper (ODM) for
-          <a href="http://mongodb.org">MongoDB</a> written in Ruby. It was conceived in August,
-          2009 during a whiskey-induced evening at the infamous Oasis in Florida,
-          USA by <a href="http://github.com/durran">Durran Jordan</a>.
-        </p>
-        <p>
-          The philosophy of Mongoid is to provide a familiar API to Ruby developers
-          who have been using Active Record or Data Mapper, while leveraging the
-          power of MongoDB's schemaless and performant document-based design, dynamic
-          queries, and atomic modifier operations.
-        </p>
-        <p>
-          <i>
-            This is the site for Mongoid 3 documentation, along with Origin and Moped. If you
-            want the Mongoid 2 docs, <a href="http://two.mongoid.org">please go here</a>.
-          </i>
-        </p>
-        <h2>Sample Syntax</h2>
-        <div class='well'>
-          <table>
-            <tr>
-              <td class='achtung'><img src="/images/achtung.png" /></td>
-              <td class='note'>
-                Mongoid only supports MRI 1.9.3, and HEAD, and JRuby 1.6.0+ in
-                1.9 mode. All code samples will use 1.9 syntax.
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="CodeRay">
-          <div class="code"><pre><span class="keyword">class</span> <span class="class">Artist</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, type: <span class="constant">String</span>&#x000A;  embeds_many <span class="symbol">:instruments</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Instrument</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, type: <span class="constant">String</span>&#x000A;  embedded_in <span class="symbol">:artist</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;syd = <span class="constant">Artist</span>.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd Vicious</span><span class="delimiter">&quot;</span></span>).between(age: <span class="integer">18</span>..<span class="integer">25</span>).first&#x000A;syd.instruments.create(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Bass</span><span class="delimiter">&quot;</span></span>)&#x000A;syd.with(database: <span class="string"><span class="delimiter">&quot;</span><span class="content">bands</span><span class="delimiter">&quot;</span></span>, session: <span class="string"><span class="delimiter">&quot;</span><span class="content">backup</span><span class="delimiter">&quot;</span></span>).save!</pre></div>
-        </div>
+<p>
+  Mongoid (pronounced mann-goyd) is an Object-Document-Mapper (ODM) for
+  <a href="http://mongodb.org">MongoDB</a> written in Ruby. It was conceived in August,
+  2009 during a whiskey-induced evening at the infamous Oasis in Florida,
+  USA by <a href="http://github.com/durran">Durran Jordan</a>.
+</p>
+<p>
+  The philosophy of Mongoid is to provide a familiar API to Ruby developers
+  who have been using Active Record or Data Mapper, while leveraging the
+  power of MongoDB's schemaless and performant document-based design, dynamic
+  queries, and atomic modifier operations.
+</p>
+<p>
+  <i>
+    This is the site for Mongoid 3 documentation, along with Origin and Moped. If you
+    want the Mongoid 2 docs, <a href="http://two.mongoid.org">please go here</a>.
+  </i>
+</p>
+<h2>Sample Syntax</h2>
+<div class='well'>
+  <table>
+    <tr>
+      <td class='achtung'><img src="/images/achtung.png" /></td>
+      <td class='note'>
+        Mongoid only supports MRI 1.9.3, and HEAD, and JRuby 1.6.0+ in
+        1.9 mode. All code samples will use 1.9 syntax.
+      </td>
+    </tr>
+  </table>
+</div>
+<div class="CodeRay">
+  <div class="code"><pre><span class="keyword">class</span> <span class="class">Artist</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, type: <span class="constant">String</span>&#x000A;  embeds_many <span class="symbol">:instruments</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Instrument</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, type: <span class="constant">String</span>&#x000A;  embedded_in <span class="symbol">:artist</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;syd = <span class="constant">Artist</span>.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd Vicious</span><span class="delimiter">&quot;</span></span>).between(age: <span class="integer">18</span>..<span class="integer">25</span>).first&#x000A;syd.instruments.create(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Bass</span><span class="delimiter">&quot;</span></span>)&#x000A;syd.with(database: <span class="string"><span class="delimiter">&quot;</span><span class="content">bands</span><span class="delimiter">&quot;</span></span>, session: <span class="string"><span class="delimiter">&quot;</span><span class="content">backup</span><span class="delimiter">&quot;</span></span>).save!</pre></div>
+</div>
       </div>
     </div>
   </body>

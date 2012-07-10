@@ -4,15 +4,15 @@
     <meta content='A Ruby DSL for building MongoDB queries' name='description' />
     <meta content='mongoid, origin, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
     <link href="/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
-    <script src="/javascripts/jquery-1.7.2.js" type="text/javascript"></script>
-    <script src="/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
-    <script src="/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
-    <script src="/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
-    <script src="/javascripts/mongoid.js" type="text/javascript"></script>
-    <title>Origin: Selection</title>
+<link href="/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
+<link href="/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="/javascripts/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
+<script src="/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
+<script src="/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
+<script src="/javascripts/mongoid.js" type="text/javascript"></script>
+<title>Origin: Selection</title>
   </head>
   <body data-offset='100' data-spy='scroll' data-target='.page-nav'>
     <div class='origin' id='header'>
@@ -69,1054 +69,1054 @@
     <div id='content'>
       <div class='container'>
         <h1>Selection</h1>
-        <p>
-          Origin provides a DSL for selection of documents in MongoDB, and supports all
-          operations that MongoDB provides. As you build your queries, you can always
-          access the raw selector by calling <code>Queryable#selector</code>.
-        </p>
-        <div class='page-nav'>
-          <div class='container'>
-            <ul class='nav nav-pills'>
-              <li><a href="#standard">Standard</a></li>
-              <li><a href="#negation">Negation</a></li>
-              <li><a href="#symbol">Symbol Operators</a></li>
-              <li><a href="#merging">Merge Strategies</a></li>
-            </ul>
-          </div>
-        </div>
-        <section id='standard'>
-          <h2>Standard</h2>
-          <p>
-            The following is a table of all selection operations and their corresponding
-            MongoDB selector.
+<p>
+  Origin provides a DSL for selection of documents in MongoDB, and supports all
+  operations that MongoDB provides. As you build your queries, you can always
+  access the raw selector by calling <code>Queryable#selector</code>.
+</p>
+<div class='page-nav'>
+  <div class='container'>
+    <ul class='nav nav-pills'>
+      <li><a href="#standard">Standard</a></li>
+      <li><a href="#negation">Negation</a></li>
+      <li><a href="#symbol">Symbol Operators</a></li>
+      <li><a href="#merging">Merge Strategies</a></li>
+    </ul>
+  </div>
+</div>
+<section id='standard'>
+  <h2>Standard</h2>
+  <p>
+    The following is a table of all selection operations and their corresponding
+    MongoDB selector.
+  </p>
+  <table class='table table-bordered table-striped'>
+    <thead>
+      <tr>
+        <th>Operation</th>
+        <th>Origin</th>
+        <th>Selector</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#all</code>
+          <p class='doc'>
+            <i>
+              Add $all selection. Documents must match all values
+              provided in the array.
+            </i>
           </p>
-          <table class='table table-bordered table-striped'>
-            <thead>
-              <tr>
-                <th>Operation</th>
-                <th>Origin</th>
-                <th>Selector</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#all</code>
-                  <p class='doc'>
-                    <i>
-                      Add $all selection. Documents must match all values
-                      provided in the array.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.all(field: [ <span class="integer">1</span>, <span class="integer">2</span>, <span class="integer">3</span> ])&#x000A;queryable.all(field: [ <span class="regexp"><span class="delimiter">/</span><span class="content">(1|2|3)</span><span class="delimiter">/</span></span> ])</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">field</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$all</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="integer">1</span>, <span class="integer">2</span>, <span class="integer">3</span> ]}}&#x000A;{ <span class="string"><span class="delimiter">&quot;</span><span class="content">field</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$all</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="regexp"><span class="delimiter">/</span><span class="content">(1|2|3)</span><span class="delimiter">/</span></span> ]}}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#and</code>
-                  <p class='doc'>
-                    <i>
-                      Add $and selection. Documents must match all the
-                      criteria provided.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.and(&#x000A;  { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> }, { active: <span class="predefined-constant">true</span> }&#x000A;)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">$and</span><span class="delimiter">&quot;</span></span> =&gt; [&#x000A;    { <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> }, { <span class="string"><span class="delimiter">&quot;</span><span class="content">active</span><span class="delimiter">&quot;</span></span> =&gt; <span class="predefined-constant">true</span> }&#x000A;  ]&#x000A;}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#between</code>
-                  <p class='doc'>
-                    <i>
-                      Add $gte/$lte selection. Finds documents with values
-                      between the lower and upper bound of the range.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.between(age: <span class="integer">18</span>..<span class="integer">30</span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gte</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">$lte</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">30</span> }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#elem_match</code>
-                  <p class='doc'>
-                    <i>
-                      Add $elemMatch selection. Finds documents with arrays of values
-                      that match the provided expression.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.elem_match(members: { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> })</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">members</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$elemMatch</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> }}}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#exists</code>
-                  <p class='doc'>
-                    <i>
-                      Add $exists selection. Matches documents based on whether a value
-                      for the field exists or not. Will match docs with <code>nil</code>
-                      values if set to <code>true</code>.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.exists(name: <span class="predefined-constant">true</span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$exists</span><span class="delimiter">&quot;</span></span> =&gt; <span class="predefined-constant">true</span> }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#gt</code>
-                  <p class='doc'>
-                    <i>
-                      Add $gt selection. Matches documents who's field is greater
-                      than the provided value.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.gt(age: <span class="integer">18</span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gt</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span> }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#gte</code>
-                  <p class='doc'>
-                    <i>
-                      Add $gte selection. Matches documents who's field is greater
-                      than or equal to the provided value.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.gte(age: <span class="integer">18</span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gte</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span> }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#in</code>
-                  <p class='doc'>
-                    <i>
-                      Add $in selection. Matches documents who's field contains a
-                      value that is in the array, similar to a SQL IN.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.in(name: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span> ])</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$in</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span> ]}}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#lt</code>
-                  <p class='doc'>
-                    <i>
-                      Add $lt selection. Matches documents who's field is less
-                      than the provided value.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.lt(age: <span class="integer">18</span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$lt</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span> }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#lte</code>
-                  <p class='doc'>
-                    <i>
-                      Add $lte selection. Matches documents who's field is less
-                      than or equal to the provided value.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.lte(age: <span class="integer">18</span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$lte</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span> }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#max_distance</code>
-                  <p class='doc'>
-                    <i>
-                      Add $maxDistance selection. This can only be used in conjunction
-                      with <code>near</code>.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.&#x000A;  near(location: [ <span class="integer">20</span>, <span class="integer">20</span> ]).&#x000A;  max_distance(<span class="float">0.5</span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$near</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="integer">20</span>, <span class="integer">20</span> ], <span class="string"><span class="delimiter">&quot;</span><span class="content">$maxDistance</span><span class="delimiter">&quot;</span></span> =&gt; <span class="float">0.5</span>&#x000A;  }&#x000A;}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#mod</code>
-                  <p class='doc'>
-                    <i>
-                      Add $mod selection. Matches documents who's field matches the
-                      modulo value.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.mod(field: [ <span class="integer">10</span>, <span class="integer">1</span> ])</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">field</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$mod</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="integer">10</span>, <span class="integer">1</span> ]}}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#ne</code>
-                  <p class='doc'>
-                    <i>
-                      Add $ne selection. Matches documents who's field is not equal
-                      to the provided value.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.ne(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$ne</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span> }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#near</code>
-                  <p class='doc'>
-                    <i>
-                      Add $near selection. Matches documents who's geo location is
-                      near the provided coordinates.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.near(location: [ <span class="float">23.1</span>, <span class="float">12.1</span> ])</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$near</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="float">23.1</span>, <span class="float">12.1</span> ] }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#near_sphere</code>
-                  <p class='doc'>
-                    <i>
-                      Add $nearSphere selection. Matches documents who's geo location is
-                      near the provided coordinates using spherical algorithms.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.near_sphere(location: [ <span class="float">23.1</span>, <span class="float">12.1</span> ])</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$nearSphere</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="float">23.1</span>, <span class="float">12.1</span> ] }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#nin</code>
-                  <p class='doc'>
-                    <i>
-                      Add $nin selection. Matches documents who's field does not match
-                      values in the provided array.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.nin(name: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Martin</span><span class="delimiter">&quot;</span></span> ])</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$nin</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Martin</span><span class="delimiter">&quot;</span></span> ] }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#nor</code>
-                  <p class='doc'>
-                    <i>
-                      Add $nor selection. Matches documents who do not match at least
-                      one of the provided criteria.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.nor(&#x000A;  { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Martin</span><span class="delimiter">&quot;</span></span> }, { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span> }&#x000A;)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">$nor</span><span class="delimiter">&quot;</span></span> =&gt; [&#x000A;    { <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Martin</span><span class="delimiter">&quot;</span></span> }, { <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span> }&#x000A;  ]&#x000A;}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#or</code>
-                  <p class='doc'>
-                    <i>
-                      Add $or selection. Matches documents who match at least
-                      one of the provided criteria.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.or(&#x000A;  { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Martin</span><span class="delimiter">&quot;</span></span> }, { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span> }&#x000A;)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">$or</span><span class="delimiter">&quot;</span></span> =&gt; [&#x000A;    { <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Martin</span><span class="delimiter">&quot;</span></span> }, { <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span> }&#x000A;  ]&#x000A;}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#where</code>
-                  <p class='doc'>
-                    <i>
-                      Add $where selection or standard document matching. If provided
-                      a string, we assume this is javascript and use $where. When
-                      a hash is provided this is a standard selection.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>)&#x000A;queryable.where(<span class="string"><span class="delimiter">&quot;</span><span class="content">this.name == 'Syd'</span><span class="delimiter">&quot;</span></span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> }&#x000A;{ <span class="string"><span class="delimiter">&quot;</span><span class="content">$where</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">this.name == 'Syd'</span><span class="delimiter">&quot;</span></span> }</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#with_size</code>
-                  <p class='doc'>
-                    <i>
-                      Add $size selection. Matches documents who's array field has
-                      the exact size of the provided value. This is named
-                      <code>with_size</code> not to conflict with Ruby's
-                      <code>Enumerable#size</code> or <code>Symbol#size</code>.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.with_size(members: <span class="integer">3</span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">members</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$size</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">3</span> }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#with_type</code>
-                  <p class='doc'>
-                    <i>
-                      Add $type selection. Matches documents who's field is of the
-                      provided BSON type. See
-                      <a href="http://www.mongodb.org/display/DOCS/Advanced+Queries#AdvancedQueries-%24type">BSON Types</a>
-                      for a complete list.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.with_type(name: <span class="integer">2</span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$type</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">2</span> }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#within_box</code>
-                  <p class='doc'>
-                    <i>
-                      Adds $within/$box selection. Matches documents that have geo
-                      locations inside the provided box.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.within_box(&#x000A;  location: [[ <span class="integer">1</span>, <span class="integer">10</span> ], [ <span class="integer">10</span>, <span class="integer">1</span> ]]&#x000A;)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$within</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$box</span><span class="delimiter">&quot;</span></span> =&gt; [[ <span class="integer">1</span>, <span class="integer">10</span> ], [ <span class="integer">10</span>, <span class="integer">1</span> ]]}&#x000A;  }&#x000A;}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#within_circle</code>
-                  <p class='doc'>
-                    <i>
-                      Adds $within/$center selection. Matches documents that have geo
-                      locations inside the provided circle with a radius.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.within_circle(&#x000A;  location: [[ <span class="integer">1</span>, <span class="integer">10</span> ], <span class="float">0.5</span> ]&#x000A;)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$within</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$center</span><span class="delimiter">&quot;</span></span> =&gt; [[ <span class="integer">1</span>, <span class="integer">10</span> ], <span class="float">0.5</span> ]}&#x000A;  }&#x000A;}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#within_polygon</code>
-                  <p class='doc'>
-                    <i>
-                      Adds $within/$polygon selection. Matches documents that have geo
-                      locations inside the provided polygon.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.within_polygon(&#x000A;  location: [&#x000A;    [ <span class="integer">10</span>, <span class="integer">20</span> ], [ <span class="integer">10</span>, <span class="integer">40</span> ], [ <span class="integer">30</span>, <span class="integer">40</span> ], [ <span class="integer">30</span>, <span class="integer">20</span> ]&#x000A;  ]&#x000A;)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$within</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;      <span class="string"><span class="delimiter">&quot;</span><span class="content">$polygon</span><span class="delimiter">&quot;</span></span> =&gt; [&#x000A;        [ <span class="integer">10</span>, <span class="integer">20</span> ], [ <span class="integer">10</span>, <span class="integer">40</span> ], [ <span class="integer">30</span>, <span class="integer">40</span> ], [ <span class="integer">30</span>, <span class="integer">20</span> ]&#x000A;      ]&#x000A;    }&#x000A;  }&#x000A;}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Queryable#within_spherical_circle</code>
-                  <p class='doc'>
-                    <i>
-                      Adds $within/$centerSphere selection. Matches documents that
-                      have geo locations inside the provided sphere with a radius.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.within_spherical_circle(&#x000A;  location: [[ <span class="integer">1</span>, <span class="integer">10</span> ], <span class="float">0.5</span> ]&#x000A;)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$within</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$centerSphere</span><span class="delimiter">&quot;</span></span> =&gt; [[ <span class="integer">1</span>, <span class="integer">10</span> ], <span class="float">0.5</span> ]}&#x000A;  }&#x000A;}&#x000A;</pre></div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-        <section id='negation'>
-          <h2>Negation</h2>
-          <p>
-            You can negate any selection by placing a <code>not</code> immediately
-            in front of the selection you want to invert. This will add a <code>$not</code>
-            clause to the query.
-          </p>
+        </td>
+        <td>
           <div class="CodeRay">
-            <div class="code"><pre>queryable.not.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span>)&#x000A;queryable.selector <span class="comment">#=&gt; { &quot;$not&quot; =&gt; { &quot;name&quot; =&gt; &quot;Dave&quot; }}</span>&#x000A;&#x000A;</pre></div>
+            <div class="code"><pre>queryable.all(field: [ <span class="integer">1</span>, <span class="integer">2</span>, <span class="integer">3</span> ])&#x000A;queryable.all(field: [ <span class="regexp"><span class="delimiter">/</span><span class="content">(1|2|3)</span><span class="delimiter">/</span></span> ])</pre></div>
           </div>
-        </section>
-        <section id='symbol'>
-          <h2>Symbol Operators</h2>
-          <p>
-            As a convenience in <code>where</code> queries, Mongoid provides methods
-            on symbol that generate more complex MongoDB operations. All symbol methods
-            are listed in the following table, with their corresponding selectors.
-          </p>
-          <table class='table table-bordered table-striped'>
-            <thead>
-              <tr>
-                <th>Operation</th>
-                <th>Origin</th>
-                <th>Selector</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#all</code>
-                  <p class='doc'>
-                    <i>
-                      Add $all selection. Documents must match all values
-                      provided in the array.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(<span class="symbol">:field</span>.all =&gt; [ <span class="integer">1</span>, <span class="integer">2</span>, <span class="integer">3</span> ])</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">field</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$all</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="integer">1</span>, <span class="integer">2</span>, <span class="integer">3</span> ]}}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#elem_match</code>
-                  <p class='doc'>
-                    <i>
-                      Add $elemMatch selection. Finds documents with arrays of values
-                      that match the provided expression.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(&#x000A;  <span class="symbol">:members</span>.elem_match =&gt; { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> }&#x000A;)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">members</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$elemMatch</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> }&#x000A;  }&#x000A;}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#exists</code>
-                  <p class='doc'>
-                    <i>
-                      Add $exists selection. Matches documents based on whether a value
-                      for the field exists or not. Will match docs with <code>nil</code>
-                      values if set to <code>true</code>.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(<span class="symbol">:name</span>.exists =&gt; <span class="predefined-constant">true</span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$exists</span><span class="delimiter">&quot;</span></span> =&gt; <span class="predefined-constant">true</span> }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#gt</code>
-                  <p class='doc'>
-                    <i>
-                      Add $gt selection. Matches documents who's field is greater
-                      than the provided value.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(<span class="symbol">:age</span>.gt <span class="integer">18</span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gt</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span> }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#gte</code>
-                  <p class='doc'>
-                    <i>
-                      Add $gte selection. Matches documents who's field is greater
-                      than or equal to the provided value.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(<span class="symbol">:age</span>.gte =&gt; <span class="integer">18</span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gte</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span> }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#in</code>
-                  <p class='doc'>
-                    <i>
-                      Add $in selection. Matches documents who's field contains a
-                      value that is in the array, similar to a SQL IN.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(<span class="symbol">:name</span>.in =&gt; [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span> ])</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$in</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span> ]}}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#lt</code>
-                  <p class='doc'>
-                    <i>
-                      Add $lt selection. Matches documents who's field is less
-                      than the provided value.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(<span class="symbol">:age</span>.lt =&gt; <span class="integer">18</span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$lt</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span> }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#lte</code>
-                  <p class='doc'>
-                    <i>
-                      Add $lte selection. Matches documents who's field is less
-                      than or equal to the provided value.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(<span class="symbol">:age</span>.lte =&gt; <span class="integer">18</span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$lte</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span> }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#mod</code>
-                  <p class='doc'>
-                    <i>
-                      Add $mod selection. Matches documents who's field matches the
-                      modulo value.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(<span class="symbol">:field</span>.mod =&gt; [ <span class="integer">10</span>, <span class="integer">1</span> ])</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">field</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$mod</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="integer">10</span>, <span class="integer">1</span> ]}}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#ne</code>
-                  <p class='doc'>
-                    <i>
-                      Add $ne selection. Matches documents who's field is not equal
-                      to the provided value.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(<span class="symbol">:name</span>.ne =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$ne</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span> }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#near</code>
-                  <p class='doc'>
-                    <i>
-                      Add $near selection. Matches documents who's geo location is
-                      near the provided coordinates.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(<span class="symbol">:location</span>.near =&gt; [ <span class="float">23.1</span>, <span class="float">12.1</span> ])</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$near</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="float">23.1</span>, <span class="float">12.1</span> ] }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#near_sphere</code>
-                  <p class='doc'>
-                    <i>
-                      Add $nearSphere selection. Matches documents who's geo location is
-                      near the provided coordinates using spherical algorithms.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(&#x000A;  <span class="symbol">:location</span>.near_sphere =&gt; [ <span class="float">23.1</span>, <span class="float">12.1</span> ]&#x000A;)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$nearSphere</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="float">23.1</span>, <span class="float">12.1</span> ] }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#nin</code>
-                  <p class='doc'>
-                    <i>
-                      Add $nin selection. Matches documents who's field does not match
-                      values in the provided array.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(<span class="symbol">:name</span>.nin =&gt; [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Martin</span><span class="delimiter">&quot;</span></span> ])</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$nin</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Martin</span><span class="delimiter">&quot;</span></span> ] }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#with_size</code>
-                  <p class='doc'>
-                    <i>
-                      Add $size selection. Matches documents who's array field has
-                      the exact size of the provided value. This is named
-                      <code>with_size</code> not to conflict with Ruby's
-                      <code>Enumerable#size</code> or <code>Symbol#size</code>.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(<span class="symbol">:members</span>.with_size =&gt; <span class="integer">3</span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">members</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$size</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">3</span> }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#with_type</code>
-                  <p class='doc'>
-                    <i>
-                      Add $type selection. Matches documents who's field is of the
-                      provided BSON type. See
-                      <a href="http://www.mongodb.org/display/DOCS/Advanced+Queries#AdvancedQueries-%24type">BSON Types</a>
-                      for a complete list.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(<span class="symbol">:name</span>.with_type =&gt; <span class="integer">2</span>)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$type</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">2</span> }}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#within_box</code>
-                  <p class='doc'>
-                    <i>
-                      Adds $within/$box selection. Matches documents that have geo
-                      locations inside the provided box.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(&#x000A;  <span class="symbol">:location</span>.within_box =&gt; [[ <span class="integer">1</span>, <span class="integer">10</span> ], [ <span class="integer">10</span>, <span class="integer">1</span> ]]&#x000A;)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$within</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$box</span><span class="delimiter">&quot;</span></span> =&gt; [[ <span class="integer">1</span>, <span class="integer">10</span> ], [ <span class="integer">10</span>, <span class="integer">1</span> ]]}&#x000A;  }&#x000A;}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#within_circle</code>
-                  <p class='doc'>
-                    <i>
-                      Adds $within/$center selection. Matches documents that have geo
-                      locations inside the provided circle with a radius.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(&#x000A;  <span class="symbol">:location</span>.within_circle =&gt; [[ <span class="integer">1</span>, <span class="integer">10</span> ], <span class="float">0.5</span> ]&#x000A;)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$within</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$center</span><span class="delimiter">&quot;</span></span> =&gt; [[ <span class="integer">1</span>, <span class="integer">10</span> ], <span class="float">0.5</span> ]}&#x000A;  }&#x000A;}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#within_polygon</code>
-                  <p class='doc'>
-                    <i>
-                      Adds $within/$polygon selection. Matches documents that have geo
-                      locations inside the provided polygon.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(&#x000A;  <span class="symbol">:location</span>.within_polygon =&gt; [&#x000A;    [ <span class="integer">10</span>, <span class="integer">20</span> ], [ <span class="integer">10</span>, <span class="integer">40</span> ], [ <span class="integer">30</span>, <span class="integer">40</span> ], [ <span class="integer">30</span>, <span class="integer">20</span> ]&#x000A;  ]&#x000A;)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$within</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;      <span class="string"><span class="delimiter">&quot;</span><span class="content">$polygon</span><span class="delimiter">&quot;</span></span> =&gt; [&#x000A;        [ <span class="integer">10</span>, <span class="integer">20</span> ], [ <span class="integer">10</span>, <span class="integer">40</span> ], [ <span class="integer">30</span>, <span class="integer">40</span> ], [ <span class="integer">30</span>, <span class="integer">20</span> ]&#x000A;      ]&#x000A;    }&#x000A;  }&#x000A;}</pre></div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td class='doc'>
-                  <code>Symbol#within_spherical_circle</code>
-                  <p class='doc'>
-                    <i>
-                      Adds $within/$centerSphere selection. Matches documents that
-                      have geo locations inside the provided sphere with a radius.
-                    </i>
-                  </p>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>queryable.where(&#x000A;  <span class="symbol">:location</span>.within_spherical_circle =&gt;&#x000A;    [[ <span class="integer">1</span>, <span class="integer">10</span> ], <span class="float">0.5</span> ]&#x000A;)</pre></div>
-                  </div>
-                </td>
-                <td>
-                  <div class="CodeRay">
-                    <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$within</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$centerSphere</span><span class="delimiter">&quot;</span></span> =&gt; [[ <span class="integer">1</span>, <span class="integer">10</span> ], <span class="float">0.5</span> ]}&#x000A;  }&#x000A;}&#x000A;</pre></div>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </section>
-        <section id='merging'>
-          <h2>Merge Strategies</h2>
-          <h3>Explicit Merging</h3>
-          <p>
-            The selection API also provides merge strategies for cases you want to
-            override the default behaviour with specific methods that expect array values.
-            The available strategies are *intersect, override, and union* and are used by
-            chaining the name of the strategy before calling any method. For example,
-            to override the default <i>intersection</i> behaviour of <code>#in</code>:
-          </p>
+        </td>
+        <td>
           <div class="CodeRay">
-            <div class="code"><pre><span class="constant">Band</span>.in(name: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Depeche Mode</span><span class="delimiter">&quot;</span></span> ]).union.in(name: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">New Order</span><span class="delimiter">&quot;</span></span> ])&#x000A;</pre></div>
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">field</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$all</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="integer">1</span>, <span class="integer">2</span>, <span class="integer">3</span> ]}}&#x000A;{ <span class="string"><span class="delimiter">&quot;</span><span class="content">field</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$all</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="regexp"><span class="delimiter">/</span><span class="content">(1|2|3)</span><span class="delimiter">/</span></span> ]}}</pre></div>
           </div>
-          <p>This translates to the following selector.</p>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#and</code>
+          <p class='doc'>
+            <i>
+              Add $and selection. Documents must match all the
+              criteria provided.
+            </i>
+          </p>
+        </td>
+        <td>
           <div class="CodeRay">
-            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$in</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Depeche Mode</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">New Order</span><span class="delimiter">&quot;</span></span> ] }}&#x000A;</pre></div>
+            <div class="code"><pre>queryable.and(&#x000A;  { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> }, { active: <span class="predefined-constant">true</span> }&#x000A;)</pre></div>
           </div>
-          <p>
-            The default behaviour for the array methods are:
-            <ul>
-              <li><code>Queryable#all</code> - defaults to <code>union</code>.</li>
-              <li><code>Queryable#in</code> - defaults to <code>intersect</code>.</li>
-              <li><code>Queryable#nin</code> - defaults to <code>intersect</code>.</li>
-            </ul>
-          </p>
-          <p>
-            The available strategies are:
-            <ul>
-              <li><code>Queryable#intersect</code> Performs an intersection of existing and new array.</li>
-              <li><code>Queryable#override</code> Overwrites the old array with the new.</li>
-              <li><code>Queryable#union</code> Performs a union of the existing and new array.</li>
-            </ul>
-          </p>
-          <h3>Automatic Merging</h3>
-          <p>
-            When using the normal Origin DSL, criterion on the same field with different
-            operators will automatically be merged into a complex selector on the common
-            field. For example:
-          </p>
+        </td>
+        <td>
           <div class="CodeRay">
-            <div class="code"><pre>likeable = <span class="constant">Band</span>.gt(likes: <span class="integer">100</span>).lt(likes: <span class="integer">1000</span>).ne(likes: <span class="integer">500</span>)&#x000A;likeable.selector <span class="comment">#=&gt; { &quot;likes&quot; =&gt; { &quot;$gt&quot; =&gt; 100, &quot;$lt&quot; =&gt; 1000, &quot;$ne&quot; =&gt; 500 }}</span>&#x000A;</pre></div>
+            <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">$and</span><span class="delimiter">&quot;</span></span> =&gt; [&#x000A;    { <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> }, { <span class="string"><span class="delimiter">&quot;</span><span class="content">active</span><span class="delimiter">&quot;</span></span> =&gt; <span class="predefined-constant">true</span> }&#x000A;  ]&#x000A;}</pre></div>
           </div>
-          <p>
-            Note that this works <i>only</i> when using the DSL methods, but not currently
-            when using the symbol operators in a <code>where</code> clause.
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#between</code>
+          <p class='doc'>
+            <i>
+              Add $gte/$lte selection. Finds documents with values
+              between the lower and upper bound of the range.
+            </i>
           </p>
+        </td>
+        <td>
           <div class="CodeRay">
-            <div class="code"><pre>likeable = <span class="constant">Band</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">100</span>, <span class="symbol">:likes</span>.lt =&gt; <span class="integer">1000</span>, <span class="symbol">:likes</span>.ne =&gt; <span class="integer">500</span>)&#x000A;likeable.selector <span class="comment">#=&gt; { &quot;likes&quot; =&gt; { &quot;$ne&quot; =&gt; 500 }}</span></pre></div>
+            <div class="code"><pre>queryable.between(age: <span class="integer">18</span>..<span class="integer">30</span>)</pre></div>
           </div>
-        </section>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gte</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">$lte</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">30</span> }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#elem_match</code>
+          <p class='doc'>
+            <i>
+              Add $elemMatch selection. Finds documents with arrays of values
+              that match the provided expression.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.elem_match(members: { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> })</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">members</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$elemMatch</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> }}}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#exists</code>
+          <p class='doc'>
+            <i>
+              Add $exists selection. Matches documents based on whether a value
+              for the field exists or not. Will match docs with <code>nil</code>
+              values if set to <code>true</code>.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.exists(name: <span class="predefined-constant">true</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$exists</span><span class="delimiter">&quot;</span></span> =&gt; <span class="predefined-constant">true</span> }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#gt</code>
+          <p class='doc'>
+            <i>
+              Add $gt selection. Matches documents who's field is greater
+              than the provided value.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.gt(age: <span class="integer">18</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gt</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span> }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#gte</code>
+          <p class='doc'>
+            <i>
+              Add $gte selection. Matches documents who's field is greater
+              than or equal to the provided value.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.gte(age: <span class="integer">18</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gte</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span> }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#in</code>
+          <p class='doc'>
+            <i>
+              Add $in selection. Matches documents who's field contains a
+              value that is in the array, similar to a SQL IN.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.in(name: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span> ])</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$in</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span> ]}}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#lt</code>
+          <p class='doc'>
+            <i>
+              Add $lt selection. Matches documents who's field is less
+              than the provided value.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.lt(age: <span class="integer">18</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$lt</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span> }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#lte</code>
+          <p class='doc'>
+            <i>
+              Add $lte selection. Matches documents who's field is less
+              than or equal to the provided value.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.lte(age: <span class="integer">18</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$lte</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span> }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#max_distance</code>
+          <p class='doc'>
+            <i>
+              Add $maxDistance selection. This can only be used in conjunction
+              with <code>near</code>.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.&#x000A;  near(location: [ <span class="integer">20</span>, <span class="integer">20</span> ]).&#x000A;  max_distance(<span class="float">0.5</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$near</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="integer">20</span>, <span class="integer">20</span> ], <span class="string"><span class="delimiter">&quot;</span><span class="content">$maxDistance</span><span class="delimiter">&quot;</span></span> =&gt; <span class="float">0.5</span>&#x000A;  }&#x000A;}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#mod</code>
+          <p class='doc'>
+            <i>
+              Add $mod selection. Matches documents who's field matches the
+              modulo value.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.mod(field: [ <span class="integer">10</span>, <span class="integer">1</span> ])</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">field</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$mod</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="integer">10</span>, <span class="integer">1</span> ]}}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#ne</code>
+          <p class='doc'>
+            <i>
+              Add $ne selection. Matches documents who's field is not equal
+              to the provided value.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.ne(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$ne</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span> }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#near</code>
+          <p class='doc'>
+            <i>
+              Add $near selection. Matches documents who's geo location is
+              near the provided coordinates.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.near(location: [ <span class="float">23.1</span>, <span class="float">12.1</span> ])</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$near</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="float">23.1</span>, <span class="float">12.1</span> ] }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#near_sphere</code>
+          <p class='doc'>
+            <i>
+              Add $nearSphere selection. Matches documents who's geo location is
+              near the provided coordinates using spherical algorithms.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.near_sphere(location: [ <span class="float">23.1</span>, <span class="float">12.1</span> ])</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$nearSphere</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="float">23.1</span>, <span class="float">12.1</span> ] }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#nin</code>
+          <p class='doc'>
+            <i>
+              Add $nin selection. Matches documents who's field does not match
+              values in the provided array.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.nin(name: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Martin</span><span class="delimiter">&quot;</span></span> ])</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$nin</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Martin</span><span class="delimiter">&quot;</span></span> ] }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#nor</code>
+          <p class='doc'>
+            <i>
+              Add $nor selection. Matches documents who do not match at least
+              one of the provided criteria.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.nor(&#x000A;  { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Martin</span><span class="delimiter">&quot;</span></span> }, { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span> }&#x000A;)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">$nor</span><span class="delimiter">&quot;</span></span> =&gt; [&#x000A;    { <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Martin</span><span class="delimiter">&quot;</span></span> }, { <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span> }&#x000A;  ]&#x000A;}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#or</code>
+          <p class='doc'>
+            <i>
+              Add $or selection. Matches documents who match at least
+              one of the provided criteria.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.or(&#x000A;  { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Martin</span><span class="delimiter">&quot;</span></span> }, { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span> }&#x000A;)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">$or</span><span class="delimiter">&quot;</span></span> =&gt; [&#x000A;    { <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Martin</span><span class="delimiter">&quot;</span></span> }, { <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span> }&#x000A;  ]&#x000A;}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#where</code>
+          <p class='doc'>
+            <i>
+              Add $where selection or standard document matching. If provided
+              a string, we assume this is javascript and use $where. When
+              a hash is provided this is a standard selection.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>)&#x000A;queryable.where(<span class="string"><span class="delimiter">&quot;</span><span class="content">this.name == 'Syd'</span><span class="delimiter">&quot;</span></span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> }&#x000A;{ <span class="string"><span class="delimiter">&quot;</span><span class="content">$where</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">this.name == 'Syd'</span><span class="delimiter">&quot;</span></span> }</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#with_size</code>
+          <p class='doc'>
+            <i>
+              Add $size selection. Matches documents who's array field has
+              the exact size of the provided value. This is named
+              <code>with_size</code> not to conflict with Ruby's
+              <code>Enumerable#size</code> or <code>Symbol#size</code>.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.with_size(members: <span class="integer">3</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">members</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$size</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">3</span> }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#with_type</code>
+          <p class='doc'>
+            <i>
+              Add $type selection. Matches documents who's field is of the
+              provided BSON type. See
+              <a href="http://www.mongodb.org/display/DOCS/Advanced+Queries#AdvancedQueries-%24type">BSON Types</a>
+              for a complete list.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.with_type(name: <span class="integer">2</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$type</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">2</span> }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#within_box</code>
+          <p class='doc'>
+            <i>
+              Adds $within/$box selection. Matches documents that have geo
+              locations inside the provided box.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.within_box(&#x000A;  location: [[ <span class="integer">1</span>, <span class="integer">10</span> ], [ <span class="integer">10</span>, <span class="integer">1</span> ]]&#x000A;)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$within</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$box</span><span class="delimiter">&quot;</span></span> =&gt; [[ <span class="integer">1</span>, <span class="integer">10</span> ], [ <span class="integer">10</span>, <span class="integer">1</span> ]]}&#x000A;  }&#x000A;}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#within_circle</code>
+          <p class='doc'>
+            <i>
+              Adds $within/$center selection. Matches documents that have geo
+              locations inside the provided circle with a radius.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.within_circle(&#x000A;  location: [[ <span class="integer">1</span>, <span class="integer">10</span> ], <span class="float">0.5</span> ]&#x000A;)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$within</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$center</span><span class="delimiter">&quot;</span></span> =&gt; [[ <span class="integer">1</span>, <span class="integer">10</span> ], <span class="float">0.5</span> ]}&#x000A;  }&#x000A;}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#within_polygon</code>
+          <p class='doc'>
+            <i>
+              Adds $within/$polygon selection. Matches documents that have geo
+              locations inside the provided polygon.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.within_polygon(&#x000A;  location: [&#x000A;    [ <span class="integer">10</span>, <span class="integer">20</span> ], [ <span class="integer">10</span>, <span class="integer">40</span> ], [ <span class="integer">30</span>, <span class="integer">40</span> ], [ <span class="integer">30</span>, <span class="integer">20</span> ]&#x000A;  ]&#x000A;)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$within</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;      <span class="string"><span class="delimiter">&quot;</span><span class="content">$polygon</span><span class="delimiter">&quot;</span></span> =&gt; [&#x000A;        [ <span class="integer">10</span>, <span class="integer">20</span> ], [ <span class="integer">10</span>, <span class="integer">40</span> ], [ <span class="integer">30</span>, <span class="integer">40</span> ], [ <span class="integer">30</span>, <span class="integer">20</span> ]&#x000A;      ]&#x000A;    }&#x000A;  }&#x000A;}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Queryable#within_spherical_circle</code>
+          <p class='doc'>
+            <i>
+              Adds $within/$centerSphere selection. Matches documents that
+              have geo locations inside the provided sphere with a radius.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.within_spherical_circle(&#x000A;  location: [[ <span class="integer">1</span>, <span class="integer">10</span> ], <span class="float">0.5</span> ]&#x000A;)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$within</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$centerSphere</span><span class="delimiter">&quot;</span></span> =&gt; [[ <span class="integer">1</span>, <span class="integer">10</span> ], <span class="float">0.5</span> ]}&#x000A;  }&#x000A;}&#x000A;</pre></div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+<section id='negation'>
+  <h2>Negation</h2>
+  <p>
+    You can negate any selection by placing a <code>not</code> immediately
+    in front of the selection you want to invert. This will add a <code>$not</code>
+    clause to the query.
+  </p>
+  <div class="CodeRay">
+    <div class="code"><pre>queryable.not.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span>)&#x000A;queryable.selector <span class="comment">#=&gt; { &quot;$not&quot; =&gt; { &quot;name&quot; =&gt; &quot;Dave&quot; }}</span>&#x000A;&#x000A;</pre></div>
+  </div>
+</section>
+<section id='symbol'>
+  <h2>Symbol Operators</h2>
+  <p>
+    As a convenience in <code>where</code> queries, Mongoid provides methods
+    on symbol that generate more complex MongoDB operations. All symbol methods
+    are listed in the following table, with their corresponding selectors.
+  </p>
+  <table class='table table-bordered table-striped'>
+    <thead>
+      <tr>
+        <th>Operation</th>
+        <th>Origin</th>
+        <th>Selector</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#all</code>
+          <p class='doc'>
+            <i>
+              Add $all selection. Documents must match all values
+              provided in the array.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(<span class="symbol">:field</span>.all =&gt; [ <span class="integer">1</span>, <span class="integer">2</span>, <span class="integer">3</span> ])</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">field</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$all</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="integer">1</span>, <span class="integer">2</span>, <span class="integer">3</span> ]}}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#elem_match</code>
+          <p class='doc'>
+            <i>
+              Add $elemMatch selection. Finds documents with arrays of values
+              that match the provided expression.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(&#x000A;  <span class="symbol">:members</span>.elem_match =&gt; { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> }&#x000A;)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">members</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$elemMatch</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> }&#x000A;  }&#x000A;}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#exists</code>
+          <p class='doc'>
+            <i>
+              Add $exists selection. Matches documents based on whether a value
+              for the field exists or not. Will match docs with <code>nil</code>
+              values if set to <code>true</code>.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(<span class="symbol">:name</span>.exists =&gt; <span class="predefined-constant">true</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$exists</span><span class="delimiter">&quot;</span></span> =&gt; <span class="predefined-constant">true</span> }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#gt</code>
+          <p class='doc'>
+            <i>
+              Add $gt selection. Matches documents who's field is greater
+              than the provided value.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(<span class="symbol">:age</span>.gt <span class="integer">18</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gt</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span> }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#gte</code>
+          <p class='doc'>
+            <i>
+              Add $gte selection. Matches documents who's field is greater
+              than or equal to the provided value.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(<span class="symbol">:age</span>.gte =&gt; <span class="integer">18</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gte</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span> }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#in</code>
+          <p class='doc'>
+            <i>
+              Add $in selection. Matches documents who's field contains a
+              value that is in the array, similar to a SQL IN.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(<span class="symbol">:name</span>.in =&gt; [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span> ])</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$in</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span> ]}}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#lt</code>
+          <p class='doc'>
+            <i>
+              Add $lt selection. Matches documents who's field is less
+              than the provided value.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(<span class="symbol">:age</span>.lt =&gt; <span class="integer">18</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$lt</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span> }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#lte</code>
+          <p class='doc'>
+            <i>
+              Add $lte selection. Matches documents who's field is less
+              than or equal to the provided value.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(<span class="symbol">:age</span>.lte =&gt; <span class="integer">18</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">age</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$lte</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">18</span> }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#mod</code>
+          <p class='doc'>
+            <i>
+              Add $mod selection. Matches documents who's field matches the
+              modulo value.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(<span class="symbol">:field</span>.mod =&gt; [ <span class="integer">10</span>, <span class="integer">1</span> ])</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">field</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$mod</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="integer">10</span>, <span class="integer">1</span> ]}}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#ne</code>
+          <p class='doc'>
+            <i>
+              Add $ne selection. Matches documents who's field is not equal
+              to the provided value.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(<span class="symbol">:name</span>.ne =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$ne</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span> }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#near</code>
+          <p class='doc'>
+            <i>
+              Add $near selection. Matches documents who's geo location is
+              near the provided coordinates.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(<span class="symbol">:location</span>.near =&gt; [ <span class="float">23.1</span>, <span class="float">12.1</span> ])</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$near</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="float">23.1</span>, <span class="float">12.1</span> ] }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#near_sphere</code>
+          <p class='doc'>
+            <i>
+              Add $nearSphere selection. Matches documents who's geo location is
+              near the provided coordinates using spherical algorithms.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(&#x000A;  <span class="symbol">:location</span>.near_sphere =&gt; [ <span class="float">23.1</span>, <span class="float">12.1</span> ]&#x000A;)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$nearSphere</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="float">23.1</span>, <span class="float">12.1</span> ] }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#nin</code>
+          <p class='doc'>
+            <i>
+              Add $nin selection. Matches documents who's field does not match
+              values in the provided array.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(<span class="symbol">:name</span>.nin =&gt; [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Martin</span><span class="delimiter">&quot;</span></span> ])</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$nin</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Martin</span><span class="delimiter">&quot;</span></span> ] }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#with_size</code>
+          <p class='doc'>
+            <i>
+              Add $size selection. Matches documents who's array field has
+              the exact size of the provided value. This is named
+              <code>with_size</code> not to conflict with Ruby's
+              <code>Enumerable#size</code> or <code>Symbol#size</code>.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(<span class="symbol">:members</span>.with_size =&gt; <span class="integer">3</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">members</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$size</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">3</span> }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#with_type</code>
+          <p class='doc'>
+            <i>
+              Add $type selection. Matches documents who's field is of the
+              provided BSON type. See
+              <a href="http://www.mongodb.org/display/DOCS/Advanced+Queries#AdvancedQueries-%24type">BSON Types</a>
+              for a complete list.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(<span class="symbol">:name</span>.with_type =&gt; <span class="integer">2</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$type</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">2</span> }}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#within_box</code>
+          <p class='doc'>
+            <i>
+              Adds $within/$box selection. Matches documents that have geo
+              locations inside the provided box.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(&#x000A;  <span class="symbol">:location</span>.within_box =&gt; [[ <span class="integer">1</span>, <span class="integer">10</span> ], [ <span class="integer">10</span>, <span class="integer">1</span> ]]&#x000A;)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$within</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$box</span><span class="delimiter">&quot;</span></span> =&gt; [[ <span class="integer">1</span>, <span class="integer">10</span> ], [ <span class="integer">10</span>, <span class="integer">1</span> ]]}&#x000A;  }&#x000A;}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#within_circle</code>
+          <p class='doc'>
+            <i>
+              Adds $within/$center selection. Matches documents that have geo
+              locations inside the provided circle with a radius.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(&#x000A;  <span class="symbol">:location</span>.within_circle =&gt; [[ <span class="integer">1</span>, <span class="integer">10</span> ], <span class="float">0.5</span> ]&#x000A;)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$within</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$center</span><span class="delimiter">&quot;</span></span> =&gt; [[ <span class="integer">1</span>, <span class="integer">10</span> ], <span class="float">0.5</span> ]}&#x000A;  }&#x000A;}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#within_polygon</code>
+          <p class='doc'>
+            <i>
+              Adds $within/$polygon selection. Matches documents that have geo
+              locations inside the provided polygon.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(&#x000A;  <span class="symbol">:location</span>.within_polygon =&gt; [&#x000A;    [ <span class="integer">10</span>, <span class="integer">20</span> ], [ <span class="integer">10</span>, <span class="integer">40</span> ], [ <span class="integer">30</span>, <span class="integer">40</span> ], [ <span class="integer">30</span>, <span class="integer">20</span> ]&#x000A;  ]&#x000A;)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$within</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;      <span class="string"><span class="delimiter">&quot;</span><span class="content">$polygon</span><span class="delimiter">&quot;</span></span> =&gt; [&#x000A;        [ <span class="integer">10</span>, <span class="integer">20</span> ], [ <span class="integer">10</span>, <span class="integer">40</span> ], [ <span class="integer">30</span>, <span class="integer">40</span> ], [ <span class="integer">30</span>, <span class="integer">20</span> ]&#x000A;      ]&#x000A;    }&#x000A;  }&#x000A;}</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Symbol#within_spherical_circle</code>
+          <p class='doc'>
+            <i>
+              Adds $within/$centerSphere selection. Matches documents that
+              have geo locations inside the provided sphere with a radius.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>queryable.where(&#x000A;  <span class="symbol">:location</span>.within_spherical_circle =&gt;&#x000A;    [[ <span class="integer">1</span>, <span class="integer">10</span> ], <span class="float">0.5</span> ]&#x000A;)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>{&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$within</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$centerSphere</span><span class="delimiter">&quot;</span></span> =&gt; [[ <span class="integer">1</span>, <span class="integer">10</span> ], <span class="float">0.5</span> ]}&#x000A;  }&#x000A;}&#x000A;</pre></div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+<section id='merging'>
+  <h2>Merge Strategies</h2>
+  <h3>Explicit Merging</h3>
+  <p>
+    The selection API also provides merge strategies for cases you want to
+    override the default behaviour with specific methods that expect array values.
+    The available strategies are *intersect, override, and union* and are used by
+    chaining the name of the strategy before calling any method. For example,
+    to override the default <i>intersection</i> behaviour of <code>#in</code>:
+  </p>
+  <div class="CodeRay">
+    <div class="code"><pre><span class="constant">Band</span>.in(name: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Depeche Mode</span><span class="delimiter">&quot;</span></span> ]).union.in(name: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">New Order</span><span class="delimiter">&quot;</span></span> ])&#x000A;</pre></div>
+  </div>
+  <p>This translates to the following selector.</p>
+  <div class="CodeRay">
+    <div class="code"><pre>{ <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">$in</span><span class="delimiter">&quot;</span></span> =&gt; [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Depeche Mode</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">New Order</span><span class="delimiter">&quot;</span></span> ] }}&#x000A;</pre></div>
+  </div>
+  <p>
+    The default behaviour for the array methods are:
+    <ul>
+      <li><code>Queryable#all</code> - defaults to <code>union</code>.</li>
+      <li><code>Queryable#in</code> - defaults to <code>intersect</code>.</li>
+      <li><code>Queryable#nin</code> - defaults to <code>intersect</code>.</li>
+    </ul>
+  </p>
+  <p>
+    The available strategies are:
+    <ul>
+      <li><code>Queryable#intersect</code> Performs an intersection of existing and new array.</li>
+      <li><code>Queryable#override</code> Overwrites the old array with the new.</li>
+      <li><code>Queryable#union</code> Performs a union of the existing and new array.</li>
+    </ul>
+  </p>
+  <h3>Automatic Merging</h3>
+  <p>
+    When using the normal Origin DSL, criterion on the same field with different
+    operators will automatically be merged into a complex selector on the common
+    field. For example:
+  </p>
+  <div class="CodeRay">
+    <div class="code"><pre>likeable = <span class="constant">Band</span>.gt(likes: <span class="integer">100</span>).lt(likes: <span class="integer">1000</span>).ne(likes: <span class="integer">500</span>)&#x000A;likeable.selector <span class="comment">#=&gt; { &quot;likes&quot; =&gt; { &quot;$gt&quot; =&gt; 100, &quot;$lt&quot; =&gt; 1000, &quot;$ne&quot; =&gt; 500 }}</span>&#x000A;</pre></div>
+  </div>
+  <p>
+    Note that this works <i>only</i> when using the DSL methods, but not currently
+    when using the symbol operators in a <code>where</code> clause.
+  </p>
+  <div class="CodeRay">
+    <div class="code"><pre>likeable = <span class="constant">Band</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">100</span>, <span class="symbol">:likes</span>.lt =&gt; <span class="integer">1000</span>, <span class="symbol">:likes</span>.ne =&gt; <span class="integer">500</span>)&#x000A;likeable.selector <span class="comment">#=&gt; { &quot;likes&quot; =&gt; { &quot;$ne&quot; =&gt; 500 }}</span></pre></div>
+  </div>
+</section>
       </div>
     </div>
   </body>
