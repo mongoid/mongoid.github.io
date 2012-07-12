@@ -326,7 +326,7 @@
     like.
   </p>
   <div class="CodeRay">
-    <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, type: <span class="constant">String</span>&#x000A;  field <span class="symbol">:_id</span>, type: <span class="constant">String</span>, default -&gt;{ name }&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+    <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, type: <span class="constant">String</span>&#x000A;  field <span class="symbol">:_id</span>, type: <span class="constant">String</span>, default: -&gt;{ name }&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
   </div>
 </section>
 <section id='dynamic_fields'>
