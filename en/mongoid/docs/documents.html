@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
   <head>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type' />
     <meta content='A Ruby ODM for MongoDB' name='description' />
     <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords' />
     <link href="/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
@@ -218,6 +219,15 @@
   </p>
   <div class="CodeRay">
     <div class="code"><pre><span class="comment"># Get the field values as a hash.</span>&#x000A;person.attributes&#x000A;&#x000A;<span class="comment"># Set the field values in the document.</span>&#x000A;<span class="constant">Person</span>.new(first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean-Baptiste</span><span class="delimiter">&quot;</span></span>, middle_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Emmanuel</span><span class="delimiter">&quot;</span></span>)&#x000A;person.attributes = { first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean-Baptiste</span><span class="delimiter">&quot;</span></span>, middle_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Emmanuel</span><span class="delimiter">&quot;</span></span> }&#x000A;person.write_attributes(&#x000A;  first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean-Baptiste</span><span class="delimiter">&quot;</span></span>,&#x000A;  middle_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Emmanuel</span><span class="delimiter">&quot;</span></span>&#x000A;)&#x000A;</pre></div>
+  </div>
+  <h3>Hash Field Keys</h3>
+  <p>
+    When using a field of type <code>Hash</code>, be wary of adhering to the
+    <a href="http://www.mongodb.org/display/DOCS/Legal+Key+Names">legal key names for mongoDB</a>
+    , or else the values will not store properly.
+  </p>
+  <div class="CodeRay">
+    <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:first_name</span>&#x000A;  field <span class="symbol">:url</span>, type: <span class="constant">Hash</span>&#x000A;  &#x000A;  <span class="comment"># will update the fields properly and save the values</span>&#x000A;  <span class="keyword">def</span> <span class="function">set_vals</span>&#x000A;    <span class="predefined-constant">self</span>.first_name = <span class="string"><span class="delimiter">'</span><span class="content">Daniel</span><span class="delimiter">'</span></span>&#x000A;    <span class="predefined-constant">self</span>.url = {<span class="string"><span class="delimiter">'</span><span class="content">home_page</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">http://www.homepage.com</span><span class="delimiter">'</span></span>}&#x000A;    save&#x000A;  <span class="keyword">end</span>&#x000A;  &#x000A;  <span class="comment"># all data will fail to save due to the illegal hashkey</span>&#x000A;  <span class="keyword">def</span> <span class="function">set_vals_fail</span>&#x000A;    <span class="predefined-constant">self</span>.first_name = <span class="string"><span class="delimiter">'</span><span class="content">Daniel</span><span class="delimiter">'</span></span>&#x000A;    <span class="predefined-constant">self</span>.url = {<span class="string"><span class="delimiter">'</span><span class="content">home.page</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">http://www.homepage.com</span><span class="delimiter">'</span></span>}&#x000A;    save&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
   </div>
   <h3>Defaults</h3>
   <p>
