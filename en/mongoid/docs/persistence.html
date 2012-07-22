@@ -178,8 +178,8 @@
           <p class='doc'>
             <i>
               Saves the changed attributes to the database
-              atomically, or insert the document if new. Can
-              bypass validations if wanted.
+              atomically, or insert the document if flagged as a new_record via
+              <code>Model#rew_record?</code>. Can bypass validations if wanted.
             </i>
           </p>
         </td>
@@ -273,6 +273,31 @@
         <td>
           <div class="CodeRay">
             <div class="code"><pre>collections[<span class="symbol">:people</span>].find(...).&#x000A;  update(<span class="string"><span class="delimiter">&quot;</span><span class="content">$set</span><span class="delimiter">&quot;</span></span> =&gt; { first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean</span><span class="delimiter">&quot;</span></span> })</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Model#upsert</code>
+          <p class='doc'>
+            <i>
+              Performs a MongoDB <code>upsert</code> on the document. If the
+              document exists in the database, it will get overwritten with
+              the current attributes of the document in memory. If the document
+              does not exist in the database, it will be inserted. Note that
+              this only runs the <code>{before|after|around}_upsert</code>
+              callbacks.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>person = <span class="constant">Person</span>.new(&#x000A;  first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>,&#x000A;  last_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;)&#x000A;person.upsert</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>collections[<span class="symbol">:people</span>].upsert({&#x000A;  first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>,&#x000A;  last_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;})</pre></div>
           </div>
         </td>
       </tr>
