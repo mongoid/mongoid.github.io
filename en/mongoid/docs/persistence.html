@@ -663,6 +663,34 @@
     <div class="code"><pre><span class="constant">Band</span>.with(database: <span class="string"><span class="delimiter">&quot;</span><span class="content">music-non-stop</span><span class="delimiter">&quot;</span></span>).create&#x000A;<span class="constant">Band</span>.with(collection: <span class="string"><span class="delimiter">&quot;</span><span class="content">artists</span><span class="delimiter">&quot;</span></span>).delete_all&#x000A;band.with(session: <span class="symbol">:tertiary</span>).save!&#x000A;</pre></div>
   </div>
   <p>
+    Persisting using <code>with</code> is a <i>one time</i> switch in the persistence
+    context - it changes back to it's defaults immediately after. Mongoid
+    will not remember anything specific on the document level regarding how it was
+    saved when using this method. A potential gotcha with is is persisting a document
+    via <code>with</code> and then immediately updating it after.
+  </p>
+  <div class="CodeRay">
+    <div class="code"><pre>band = <span class="constant">Band</span>.new(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Scuba</span><span class="delimiter">&quot;</span></span>)&#x000A;band.with(collection: <span class="string"><span class="delimiter">&quot;</span><span class="content">artists</span><span class="delimiter">&quot;</span></span>).save!&#x000A;band.update_attribute(likes: <span class="integer">1000</span>) <span class="comment"># This will not save - tries the collection &quot;bands&quot;</span>&#x000A;band.with(collection: <span class="string"><span class="delimiter">&quot;</span><span class="content">artists</span><span class="delimiter">&quot;</span></span>).update_attribute(likes: <span class="integer">1000</span>) <span class="comment"># This will update the document.</span>&#x000A;</pre></div>
+  </div>
+  <p>
+    If you want to switch the persistence context for all operations at runtime,
+    but don't want to be using <code>with</code> all over your code, Mongoid provides
+    the ability to do this as the session and database level globally. The methods
+    for this are <code>Mongoid.override_session</code> and
+    <code>Mongoid.override_database</code>. A useful case for this are internationalized
+    applications that store information for different locales in different databases
+    or sessions, but the schema in each remains the same.
+  </p>
+  <div class="CodeRay">
+  <div class="code"><pre><span class="keyword">class</span> <span class="class">BandsController</span> &lt; <span class="constant">ApplicationController</span>&#x000A;  before_filter <span class="symbol">:switch_database</span>&#x000A;  after_filter <span class="symbol">:reset_database</span>&#x000A;&#x000A;  private&#x000A;&#x000A;  <span class="keyword">def</span> <span class="function">switch_database</span>&#x000A;    <span class="constant">I18n</span>.locale = params[<span class="symbol">:locale</span>] || <span class="constant">I18n</span>.default_locale&#x000A;    <span class="constant">Mongoid</span>.override_database(<span class="string"><span class="delimiter">&quot;</span><span class="content">my_db_name_</span><span class="inline"><span class="inline-delimiter">#{</span><span class="constant">I18n</span>.locale<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>)&#x000A;  <span class="keyword">end</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="function">reset_database</span>&#x000A;    <span class="constant">Mongoid</span>.override_database(<span class="predefined-constant">nil</span>)&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+</div>
+  <p>
+    In the above example, all persistence operations would be stored in the
+    alternative database <i>for all remaining operations on this thread</i>.
+    This is why the after request set the override back to nil - it ensures
+    subsequent requests with no local params use the default option.
+  </p>
+  <p>
     <code>#with</code>is also used for changing safe mode options temporarily
     at runtime.
   </p>
