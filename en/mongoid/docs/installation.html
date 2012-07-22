@@ -314,6 +314,13 @@
   <div class="CodeRay">
     <div class="code"><pre><span class="keyword">module</span> <span class="class">MyApplication</span>&#x000A;  <span class="keyword">class</span> <span class="class">Application</span> &lt;&lt; <span class="constant">Rails</span>::<span class="constant">Application</span>&#x000A;    <span class="constant">Mongoid</span>.logger.level = <span class="constant">Logger</span>::<span class="constant">DEBUG</span>&#x000A;    <span class="constant">Moped</span>.logger.level = <span class="constant">Logger</span>::<span class="constant">DEBUG</span>&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
   </div>
+  <p>
+    If you want to change the logger instance, you can simply just set a
+    new one.
+  </p>
+  <div class="CodeRay">
+    <div class="code"><pre><span class="constant">Mongoid</span>.logger = <span class="constant">Logger</span>.new(<span class="global-variable">$stdout</span>)&#x000A;<span class="constant">Moped</span>.logger = <span class="constant">Logger</span>.new(<span class="global-variable">$stdout</span>)&#x000A;</pre></div>
+  </div>
 </section>
 <section id='replica'>
   <h2>Replica Sets</h2>
