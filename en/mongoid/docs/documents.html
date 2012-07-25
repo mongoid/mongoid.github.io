@@ -205,6 +205,7 @@
       <li><code>Range</code></li>
     </ul>
   </p>
+  <a name='getters_and_setters'></a>
   <h3>Getting and setting field values</h3>
   <p>
     When a field is defined, Mongoid provides several different ways of
@@ -220,6 +221,7 @@
   <div class="CodeRay">
     <div class="code"><pre><span class="comment"># Get the field values as a hash.</span>&#x000A;person.attributes&#x000A;&#x000A;<span class="comment"># Set the field values in the document.</span>&#x000A;<span class="constant">Person</span>.new(first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean-Baptiste</span><span class="delimiter">&quot;</span></span>, middle_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Emmanuel</span><span class="delimiter">&quot;</span></span>)&#x000A;person.attributes = { first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean-Baptiste</span><span class="delimiter">&quot;</span></span>, middle_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Emmanuel</span><span class="delimiter">&quot;</span></span> }&#x000A;person.write_attributes(&#x000A;  first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean-Baptiste</span><span class="delimiter">&quot;</span></span>,&#x000A;  middle_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Emmanuel</span><span class="delimiter">&quot;</span></span>&#x000A;)&#x000A;</pre></div>
   </div>
+  <a name='hash_field_keys'></a>
   <h3>Hash Field Keys</h3>
   <p>
     When using a field of type <code>Hash</code>, be wary of adhering to the
@@ -227,8 +229,9 @@
     , or else the values will not store properly.
   </p>
   <div class="CodeRay">
-    <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:first_name</span>&#x000A;  field <span class="symbol">:url</span>, type: <span class="constant">Hash</span>&#x000A;  &#x000A;  <span class="comment"># will update the fields properly and save the values</span>&#x000A;  <span class="keyword">def</span> <span class="function">set_vals</span>&#x000A;    <span class="predefined-constant">self</span>.first_name = <span class="string"><span class="delimiter">'</span><span class="content">Daniel</span><span class="delimiter">'</span></span>&#x000A;    <span class="predefined-constant">self</span>.url = {<span class="string"><span class="delimiter">'</span><span class="content">home_page</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">http://www.homepage.com</span><span class="delimiter">'</span></span>}&#x000A;    save&#x000A;  <span class="keyword">end</span>&#x000A;  &#x000A;  <span class="comment"># all data will fail to save due to the illegal hashkey</span>&#x000A;  <span class="keyword">def</span> <span class="function">set_vals_fail</span>&#x000A;    <span class="predefined-constant">self</span>.first_name = <span class="string"><span class="delimiter">'</span><span class="content">Daniel</span><span class="delimiter">'</span></span>&#x000A;    <span class="predefined-constant">self</span>.url = {<span class="string"><span class="delimiter">'</span><span class="content">home.page</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">http://www.homepage.com</span><span class="delimiter">'</span></span>}&#x000A;    save&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+    <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:first_name</span>&#x000A;  field <span class="symbol">:url</span>, type: <span class="constant">Hash</span>&#x000A;&#x000A;  <span class="comment"># will update the fields properly and save the values</span>&#x000A;  <span class="keyword">def</span> <span class="function">set_vals</span>&#x000A;    <span class="predefined-constant">self</span>.first_name = <span class="string"><span class="delimiter">'</span><span class="content">Daniel</span><span class="delimiter">'</span></span>&#x000A;    <span class="predefined-constant">self</span>.url = {<span class="string"><span class="delimiter">'</span><span class="content">home_page</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">http://www.homepage.com</span><span class="delimiter">'</span></span>}&#x000A;    save&#x000A;  <span class="keyword">end</span>&#x000A;&#x000A;  <span class="comment"># all data will fail to save due to the illegal hashkey</span>&#x000A;  <span class="keyword">def</span> <span class="function">set_vals_fail</span>&#x000A;    <span class="predefined-constant">self</span>.first_name = <span class="string"><span class="delimiter">'</span><span class="content">Daniel</span><span class="delimiter">'</span></span>&#x000A;    <span class="predefined-constant">self</span>.url = {<span class="string"><span class="delimiter">'</span><span class="content">home.page</span><span class="delimiter">'</span></span> =&gt; <span class="string"><span class="delimiter">'</span><span class="content">http://www.homepage.com</span><span class="delimiter">'</span></span>}&#x000A;    save&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
   </div>
+  <a name='field_defaults'></a>
   <h3>Defaults</h3>
   <p>
     You can tell a field in Mongoid to always have a default value if nothing
@@ -265,6 +268,7 @@
       </tr>
     </table>
   </div>
+  <a name='field_aliasing'></a>
   <h3>Field Aliasing</h3>
   <p>
     One of the drawbacks of having a schemaless database is that MongoDB must
@@ -278,6 +282,7 @@
   <div class="CodeRay">
     <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:n</span>, as: <span class="symbol">:name</span>, type: <span class="constant">String</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;band = <span class="constant">Band</span>.new(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Placebo</span><span class="delimiter">&quot;</span></span>)&#x000A;band.attributes <span class="comment">#=&gt; { &quot;n&quot; =&gt; &quot;Placebo&quot; }</span>&#x000A;&#x000A;criteria = <span class="constant">Band</span>.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Placebo</span><span class="delimiter">&quot;</span></span>)&#x000A;criteria.selector <span class="comment">#=&gt; { &quot;n&quot; =&gt; &quot;Placebo&quot; }</span>&#x000A;</pre></div>
   </div>
+  <a name='custom_fields'></a>
   <h3>Custom field serialization</h3>
   <p>
     You can define custom types in Mongoid and determine how they are
@@ -286,7 +291,7 @@
     values.
   </p>
   <div class="CodeRay">
-    <div class="code"><pre><span class="keyword">class</span> <span class="class">Profile</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:location</span>, type: <span class="constant">Point</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Point</span>&#x000A;&#x000A;  attr_reader <span class="symbol">:x</span>, <span class="symbol">:y</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="function">initialize</span>(x, y)&#x000A;    <span class="instance-variable">@x</span>, <span class="instance-variable">@y</span> = x, y&#x000A;  <span class="keyword">end</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="function">mongoize</span>&#x000A;    [ x, y ]&#x000A;  <span class="keyword">end</span>&#x000A;&#x000A;  <span class="keyword">class</span> &lt;&lt; <span class="class">self</span>&#x000A;&#x000A;    <span class="keyword">def</span> <span class="function">demongoize</span>(object)&#x000A;      <span class="constant">Point</span>.new(object[<span class="integer">0</span>], object[<span class="integer">1</span>])&#x000A;    <span class="keyword">end</span>&#x000A;&#x000A;    <span class="keyword">def</span> <span class="function">mongoize</span>(object)&#x000A;      object&#x000A;    <span class="keyword">end</span>&#x000A;&#x000A;    <span class="keyword">def</span> <span class="function">evolve</span>(object)&#x000A;      <span class="keyword">if</span> object.is_a?(<span class="constant">Point</span>)&#x000A;        [ object.x, object.y ]&#x000A;      <span class="keyword">else</span>&#x000A;        object&#x000A;      <span class="keyword">end</span>&#x000A;    <span class="keyword">end</span>&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+    <div class="code"><pre><span class="keyword">class</span> <span class="class">Profile</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:location</span>, type: <span class="constant">Point</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Point</span>&#x000A;&#x000A;  attr_reader <span class="symbol">:x</span>, <span class="symbol">:y</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="function">initialize</span>(x, y)&#x000A;    <span class="instance-variable">@x</span>, <span class="instance-variable">@y</span> = x, y&#x000A;  <span class="keyword">end</span>&#x000A;&#x000A;  <span class="comment"># Converts an object of this instance into a database friendly value.</span>&#x000A;  <span class="keyword">def</span> <span class="function">mongoize</span>&#x000A;    [ x, y ]&#x000A;  <span class="keyword">end</span>&#x000A;&#x000A;  <span class="keyword">class</span> &lt;&lt; <span class="class">self</span>&#x000A;&#x000A;    <span class="comment"># Get the object as it was stored in the database, and instantiate</span>&#x000A;    <span class="comment"># this custom class from it.</span>&#x000A;    <span class="keyword">def</span> <span class="function">demongoize</span>(object)&#x000A;      <span class="constant">Point</span>.new(object[<span class="integer">0</span>], object[<span class="integer">1</span>])&#x000A;    <span class="keyword">end</span>&#x000A;&#x000A;    <span class="comment"># Takes any possible object and converts it to how it would be</span>&#x000A;    <span class="comment"># stored in the database.</span>&#x000A;    <span class="keyword">def</span> <span class="function">mongoize</span>(object)&#x000A;      <span class="keyword">case</span> object&#x000A;      <span class="keyword">when</span> <span class="constant">Point</span> <span class="keyword">then</span> object.mongoize&#x000A;      <span class="keyword">when</span> <span class="constant">Hash</span> <span class="keyword">then</span> <span class="constant">Point</span>.new(object[<span class="symbol">:x</span>], object[<span class="symbol">:y</span>]).mongoize&#x000A;      <span class="keyword">else</span> object&#x000A;      <span class="keyword">end</span>&#x000A;    <span class="keyword">end</span>&#x000A;&#x000A;    <span class="comment"># Converts the object that was supplied to a criteria and converts it</span>&#x000A;    <span class="comment"># into a database friendly form.</span>&#x000A;    <span class="keyword">def</span> <span class="function">evolve</span>(object)&#x000A;      <span class="keyword">case</span> object&#x000A;      <span class="keyword">when</span> <span class="constant">Point</span> <span class="keyword">then</span> object.mongoize&#x000A;      <span class="keyword">else</span> object&#x000A;      <span class="keyword">end</span>&#x000A;    <span class="keyword">end</span>&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
   </div>
   <p>
     The instance method <code>mongoize</code> take an instance of your object,
@@ -323,12 +328,14 @@
     that takes care of this. We check if the passed in object is a <code>Point</code>
     first, in case we also want to be able to pass in ordinary arrays instead.
   </p>
+  <a name='reserved_field_names'></a>
   <h3>Reserved names</h3>
   <p>
     If you define a field on your document that conflicts with a reserved method
     name in Mongoid, the configuration will raise an error. For a list of these
     you may look at <code>Mongoid.destructive_fields</code>.
   </p>
+  <a name='custom_ids'></a>
   <h3>Creating Custom Ids</h3>
   <p>
     For cases when you do not want to have <code>Moped::BSON::ObjectId</code> ids, you
