@@ -769,6 +769,11 @@
   <div class="CodeRay">
     <div class="code"><pre><span class="keyword">class</span> <span class="class">Label</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  embeds_many <span class="symbol">:bands</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:active</span>, default: <span class="predefined-constant">true</span>&#x000A;  embedded_in <span class="symbol">:label</span>&#x000A;  default_scoped where(active: <span class="predefined-constant">true</span>)&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;label.bands.push(band)&#x000A;label.bands <span class="comment">#=&gt; [ band ]</span>&#x000A;band.update_attribute(<span class="symbol">:active</span>, <span class="predefined-constant">false</span>)&#x000A;label.bands <span class="comment">#=&gt; [ band ] Must reload.</span>&#x000A;label.reload.bands <span class="comment">#=&gt; []</span>&#x000A;</pre></div>
   </div>
+  <p>
+    Note that you should not use default scopes in conjunction with
+    `Mongoid::Paranoia` as the default scope will override the paranoia scope
+    and cause all documents, soft-deleted or not, to be included.
+  </p>
   <h3>Class Methods</h3>
   <p>
     Class methods on models that return criteria objects are also
