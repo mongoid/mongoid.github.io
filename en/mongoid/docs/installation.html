@@ -182,6 +182,24 @@
   <div class="CodeRay">
     <div class="code"><pre>$ rails g mongoid:config&#x000A;</pre></div>
   </div>
+  <p>
+    When Mongoid loads its configuration, it chooses the environment to used
+    based on the following order:
+    <ul>
+      <li><code>Rails.env</code> if using Rails.</li>
+      <li><code>Sinatra::Base.environment</code> if using Sinatra.</li>
+      <li><code>RACK_ENV</code> environment variable.</li>
+      <li><code>MONGOID_ENV</code> environment variable.</li>
+    </ul>
+  </p>
+  <p>
+    If you are not using any rack based application and want to override the
+    environment programatically, you can pass a second paramter to <code>load!</code>
+    and Mongoid will use that.
+  </p>
+  <div class="CodeRay">
+    <div class="code"><pre><span class="constant">Mongoid</span>.load!(<span class="string"><span class="delimiter">&quot;</span><span class="content">path/to/your/mongoid.yml</span><span class="delimiter">&quot;</span></span>, <span class="symbol">:production</span>)&#x000A;&#x000A;</pre></div>
+  </div>
   <h3>Anatomy of a Mongoid Config</h3>
   <p>
     Let's have a look at a full-blown <code>mongoid.yml</code> and explain
