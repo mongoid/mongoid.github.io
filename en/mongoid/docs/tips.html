@@ -91,6 +91,7 @@
       <li><a href="#relational_associations">Relational Data</a></li>
       <li><a href="#safe_mode">Safe Mode</a></li>
       <li><a href="#other_mappers">Other Mappers</a></li>
+      <li><a href="#sidekiq">Sidekiq</a></li>
     </ul>
   </div>
 </div>
@@ -268,8 +269,35 @@
     of accessing an Active Record model from Mongoid manually.
   </p>
   <div class="CodeRay">
-    <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;&#x000A;  field <span class="symbol">:user_id</span>, type: <span class="constant">Integer</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="function">user</span>&#x000A;    <span class="instance-variable">@user</span> ||= <span class="constant">Band</span>.where(id: user_id).first&#x000A;  <span class="keyword">end</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="function">user=</span>(user)&#x000A;    <span class="predefined-constant">self</span>.user_id = user.id&#x000A;    <span class="instance-variable">@user</span> = user&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">User</span> &lt; <span class="constant">ActiveRecord</span>::<span class="constant">Base</span>&#x000A;<span class="keyword">end</span></pre></div>
+    <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;&#x000A;  field <span class="symbol">:user_id</span>, type: <span class="constant">Integer</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="function">user</span>&#x000A;    <span class="instance-variable">@user</span> ||= <span class="constant">Band</span>.where(id: user_id).first&#x000A;  <span class="keyword">end</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="function">user=</span>(user)&#x000A;    <span class="predefined-constant">self</span>.user_id = user.id&#x000A;    <span class="instance-variable">@user</span> = user&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">User</span> &lt; <span class="constant">ActiveRecord</span>::<span class="constant">Base</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
   </div>
+</section>
+<section id='sidekiq'>
+  <h2>Sidekiq</h2>
+  <p>
+    If you are using Sidekiq, you need to ensure that MongoDB sessions are
+    diconnected after each worker runs, or you will quickly overload MongoDB
+    with more active connections that it can handle. In order to handle this
+    seamlessly for you, we have provided a gem with a Sidekiq middleware that
+    handles this - <a href="https://github.com/mongoid/kiqstand">Kiqstand</a>.
+    You will need to be on Mongoid version 3.0.3 or higher.
+  </p>
+  <p>
+    To use Kiqstand, first add it to your <code>Gemfile</code>.
+  </p>
+  <div class="CodeRay">
+    <div class="code"><pre>gem <span class="string"><span class="delimiter">&quot;</span><span class="content">kiqstand</span><span class="delimiter">&quot;</span></span>&#x000A;</pre></div>
+  </div>
+  <p>
+    When you intialize Sidekiq, add the middleware to the Kiqstand server
+    stack.
+  </p>
+  <div class="CodeRay">
+    <div class="code"><pre><span class="constant">Sidekiq</span>.configure_server <span class="keyword">do</span> |config|&#x000A;  config.server_middleware <span class="keyword">do</span> |chain|&#x000A;    chain.add <span class="constant">Kiqstand</span>::<span class="constant">Middleware</span>&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+  </div>
+  <p>
+    After this, all connection handling is taken care of for you.
+  </p>
 </section>
       </div>
     </div>
