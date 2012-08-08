@@ -445,12 +445,30 @@
         <td class='doc'>
           <code>Criteria#update</code>
           <p class='doc'>
-            <i>Update attributes of all matching documents.</i>
+            <i>Update attributes of the first matching document.</i>
           </p>
         </td>
         <td>
           <div class="CodeRay">
             <div class="code"><pre><span class="constant">Band</span>.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).update(label: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mute</span><span class="delimiter">&quot;</span></span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(&#x000A;  { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span> }&#x000A;).update({ <span class="string"><span class="delimiter">&quot;</span><span class="content">$set</span><span class="delimiter">&quot;</span></span> =&gt; { label: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mute</span><span class="delimiter">&quot;</span></span> }})</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>Criteria#update_all</code>
+          <p class='doc'>
+            <i>Update attributes of all matching documents.</i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Band</span>.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).update_all(label: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mute</span><span class="delimiter">&quot;</span></span>)</pre></div>
           </div>
         </td>
         <td>
