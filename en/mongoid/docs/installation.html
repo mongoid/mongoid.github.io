@@ -309,6 +309,13 @@
     <div class="code"><pre><span class="comment"># config.active_record.mass_assignment_sanitizer = :strict</span>&#x000A;<span class="comment"># config.active_record.auto_explain_threshold_in_seconds = 0.5</span>&#x000A;</pre></div>
   </div>
   <p>
+    For Rails 3.2.3+ you'll also need to comment out the following line in
+    <code>myapp/config/application.rb</code>.
+  </p>
+  <div class="CodeRay">
+    <div class="code"><pre><span class="comment"># config.active_record.whitelist_attributes = true</span>&#x000A;</pre></div>
+  </div>
+  <p>
     You can also generate your new rails app sans Active Record like so.
   </p>
   <div class="CodeRay">
