@@ -127,8 +127,8 @@
       <tr>
         <td class='achtung'><img src="/images/achtung.png" /></td>
         <td class='note'>
-          Most of Mongoid's criteria has been extracted into it's own
-          gem, Origin, which Mongoid now depends on for most of it's API.
+          Most of Mongoid's criteria has been extracted into its own
+          gem, Origin, which Mongoid now depends on for most of its API.
           A complete list of commands can be found in
           <a href="/en/origin/docs/selection.html">Selection with Origin</a>
           and <a href="/en/origin/docs/options.html">Options with Origin</a>.
@@ -782,7 +782,7 @@
     <code>has_many</code>, <code>has_and_belongs_to_many</code>, or
     <code>embeds_many</code>, you must reload the relation to have scoping reapplied.
     This is important to note if you change a value of a document in the relation
-    that would affect it's visibility within the scoped relation.
+    that would affect its visibility within the scoped relation.
   </p>
   <div class="CodeRay">
     <div class="code"><pre><span class="keyword">class</span> <span class="class">Label</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  embeds_many <span class="symbol">:bands</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:active</span>, default: <span class="predefined-constant">true</span>&#x000A;  embedded_in <span class="symbol">:label</span>&#x000A;  default_scoped where(active: <span class="predefined-constant">true</span>)&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;label.bands.push(band)&#x000A;label.bands <span class="comment">#=&gt; [ band ]</span>&#x000A;band.update_attribute(<span class="symbol">:active</span>, <span class="predefined-constant">false</span>)&#x000A;label.bands <span class="comment">#=&gt; [ band ] Must reload.</span>&#x000A;label.reload.bands <span class="comment">#=&gt; []</span>&#x000A;</pre></div>

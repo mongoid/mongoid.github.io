@@ -133,7 +133,7 @@
     </table>
   </div>
   <p>
-    At any time you can ask the queryable for a <code>selector</code> or it's
+    At any time you can ask the queryable for a <code>selector</code> or its
     <code>options</code>, which can then be used with your favourite driver
     to query the database for documents.
   </p>
@@ -163,7 +163,7 @@
     <code>Queryable</code> object manually, but provide an easier way to
     generate them from models. Origin provides a <code>Origin::Forwardable</code>
     module to allow you to specify a method to create queryables from, and
-    subsequently injects all of it's public API into the model in question.
+    subsequently injects all of its public API into the model in question.
   </p>
   <div class="CodeRay">
     <div class="code"><pre><span class="keyword">class</span> <span class="class">Query</span>&#x000A;  include <span class="constant">Origin</span>::<span class="constant">Queryable</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Band</span>&#x000A;  extend <span class="constant">Origin</span>::<span class="constant">Forwardable</span>&#x000A;  select_with <span class="symbol">:query</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="predefined-constant">self</span>.<span class="function">query</span>&#x000A;    <span class="constant">Query</span>.new&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="constant">Band</span>.where(name: <span class="regexp"><span class="delimiter">/</span><span class="content">^depeceh</span><span class="delimiter">/</span><span class="modifier">i</span></span>).gt(likes: <span class="integer">10000</span>)&#x000A;<span class="constant">Band</span>.nin(name: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">New Order</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Pet Shop Boys</span><span class="delimiter">&quot;</span></span> ]).asc(<span class="symbol">:likes</span>)</pre></div>

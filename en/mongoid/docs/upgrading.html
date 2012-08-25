@@ -132,7 +132,7 @@
     <div class="CodeRay">
       <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, type: <span class="constant">String</span>&#x000A;  index({ name: <span class="integer">1</span> }, { unique: <span class="predefined-constant">true</span>, background: <span class="predefined-constant">true</span> })&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
     </div>
-    <p>Geospacial indexing needs "2d" as it's direction.</p>
+    <p>Geospacial indexing needs "2d" as its direction.</p>
     <div class="CodeRay">
       <div class="code"><pre><span class="keyword">class</span> <span class="class">Venue</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:location</span>, type: <span class="constant">Array</span>&#x000A;&#x000A;  index location: <span class="string"><span class="delimiter">&quot;</span><span class="content">2d</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
     </div>
@@ -313,12 +313,12 @@
       the relation will return empty results.
     </p>
     <p>
-      If the id is set and it's document is persisted, accessing the relation
+      If the id is set and its document is persisted, accessing the relation
       will return the document.
     </p>
     <p>
       If the id is set, but the base document is not saved afterwards, then
-      reloading will return the document to it's original state.
+      reloading will return the document to its original state.
     </p>
   </li>
   <li>

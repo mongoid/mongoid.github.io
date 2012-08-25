@@ -119,7 +119,7 @@
   </div>
   <p>
     Then when instantiating your queryable, you need to provide it a hash of
-    field name/serializer pairs as it's second argument.
+    field name/serializer pairs as its second argument.
   </p>
   <div class="CodeRay">
     <div class="code"><pre><span class="keyword">class</span> <span class="class">Query</span>&#x000A;  include <span class="constant">Origin</span>::<span class="constant">Queryable</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;queryable = <span class="constant">Query</span>.new({}, { <span class="string"><span class="delimiter">&quot;</span><span class="content">date</span><span class="delimiter">&quot;</span></span> =&gt; <span class="constant">DateSerializer</span>.new })&#x000A;</pre></div>
