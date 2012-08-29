@@ -671,7 +671,7 @@
     </div>
   </p>
   <div class="CodeRay">
-    <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  store_in collection: <span class="string"><span class="delimiter">&quot;</span><span class="content">artists</span><span class="delimiter">&quot;</span></span>, database: <span class="string"><span class="delimiter">&quot;</span><span class="content">music</span><span class="delimiter">&quot;</span></span>, session: <span class="string"><span class="delimiter">&quot;</span><span class="content">secondary</span><span class="delimiter">&quot;</span></span>&#x000A;</pre></div>
+    <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  store_in collection: <span class="string"><span class="delimiter">&quot;</span><span class="content">artists</span><span class="delimiter">&quot;</span></span>, database: <span class="string"><span class="delimiter">&quot;</span><span class="content">music</span><span class="delimiter">&quot;</span></span>, session: <span class="string"><span class="delimiter">&quot;</span><span class="content">secondary</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
   </div>
   <p>
     If no `store_in` macro would have been provided, Mongoid would store the model
