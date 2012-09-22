@@ -645,8 +645,22 @@
     in front of the selection you want to invert. This will add a <code>$not</code>
     clause to the query.
   </p>
+  <div class='well'>
+    <table>
+      <tr>
+        <td class='achtung'><img src="/images/achtung.png" /></td>
+        <td class='note'>
+          <p>
+            Note that <code>$not</code> clauses can only be applied to other operators.
+            See the official
+            <a href="http://www.mongodb.org/display/DOCS/Advanced+Queries#AdvancedQueries-Metaoperator%3A{{%24not}}">$not documentation</a> for more information.
+          </p>
+        </td>
+      </tr>
+    </table>
+  </div>
   <div class="CodeRay">
-    <div class="code"><pre>queryable.not.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Dave</span><span class="delimiter">&quot;</span></span>)&#x000A;queryable.selector <span class="comment">#=&gt; { &quot;$not&quot; =&gt; { &quot;name&quot; =&gt; &quot;Dave&quot; }}</span>&#x000A;&#x000A;</pre></div>
+    <div class="code"><pre>queryable.not.gt(age: <span class="integer">50</span>)&#x000A;queryable.selector <span class="comment">#=&gt; { &quot;age&quot; =&gt; { &quot;$not&quot; =&gt; { &quot;$gt&quot; =&gt; 50 }}}</span>&#x000A;&#x000A;</pre></div>
   </div>
 </section>
 <section id='symbol'>
