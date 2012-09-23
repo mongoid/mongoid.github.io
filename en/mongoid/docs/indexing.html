@@ -138,7 +138,8 @@
   <div class="code"><pre>rake db<span class="symbol">:mongoid</span><span class="symbol">:create_indexes</span>&#x000A;</pre></div>
 </div>
 <p>
-  Mongoid also provides a rake task to delete non-defined indexes.
+  Mongoid also provides a rake task to delete all secondary indexes, plus non-defined
+  indexes as well.
 </p>
 <div class="CodeRay">
   <div class="code"><pre>rake db<span class="symbol">:mongoid</span><span class="symbol">:remove_indexes</span></pre></div>
