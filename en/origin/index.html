@@ -94,7 +94,7 @@
   </table>
 </div>
 <div class="CodeRay">
-  <div class="code"><pre><span class="keyword">class</span> <span class="class">Criteria</span>&#x000A;  include <span class="constant">Origin</span>::<span class="constant">Queryable</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;criteria = <span class="constant">Criteria</span>.new&#x000A;criteria.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>).gt(age: <span class="integer">10</span>).desc(<span class="symbol">:created_at</span>)&#x000A;&#x000A;criteria.selector <span class="comment">#=&gt; { name: &quot;Syd&quot;, age: { &quot;$gt&quot; =&gt; 10 }}</span>&#x000A;criteria.option <span class="comment">#=&gt; { sort: { created_at: -1 }}</span></pre></div>
+  <div class="code"><pre><span class="keyword">class</span> <span class="class">Criteria</span>&#x000A;  include <span class="constant">Origin</span>::<span class="constant">Queryable</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;criteria = <span class="constant">Criteria</span>.new&#x000A;criteria.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>).gt(age: <span class="integer">10</span>).desc(<span class="symbol">:created_at</span>)&#x000A;&#x000A;criteria.selector <span class="comment">#=&gt; { name: &quot;Syd&quot;, age: { &quot;$gt&quot; =&gt; 10 }}</span>&#x000A;criteria.options <span class="comment">#=&gt; { sort: { created_at: -1 }}</span></pre></div>
 </div>
       </div>
     </div>
