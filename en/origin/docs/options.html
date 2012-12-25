@@ -358,7 +358,7 @@
     argument to the queryable constructor.
   </p>
   <div class="CodeRay">
-    <div class="code"><pre>queryable = <span class="constant">Query</span>.new({}, {}, <span class="symbol">:mongo</span>)&#x000A;queryable.order_by([[ <span class="symbol">:first_name</span>, <span class="symbol">:desc</span> ], [ <span class="symbol">:last_name</span>, <span class="symbol">:desc</span> ]])&#x000A;queryable.options <span class="comment">#=&gt; { sort: [[ &quot;first_name&quot;, -1 ], [ &quot;last_name&quot;, -1 ]]}</span></pre></div>
+    <div class="code"><pre>queryable = <span class="constant">Query</span>.new({}, {}, <span class="symbol">:mongo</span>)&#x000A;queryable = queryable.order_by([[ <span class="symbol">:first_name</span>, <span class="symbol">:desc</span> ], [ <span class="symbol">:last_name</span>, <span class="symbol">:desc</span> ]])&#x000A;queryable.options <span class="comment">#=&gt; { sort: [[ &quot;first_name&quot;, -1 ], [ &quot;last_name&quot;, -1 ]]}</span></pre></div>
   </div>
 </section>
       </div>

@@ -142,14 +142,14 @@
     to query the database for documents.
   </p>
   <div class="CodeRay">
-    <div class="code"><pre>query = <span class="constant">Query</span>.new&#x000A;query.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>).only(<span class="symbol">:name</span>)&#x000A;&#x000A;<span class="comment"># With Moped</span>&#x000A;session[<span class="symbol">:users</span>].find(query.selector).select(query.options.fields)&#x000A;&#x000A;<span class="comment"># With the 10gen driver</span>&#x000A;collection.find(query.selector, query.options)&#x000A;</pre></div>
+    <div class="code"><pre>query = <span class="constant">Query</span>.new.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>).only(<span class="symbol">:name</span>)&#x000A;&#x000A;<span class="comment"># With Moped</span>&#x000A;session[<span class="symbol">:users</span>].find(query.selector).select(query.options.fields)&#x000A;&#x000A;<span class="comment"># With the 10gen driver</span>&#x000A;collection.find(query.selector, query.options)&#x000A;</pre></div>
   </div>
   <p>
     The query's <code>selector</code> is a hash that represents the MongoDB
     selector.
   </p>
   <div class="CodeRay">
-    <div class="code"><pre>query = <span class="constant">Query</span>.new&#x000A;query.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>).between(age: <span class="integer">18</span>..<span class="integer">25</span>)&#x000A;query.selector <span class="comment">#=&gt; { &quot;name&quot; =&gt; &quot;Syd&quot;, &quot;age&quot; =&gt; { &quot;$gte&quot; =&gt; 18, &quot;$lte&quot; =&gt; 25 }}</span>&#x000A;</pre></div>
+    <div class="code"><pre>query = <span class="constant">Query</span>.new&#x000A;query = query.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>).between(age: <span class="integer">18</span>..<span class="integer">25</span>)&#x000A;query.selector <span class="comment">#=&gt; { &quot;name&quot; =&gt; &quot;Syd&quot;, &quot;age&quot; =&gt; { &quot;$gte&quot; =&gt; 18, &quot;$lte&quot; =&gt; 25 }}</span>&#x000A;</pre></div>
   </div>
   <p>
     The query's <code>options</code> is a hash that represents various options
@@ -157,7 +157,7 @@
     sorting options.
   </p>
   <div class="CodeRay">
-    <div class="code"><pre>query = <span class="constant">Query</span>.new&#x000A;query.only(<span class="symbol">:name</span>).skip(<span class="integer">10</span>).limit(<span class="integer">20</span>).desc(<span class="symbol">:name</span>)&#x000A;&#x000A;query.options <span class="comment">#=&gt; { fields: { &quot;name&quot; =&gt; 1 }, skip: 10, limit: 20, sort: { &quot;name&quot; =&gt; -1 }}</span>&#x000A;&#x000A;query.options.fields <span class="comment">#=&gt; { &quot;name&quot; =&gt; 1 }</span>&#x000A;query.options.limit <span class="comment">#=&gt; 20</span>&#x000A;query.options.skip <span class="comment">#=&gt; 10</span>&#x000A;query.options.sort <span class="comment">#=&gt; { &quot;name&quot; =&gt; -1 }</span>&#x000A;</pre></div>
+    <div class="code"><pre>query = <span class="constant">Query</span>.new&#x000A;query = query.only(<span class="symbol">:name</span>).skip(<span class="integer">10</span>).limit(<span class="integer">20</span>).desc(<span class="symbol">:name</span>)&#x000A;&#x000A;query.options <span class="comment">#=&gt; { fields: { &quot;name&quot; =&gt; 1 }, skip: 10, limit: 20, sort: { &quot;name&quot; =&gt; -1 }}</span>&#x000A;&#x000A;query.options.fields <span class="comment">#=&gt; { &quot;name&quot; =&gt; 1 }</span>&#x000A;query.options.limit <span class="comment">#=&gt; 20</span>&#x000A;query.options.skip <span class="comment">#=&gt; 10</span>&#x000A;query.options.sort <span class="comment">#=&gt; { &quot;name&quot; =&gt; -1 }</span>&#x000A;</pre></div>
   </div>
 </section>
 <section id='forwarding'>
