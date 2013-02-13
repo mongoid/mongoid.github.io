@@ -141,6 +141,13 @@
     <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  store_in collection: <span class="string"><span class="delimiter">&quot;</span><span class="content">citizens</span><span class="delimiter">&quot;</span></span>, database: <span class="string"><span class="delimiter">&quot;</span><span class="content">other</span><span class="delimiter">&quot;</span></span>, session: <span class="string"><span class="delimiter">&quot;</span><span class="content">secondary</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
   </div>
   <p>
+    The <code>store_in</code> macro can also take lambdas - a common case for this
+    is multi-tenant applications.
+  </p>
+  <div class="CodeRay">
+    <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  store_in database: -&gt;{ <span class="constant">Thread</span>.current[<span class="symbol">:database</span>] }&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+  </div>
+  <p>
     When a document is stored in the database the ruby object will get
     serialized into BSON and have a structure like so:
   </p>
@@ -327,6 +334,19 @@
   </p>
   <div class="CodeRay">
     <div class="code"><pre>point = <span class="constant">Point</span>.new(<span class="integer">12</span>, <span class="integer">24</span>)&#x000A;<span class="constant">Venue</span>.where(location: point)&#x000A;</pre></div>
+  </div>
+  <div class='well'>
+    <table>
+      <tr>
+        <td class='achtung'><img src="/images/achtung.png" /></td>
+        <td class='note'>
+          When accessing custom fields from the document, you will get a new
+          instance of that object with each call to the getter. This is
+          because Mongoid is generating a new object from the object from the
+          raw attributes on each access.
+        </td>
+      </tr>
+    </table>
   </div>
   <p>
     We need the point object in the criteria to be transformed to a Mongo

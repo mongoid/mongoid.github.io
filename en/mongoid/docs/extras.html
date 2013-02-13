@@ -116,7 +116,10 @@
   </div>
 </section>
 <section id='paranoia'>
-  <h2>Paranoid Documents</h2>
+  <h2>
+    Paranoid Documents
+    <span class="label label-info">Removing in 4.0.0</span>
+  </h2>
   <p>
     There may be times when you don't want documents to actually get deleted
     from the database, but "flagged" as deleted. Mongoid provides a Paranoia
@@ -135,7 +138,10 @@
   </div>
 </section>
 <section id='versioning'>
-  <h2>Versioning</h2>
+  <h2>
+    Versioning
+    <span class="label label-info">Removing in 4.0.0</span>
+  </h2>
   <p>
     Mongoid supports simple versioning through inclusion of the
     <code>Mongoid::Versioning</code> module. Including this module will create a
@@ -183,7 +189,14 @@
     method:
   </p>
   <div class="CodeRay">
-    <div class="code"><pre>person.timeless.save&#x000A;<span class="constant">Person</span>.timeless.create!</pre></div>
+    <div class="code"><pre>person.timeless.save&#x000A;<span class="constant">Person</span>.timeless.create!&#x000A;</pre></div>
+  </div>
+  <p>
+    If you'd like shorter timestamp fields with aliases on them to save space,
+    you can include the short versions of the modules.
+  </p>
+  <div class="CodeRay">
+    <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Timestamps</span>::<span class="constant">Short</span> <span class="comment"># For c_at and u_at.</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Timestamps</span>::<span class="constant">Created</span>::<span class="constant">Short</span> <span class="comment"># For c_at only.</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Timestamps</span>::<span class="constant">Updated</span>::<span class="constant">Short</span> <span class="comment"># For u_at only.</span>&#x000A;<span class="keyword">end</span></pre></div>
   </div>
 </section>
       </div>

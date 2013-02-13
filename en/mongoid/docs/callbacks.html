@@ -89,13 +89,14 @@
 <div class='page-nav'>
   <div class='container'>
     <ul class='nav nav-pills'>
-      <li><a href="#callbacks">Callbacks</a></li>
+      <li><a href="#callbacks">Document Callbacks</a></li>
+      <li><a href="#relation_callbacks">Relation Callbacks</a></li>
       <li><a href="#observers">Observers</a></li>
     </ul>
   </div>
 </div>
 <section id='callbacks'>
-  <h2>Callbacks</h2>
+  <h2>Document Callbacks</h2>
   <p>
     Mongoid supports the following callbacks:
     <ul>
@@ -106,6 +107,7 @@
       <li><code>before_create</code></li>
       <li><code>around_create</code></li>
       <li><code>after_create</code></li>
+      <li><code>after_find</code> <span class="label label-info">Since 3.1.0</span></li>
       <li><code>before_update</code></li>
       <li><code>around_update</code></li>
       <li><code>after_update</code></li>
@@ -153,6 +155,24 @@
   <div class="CodeRay">
     <div class="code"><pre><span class="keyword">class</span> <span class="class">Article</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, type: <span class="constant">String</span>&#x000A;&#x000A;  set_callback(<span class="symbol">:create</span>, <span class="symbol">:before</span>) <span class="keyword">do</span> |document|&#x000A;    <span class="comment"># Message sending code here.</span>&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
   </div>
+</section>
+<section id='relation_callbacks'>
+  <h2>
+    Relation Callbacks
+  </h2>
+  <span class='label label-info'>Since 3.1.0</span>
+  <p>
+    Mongoid has a set of callbacks that are specific to collection based relations - these are:
+    <ul>
+      <li><code>after_add</code></li>
+      <li><code>after_remove</code></li>
+      <li><code>before_add</code></li>
+      <li><code>before_remove</code></li>
+    </ul>
+    Each time a document is added or removed from any of the following relations,
+    the respective callbacks are fired: <code>embeds_many</code>,
+    <code>has_many</code>, and <code>has_and_belongs_to_many</code>.
+  </p>
 </section>
 <section id='observers'>
   <h2>Observers</h2>

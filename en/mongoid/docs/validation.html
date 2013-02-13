@@ -100,8 +100,8 @@
       <td class='note'>
         Mongoid behaves slightly different to Active Record when using <code>#valid?</code>
         on already persisted data. Active Record's <code>#valid?</code> will run all
-        validations whereas Mongoid's <code>#valid?</code> will only run validations on fields
-        where data has changed as an optimization.
+        validations whereas Mongoid's <code>#valid?</code> will only run validations on
+        documents that are in memory as an optimization.
       </td>
     </tr>
   </table>
@@ -290,7 +290,9 @@
       <td class='doc'>
         <p class='doc'>
           <i>
-            Validate that an attribute exists.
+            Validate that an attribute exists. <i>Note that if you add a
+            presence validation to a relation, then Mongoid will enable
+            autosave for that relation.</i>
           </i>
         </p>
       </td>

@@ -100,6 +100,7 @@
       <li><a href="#find_and_modify">Find and Modify</a></li>
       <li><a href="#map_reduce">Map/Reduce</a></li>
       <li><a href="#aggregations">Aggregations</a></li>
+      <li><a href="#geo_near">Geo Near</a></li>
     </ul>
   </div>
 </div>
@@ -175,6 +176,26 @@
           <td>
             <div class="CodeRay">
               <div class="code"><pre>collections[<span class="symbol">:bands</span>].find.count&#x000A;collections[<span class="symbol">:bands</span>].find(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).count</pre></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class='doc'>
+            <code>Criteria#distinct</code>
+            <p class='doc'>
+              <i>
+                Get a list of distinct values for a single field.
+              </i>
+            </p>
+          </td>
+          <td>
+            <div class="CodeRay">
+              <div class="code"><pre><span class="constant">Band</span>.distinct(<span class="symbol">:name</span>)&#x000A;<span class="constant">Band</span>.where(<span class="symbol">:fans</span>.gt =&gt; <span class="integer">100000</span>).&#x000A;  distinct(<span class="symbol">:name</span>)</pre></div>
+            </div>
+          </td>
+          <td>
+            <div class="CodeRay">
+              <div class="code"><pre>collections[<span class="symbol">:bands</span>].find.&#x000A;  distinct(<span class="symbol">:name</span>)&#x000A;collections[<span class="symbol">:bands</span>].find(fans: { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gt</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">100000</span> }).&#x000A;  distinct(<span class="symbol">:name</span>)</pre></div>
             </div>
           </td>
         </tr>
@@ -264,7 +285,7 @@
         </tr>
         <tr>
           <td class='doc'>
-            <code>Model.find_or_create_by</code>
+            <code>Criteria#find_or_create_by</code>
             <p class='doc'>
               <i>
                 Find a document by the provided attributes, and if not found
@@ -274,18 +295,18 @@
           </td>
           <td>
             <div class="CodeRay">
-              <div class="code"><pre><span class="constant">Band</span>.find_or_create_by(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)</pre></div>
+              <div class="code"><pre><span class="constant">Band</span>.find_or_create_by(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="constant">Band</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">10</span>).find_or_create_by(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)</pre></div>
             </div>
           </td>
           <td>
             <div class="CodeRay">
-              <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first</pre></div>
+              <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first&#x000A;collections[<span class="symbol">:bands</span>].find(&#x000A;  likes: { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gt</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">10</span> }, name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>&#x000A;).first</pre></div>
             </div>
           </td>
         </tr>
         <tr>
           <td class='doc'>
-            <code>Model.find_or_initialize_by</code>
+            <code>Criteria#find_or_initialize_by</code>
             <p class='doc'>
               <i>
                 Find a document by the provided attributes, and if not found
@@ -295,12 +316,12 @@
           </td>
           <td>
             <div class="CodeRay">
-              <div class="code"><pre><span class="constant">Band</span>.find_or_initialize_by(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)</pre></div>
+              <div class="code"><pre><span class="constant">Band</span>.find_or_initialize_by(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="constant">Band</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">10</span>).find_or_create_by(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)</pre></div>
             </div>
           </td>
           <td>
             <div class="CodeRay">
-              <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first</pre></div>
+              <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first&#x000A;collections[<span class="symbol">:bands</span>].find(&#x000A;  likes: { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gt</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">10</span> }, name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>&#x000A;).first</pre></div>
             </div>
           </td>
         </tr>
@@ -322,6 +343,94 @@
           <td>
             <div class="CodeRay">
               <div class="code"><pre>collections[<span class="symbol">:bands</span>].find.sort(_id: <span class="integer">1</span>).limit(<span class="integer">-1</span>)&#x000A;collections[<span class="symbol">:bands</span>].find(&#x000A;  { members: { <span class="string"><span class="delimiter">&quot;</span><span class="content">$size</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">3</span> }}&#x000A;).sort(_id: <span class="integer">1</span>).limit(<span class="integer">-1</span>)</pre></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class='doc'>
+            <code>Criteria#first_or_create</code><br/>
+            <span class="label label-info">Since 3.1.0</span>
+            <p class='doc'>
+              <i>
+                Find the first document by the provided attributes, and if not found
+                create and return a newly persisted one.
+              </i>
+            </p>
+          </td>
+          <td>
+            <div class="CodeRay">
+              <div class="code"><pre><span class="constant">Band</span>.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first_or_create</pre></div>
+            </div>
+          </td>
+          <td>
+            <div class="CodeRay">
+              <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first</pre></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class='doc'>
+            <code>Criteria#first_or_create!</code><br/>
+            <span class="label label-info">Since 3.1.0</span>
+            <p class='doc'>
+              <i>
+                Find the first document by the provided attributes, and if not found
+                create and return a newly persisted one using `create!`.
+              </i>
+            </p>
+          </td>
+          <td>
+            <div class="CodeRay">
+              <div class="code"><pre><span class="constant">Band</span>.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first_or_create!</pre></div>
+            </div>
+          </td>
+          <td>
+            <div class="CodeRay">
+              <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first</pre></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class='doc'>
+            <code>Criteria#first_or_initialize</code><br/>
+            <span class="label label-info">Since 3.1.0</span>
+            <p class='doc'>
+              <i>
+                Find the first document by the provided attributes, and if not found
+                instantiate and return a new one.
+              </i>
+            </p>
+          </td>
+          <td>
+            <div class="CodeRay">
+              <div class="code"><pre><span class="constant">Band</span>.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first_or_initialize</pre></div>
+            </div>
+          </td>
+          <td>
+            <div class="CodeRay">
+              <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first</pre></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class='doc'>
+            <code>Criteria#for_js</code>
+            <p class='doc'>
+              <i>
+                Find documents for a provided javascript expression. This will
+                wrap the javascript in a `Moped::BSON::Code` object will is the
+                safe way to avoid javascript injection attacks.
+              </i>
+            </p>
+          </td>
+          <td>
+            <div class="CodeRay">
+              <div class="code"><pre><span class="constant">Band</span>.for_js(<span class="string"><span class="delimiter">&quot;</span><span class="content">this.name = param</span><span class="delimiter">&quot;</span></span>, param: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>)</pre></div>
+            </div>
+          </td>
+          <td>
+            <div class="CodeRay">
+              <div class="code"><pre>expr = <span class="constant">Moped</span>::<span class="constant">BSON</span>::<span class="constant">Code</span>.new(&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">this.name = param</span><span class="delimiter">&quot;</span></span>, param: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>&#x000A;)&#x000A;collections[<span class="symbol">:bands</span>].find(<span class="string"><span class="delimiter">&quot;</span><span class="content">$where</span><span class="delimiter">&quot;</span></span> =&gt; expr)</pre></div>
             </div>
           </td>
         </tr>
@@ -364,7 +473,28 @@
           </td>
           <td>
             <div class="CodeRay">
-              <div class="code"><pre>collections[<span class="symbol">:bands</span>].find.count&#x000A;collections[<span class="symbol">:bands</span>].find(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).count&#x000A;</pre></div>
+              <div class="code"><pre>collections[<span class="symbol">:bands</span>].find.count&#x000A;collections[<span class="symbol">:bands</span>].find(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).count</pre></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class='doc'>
+            <code>Criteria#pluck</code><br/>
+            <span class="label label-info">Since 3.1.0</span>
+            <p class='doc'>
+              <i>
+                Get all the non nil values for the provided field.
+              </i>
+            </p>
+          </td>
+          <td>
+            <div class="CodeRay">
+              <div class="code"><pre><span class="constant">Band</span>.all.pluck(<span class="symbol">:name</span>)</pre></div>
+            </div>
+          </td>
+          <td>
+            <div class="CodeRay">
+              <div class="code"><pre>collections[<span class="symbol">:bands</span>].find.select(name: <span class="integer">1</span>)&#x000A;</pre></div>
             </div>
           </td>
         </tr>
@@ -430,9 +560,27 @@
       </tr>
       <tr>
         <td class='doc'>
+          <code>Criteria#create!</code>
+          <p class='doc'>
+            <i>Create a newly persisted document with <code>create!</code>.</i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Band</span>.where(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).create!</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)&#x000A;collections[<span class="symbol">:bands</span>].insert(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
           <code>Criteria#build</code>
           <p class='doc'>
-            <i>Create a new document (unsaved).</i>
+            <i>Create a new document (unsaved). Also <code>new</code>.</i>
           </p>
         </td>
         <td>
@@ -1121,7 +1269,149 @@
         </td>
         <td>
           <div class="CodeRay">
-            <div class="code"><pre><span class="constant">Band</span>.sum(<span class="symbol">:likes</span>)&#x000A;<span class="constant">Band</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">100</span>).sum(<span class="symbol">:likes</span>)</pre></div>
+            <div class="code"><pre><span class="constant">Band</span>.sum(<span class="symbol">:likes</span>)&#x000A;<span class="constant">Band</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">100</span>).sum(<span class="symbol">:likes</span>)&#x000A;</pre></div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+<section id='geo_near'>
+  <h2>Geo Near</h2>
+  <p>
+    Mongoid provides a DSL around MongoDB's <code>$geoNear</code> command.
+  </p>
+  <h3>Execution</h3>
+  <p>
+    You can tell Mongoid off the class or a criteria to perform a $geoNear
+    by calling <code>geo_near</code> and providing an array of
+    <code>[ x, y ]</code> coordinates to search from.
+  </p>
+  <div class="CodeRay">
+    <div class="code"><pre><span class="constant">Bar</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">100</span>).geo_near([ <span class="integer">50</span>, <span class="integer">12</span> ]).spherical&#x000A;</pre></div>
+  </div>
+  <p>
+    Just like criteria, <code>geo_near</code> calls are lazily evaluated. So
+    nothing will hit the database until you iterate over the results, or make
+    a call on the wrapper that would need to force a database hit. Note that
+    each instantiated document from a $geoNear query will get a special
+    dynamic attribute <code>geo_near_distance</code> that will be available
+    as long as the document is in memory.
+  </p>
+  <div class="CodeRay">
+    <div class="code"><pre><span class="constant">Bar</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">100</span>).geo_near([ <span class="integer">50</span>, <span class="integer">12</span> ]).each <span class="keyword">do</span> |document|&#x000A;  p document.geo_near_distance&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+  </div>
+  <p>
+    The full API for $geoNear is as follows.
+  </p>
+  <table class='table table-bordered table-striped'>
+    <thead>
+      <tr>
+        <th>Operation</th>
+        <th>Mongoid</th>
+        <th>Moped</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class='doc'>
+          <code>GeoNear#average_distance</code>
+          <p class='doc'>
+            <i>
+              Get the average distance of all the documents from the
+              provided location.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Bar</span>.geo_near([ <span class="integer">50</span>, <span class="integer">13</span> ]).average_distance</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>session.command({&#x000A;  geoNear: <span class="string"><span class="delimiter">&quot;</span><span class="content">bars</span><span class="delimiter">&quot;</span></span>,&#x000A;  near: [ <span class="integer">50</span>, <span class="integer">13</span> ]&#x000A;})[<span class="string"><span class="delimiter">&quot;</span><span class="content">stats</span><span class="delimiter">&quot;</span></span>][<span class="string"><span class="delimiter">&quot;</span><span class="content">averageDistance</span><span class="delimiter">&quot;</span></span>]</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>GeoNear#distance_multiplier</code>
+          <p class='doc'>
+            <i>
+              Set the distance multiplier for returned distance
+              calculations.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Bar</span>.geo_near([ <span class="integer">50</span>, <span class="integer">13</span> ]).distance_multiplier(<span class="integer">5012</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>session.command({&#x000A;  geoNear: <span class="string"><span class="delimiter">&quot;</span><span class="content">bars</span><span class="delimiter">&quot;</span></span>,&#x000A;  near: [ <span class="integer">50</span>, <span class="integer">13</span> ],&#x000A;  distanceMultiplier: <span class="integer">5012</span>&#x000A;})</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>GeoNear#max_distance</code>
+          <p class='doc'>
+            <i>
+              Set the maximum distance to return documents for.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Bar</span>.geo_near([ <span class="integer">50</span>, <span class="integer">13</span> ]).max_distance(<span class="integer">100</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>session.command({&#x000A;  geoNear: <span class="string"><span class="delimiter">&quot;</span><span class="content">bars</span><span class="delimiter">&quot;</span></span>,&#x000A;  near: [ <span class="integer">50</span>, <span class="integer">13</span> ],&#x000A;  maxDistance: <span class="integer">100</span>&#x000A;})</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>GeoNear#spherical</code>
+          <p class='doc'>
+            <i>
+              Set the calculations to work for spheres.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Bar</span>.geo_near([ <span class="integer">50</span>, <span class="integer">13</span> ]).spherical</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>session.command({&#x000A;  geoNear: <span class="string"><span class="delimiter">&quot;</span><span class="content">bars</span><span class="delimiter">&quot;</span></span>,&#x000A;  near: [ <span class="integer">50</span>, <span class="integer">13</span> ],&#x000A;  spherical: <span class="predefined-constant">true</span>&#x000A;})</pre></div>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class='doc'>
+          <code>GeoNear#unique</code>
+          <p class='doc'>
+            <i>
+              Specify whether unique documents should be returned.
+            </i>
+          </p>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Bar</span>.geo_near([ <span class="integer">50</span>, <span class="integer">13</span> ]).unique(<span class="predefined-constant">false</span>)</pre></div>
+          </div>
+        </td>
+        <td>
+          <div class="CodeRay">
+            <div class="code"><pre>session.command({&#x000A;  geoNear: <span class="string"><span class="delimiter">&quot;</span><span class="content">bars</span><span class="delimiter">&quot;</span></span>,&#x000A;  near: [ <span class="integer">50</span>, <span class="integer">13</span> ],&#x000A;  unique: <span class="predefined-constant">false</span>&#x000A;})</pre></div>
           </div>
         </td>
       </tr>

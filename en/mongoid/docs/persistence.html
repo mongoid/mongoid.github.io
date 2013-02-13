@@ -142,17 +142,17 @@
         <td class='doc'>
           <code>Model.create</code>
           <p class='doc'>
-            <i>Insert a document into the database</i>
+            <i>Insert a document or multiple documents into the database</i>
           </p>
         </td>
         <td>
           <div class="CodeRay">
-            <div class="code"><pre><span class="constant">Person</span>.create(&#x000A;  first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>,&#x000A;  last_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;)&#x000A;&#x000A;<span class="constant">Person</span>.create(first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |doc|&#x000A;  doc.last_name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="keyword">end</span></pre></div>
+            <div class="code"><pre><span class="constant">Person</span>.create(&#x000A;  first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>,&#x000A;  last_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;)&#x000A;&#x000A;<span class="constant">Person</span>.create([&#x000A;  { first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>, last_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span> },&#x000A;  { first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Willy</span><span class="delimiter">&quot;</span></span>, last_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Brandt</span><span class="delimiter">&quot;</span></span> }&#x000A;])&#x000A;&#x000A;<span class="constant">Person</span>.create(first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |doc|&#x000A;  doc.last_name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="keyword">end</span></pre></div>
           </div>
         </td>
         <td>
           <div class="CodeRay">
-            <div class="code"><pre>collections[<span class="symbol">:people</span>].insert({&#x000A;  first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>,&#x000A;  last_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;})</pre></div>
+            <div class="code"><pre>collections[<span class="symbol">:people</span>].insert({&#x000A;  first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>,&#x000A;  last_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;})&#x000A;collections[<span class="symbol">:people</span>].insert([&#x000A;  { first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>, last_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span> },&#x000A;  { first_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Willy</span><span class="delimiter">&quot;</span></span>, last_name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Brandt</span><span class="delimiter">&quot;</span></span> }&#x000A;])</pre></div>
           </div>
         </td>
       </tr>
@@ -161,7 +161,7 @@
           <code>Model.create!</code>
           <p class='doc'>
             <i>
-              Insert a document into the database,
+              Insert a document or multiple documents into the database,
               raising an error if a validation error occurs.
             </i>
           </p>

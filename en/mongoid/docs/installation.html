@@ -160,8 +160,8 @@
       <tr>
         <td class='achtung'><img src="/images/achtung.png" /></td>
         <td class='note'>
-          The minimum version of MongoDB that is required for you to run Mongoid 3
-          is <code>2.0.0</code>.
+          The minimum version of MongoDB that is required for you to run Mongoid
+          is <code>2.0.0</code> for 3.0.x and <code>2.2.0</code> for 3.1.x.
         </td>
       </tr>
     </table>
@@ -342,7 +342,7 @@
     logger to have a different level. Logging is turned off by default.
   </p>
   <div class="CodeRay">
-    <div class="code"><pre><span class="keyword">module</span> <span class="class">MyApplication</span>&#x000A;  <span class="keyword">class</span> <span class="class">Application</span> &lt;&lt; <span class="constant">Rails</span>::<span class="constant">Application</span>&#x000A;    <span class="constant">Mongoid</span>.logger.level = <span class="constant">Logger</span>::<span class="constant">DEBUG</span>&#x000A;    <span class="constant">Moped</span>.logger.level = <span class="constant">Logger</span>::<span class="constant">DEBUG</span>&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+    <div class="code"><pre><span class="keyword">module</span> <span class="class">MyApplication</span>&#x000A;  <span class="keyword">class</span> <span class="class">Application</span> &lt; <span class="constant">Rails</span>::<span class="constant">Application</span>&#x000A;    <span class="constant">Mongoid</span>.logger.level = <span class="constant">Logger</span>::<span class="constant">DEBUG</span>&#x000A;    <span class="constant">Moped</span>.logger.level = <span class="constant">Logger</span>::<span class="constant">DEBUG</span>&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
   </div>
   <p>
     If you want to change the logger instance, you can simply just set a
