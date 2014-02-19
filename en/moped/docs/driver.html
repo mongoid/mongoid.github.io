@@ -544,7 +544,7 @@
         </td>
         <td>
           <div class="CodeRay">
-            <div class="code"><pre>query.update(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>)</pre></div>
+            <div class="code"><pre>query.update(<span class="string"><span class="delimiter">'</span><span class="content">$set</span><span class="delimiter">'</span></span> =&gt; {name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>})</pre></div>
           </div>
         </td>
       </tr>
@@ -559,7 +559,7 @@
         </td>
         <td>
           <div class="CodeRay">
-            <div class="code"><pre>query.update_all(pending: <span class="predefined-constant">true</span>)</pre></div>
+            <div class="code"><pre>query.update_all(<span class="string"><span class="delimiter">'</span><span class="content">$set</span><span class="delimiter">'</span></span> =&gt; {pending: <span class="predefined-constant">true</span>})</pre></div>
           </div>
         </td>
       </tr>

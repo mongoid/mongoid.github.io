@@ -89,7 +89,7 @@
 <p>
   You can define indexes on documents using the index macro. Provide the key
   for the index along with a direction. For additional options, supply them
-  in a second options hash paramter.
+  in a second options hash parameter.
 </p>
 <div class="CodeRay">
   <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:ssn</span>&#x000A;&#x000A;  index({ ssn: <span class="integer">1</span> }, { unique: <span class="predefined-constant">true</span>, name: <span class="string"><span class="delimiter">&quot;</span><span class="content">ssn_index</span><span class="delimiter">&quot;</span></span> })&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
@@ -119,7 +119,7 @@
   <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:ssn</span>&#x000A;  index({ ssn: <span class="integer">1</span> }, { unique: <span class="predefined-constant">true</span>, background: <span class="predefined-constant">true</span> })&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
 </div>
 <p>
-  For geospacial indexes, make sure the field you are indexing is an <tt>Array</tt>.
+  For geospatial indexes, make sure the field you are indexing is an <tt>Array</tt>.
 </p>
 <div class="CodeRay">
   <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:location</span>, type: <span class="constant">Array</span>&#x000A;&#x000A;  index({ location: <span class="string"><span class="delimiter">&quot;</span><span class="content">2d</span><span class="delimiter">&quot;</span></span> }, { min: <span class="integer">-200</span>, max: <span class="integer">200</span> })&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>

@@ -140,7 +140,7 @@
     Mongoid. This includes: <code>update_attributes</code>,
     <code>update_attributes!</code> and <code>attributes=</code>. For full
     examples of every single scenario you could possibly imagine, see the
-    <a href="https://github.com/mongoid/mongoid/blob/master/spec/mongoid/nested_attributes_spec.rb">One Spec to Rule them All</a>.
+    <a href="https://github.com/mongoid/mongoid/blob/master/spec/mongoid/attributes/nested_spec.rb">One Spec to Rule them All</a>.
   </p>
 </section>
 <section id='operations'>
@@ -413,7 +413,7 @@
         </td>
         <td>
           <div class="CodeRay">
-            <div class="code"><pre><span class="keyword">class</span> <span class="class">Album</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  embeds_many <span class="symbol">:albums</span>&#x000A;  accepts_nested_attributes_for <span class="symbol">:albums</span>,&#x000A;    reject_if: <span class="symbol">:all_blank</span>&#x000A;<span class="keyword">end</span></pre></div>
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  embeds_many <span class="symbol">:albums</span>&#x000A;  accepts_nested_attributes_for <span class="symbol">:albums</span>,&#x000A;    reject_if: <span class="symbol">:all_blank</span>&#x000A;<span class="keyword">end</span></pre></div>
           </div>
         </td>
       </tr>

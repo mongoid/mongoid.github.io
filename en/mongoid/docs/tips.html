@@ -242,11 +242,11 @@
 <section id='safe_mode'>
   <h2>Safe Mode</h2>
   <p>
-    By default, safe mode is turned off by default due to that being MongoDB's
-    recommendation. However for users, especially first timers, we recommend
-    that you always have this setting on at least in development and test mode.
-    This will help you understand what is going on with more clarity, instead
-    of jsut making the assumption that your data was actually persisted.
+    Safe mode is turned off by default, as this is MongoDB's
+    recommendation. However, we recommend that users, especially first timers,
+    have this setting enabled in development and test mode.
+    Doing so will allow you to better understand what is going on, rather
+    than assuming your data was actually persisted.
   </p>
   <p>
     To ensure safe mode is on in development and test, you should simply
@@ -256,7 +256,7 @@
     <div class="code"><pre><span class="key">development</span>:&#x000A;  <span class="key">sessions</span>:&#x000A;    <span class="key">default</span>:&#x000A;      <span class="key">database</span>: <span class="string"><span class="content">my_app_dev</span></span>&#x000A;      <span class="key">hosts</span>:&#x000A;        - <span class="string"><span class="content">localhost:27017</span></span>&#x000A;      <span class="key">options</span>:&#x000A;        <span class="key">safe</span>: <span class="string"><span class="content">true</span></span>&#x000A;<span class="key">test</span>:&#x000A;  <span class="key">sessions</span>:&#x000A;    <span class="key">default</span>:&#x000A;      <span class="key">database</span>: <span class="string"><span class="content">my_app_test</span></span>&#x000A;      <span class="key">hosts</span>:&#x000A;        - <span class="string"><span class="content">localhost:27017</span></span>&#x000A;      <span class="key">options</span>:&#x000A;        <span class="key">safe</span>: <span class="string"><span class="content">true</span></span>&#x000A;</pre></div>
   </div>
   <p>
-    Also we recommend keeping an eye on the MongoDB logs if you are also getting
+    Also we recommend keeping an eye on the MongoDB logs if you are getting
     started, as safe mode itself won't even catch all errors - sometimes MongoDB
     will simply log an error on the server but send a message back to the client
     that the operation succeeded.
@@ -282,7 +282,7 @@
   <p>
     If you are using Sidekiq, you need to ensure that MongoDB sessions are
     diconnected after each worker runs, or you will quickly overload MongoDB
-    with more active connections that it can handle. In order to handle this
+    with more active connections than it can handle. In order to handle this
     seamlessly for you, we have provided a gem with a Sidekiq middleware that
     handles this - <a href="https://github.com/mongoid/kiqstand">Kiqstand</a>.
     You will need to be on Mongoid version 3.0.3 or higher.

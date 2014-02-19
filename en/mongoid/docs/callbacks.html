@@ -169,9 +169,20 @@
       <li><code>before_add</code></li>
       <li><code>before_remove</code></li>
     </ul>
+  </p>
+  <p>
     Each time a document is added or removed from any of the following relations,
     the respective callbacks are fired: <code>embeds_many</code>,
     <code>has_many</code>, and <code>has_and_belongs_to_many</code>.
+  </p>
+  <p>
+    Relation Callbacks are specified as an option on the relation. The element added/removed is the parameter to the method you call via the callback. Example:
+    <div class="CodeRay">
+      <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;&#x000A;  has_many <span class="symbol">:posts</span>, after_add: <span class="symbol">:send_email_to_subscribers</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">def</span> <span class="function">send_email_to_subscribers</span>(post)&#x000A;  <span class="constant">Notifications</span>.new_post(post).deliver&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+    </div>
+  </p>
+  <p>
+    Relation Callbacks are not available to Observers.
   </p>
 </section>
 <section id='observers'>
