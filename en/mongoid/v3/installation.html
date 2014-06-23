@@ -326,19 +326,19 @@
     so you end up with this:
   </p>
   <div class="CodeRay">
-    <div class="code"><pre>require <span class="string"><span class="delimiter">&quot;</span><span class="content">action_controller/railtie</span><span class="delimiter">&quot;</span></span>&#x000A;require <span class="string"><span class="delimiter">&quot;</span><span class="content">action_mailer/railtie</span><span class="delimiter">&quot;</span></span>&#x000A;require <span class="string"><span class="delimiter">&quot;</span><span class="content">active_resource/railtie</span><span class="delimiter">&quot;</span></span> <span class="comment"># Comment this line for Rails 4.0+</span>&#x000A;require <span class="string"><span class="delimiter">&quot;</span><span class="content">rails/test_unit/railtie</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="comment"># require &quot;sprockets/railtie&quot; # Uncomment this line for Rails 3.1+</span>&#x000A;</pre></div>
+    <div class="code"><pre>require <span class="string"><span class="delimiter">&quot;</span><span class="content">action_controller/railtie</span><span class="delimiter">&quot;</span></span>&#x000A;require <span class="string"><span class="delimiter">&quot;</span><span class="content">action_mailer/railtie</span><span class="delimiter">&quot;</span></span>&#x000A;require <span class="string"><span class="delimiter">&quot;</span><span class="content">active_resource/railtie</span><span class="delimiter">&quot;</span></span>&#x000A;require <span class="string"><span class="delimiter">&quot;</span><span class="content">rails/test_unit/railtie</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="comment"># require &quot;sprockets/railtie&quot; # Uncomment this line for Rails 3.1+</span>&#x000A;</pre></div>
   </div>
   <p>
     For Rails 3.2+ you'll also need to remove configuration options for
     Active Record that reside in your environments, ie
-    <code>myapp/config/environments/development.rb</code>. Make sure any
-    references to <code>active_record</code> are commented out like as follows
+    <code>myapp/config/environments/development.rb</code>. Make sure the
+    lines are commented out like as follows.
   </p>
   <div class="CodeRay">
-    <div class="code"><pre><span class="comment"># Rails 3.2+, &lt; 4.0</span>&#x000A;<span class="comment"># config.active_record.mass_assignment_sanitizer = :strict</span>&#x000A;<span class="comment"># config.active_record.auto_explain_threshold_in_seconds = 0.5</span>&#x000A;<span class="comment">#</span>&#x000A;<span class="comment"># Rails 4.0+</span>&#x000A;<span class="comment"># config.active_record.migration_error = :page_load</span>&#x000A;</pre></div>
+    <div class="code"><pre><span class="comment"># config.active_record.mass_assignment_sanitizer = :strict</span>&#x000A;<span class="comment"># config.active_record.auto_explain_threshold_in_seconds = 0.5</span>&#x000A;</pre></div>
   </div>
   <p>
-    For Rails 3.2.3+ but < 4.0 you'll also need to comment out the following line in
+    For Rails 3.2.3+ you'll also need to comment out the following line in
     <code>myapp/config/application.rb</code>.
   </p>
   <div class="CodeRay">

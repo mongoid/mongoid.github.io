@@ -55,7 +55,7 @@
             <li><a href="/en/mongoid/">HOME</a></li>
             <li class='dropdown' id='docs'>
               <a class='dropdown-toggle' data-toggle='dropdown' href='#docs'>
-                DOCS
+                docs
                 <b class='caret'></b>
               </a>
               <ul class='dropdown-menu'>
@@ -75,6 +75,30 @@
                 <li><a href="/en/mongoid/docs/contributing.html">Contributing</a></li>
                 <li><a href="/en/mongoid/docs/performance.html">Performance</a></li>
                 <li><a href="/en/mongoid/docs/tips.html">Tips/FAQs</a></li>
+              </ul>
+            </li>
+            <li class='dropdown' id='docs'>
+              <a class='dropdown-toggle' data-toggle='dropdown' href='#docsv3'>
+                docs 3.x
+                <b class='caret'></b>
+              </a>
+              <ul class='dropdown-menu'>
+                <li><a href="/en/mongoid/v3/installation.html">Installation</a></li>
+                <li><a href="/en/mongoid/v3/documents.html">Documents</a></li>
+                <li><a href="/en/mongoid/v3/persistence.html">Persistence</a></li>
+                <li><a href="/en/mongoid/v3/querying.html">Querying</a></li>
+                <li><a href="/en/mongoid/v3/relations.html">Relations</a></li>
+                <li><a href="/en/mongoid/v3/nested_attributes.html">Nested Attributes</a></li>
+                <li><a href="/en/mongoid/v3/identity_map.html">Identity Map</a></li>
+                <li><a href="/en/mongoid/v3/callbacks.html">Callbacks</a></li>
+                <li><a href="/en/mongoid/v3/validation.html">Validation</a></li>
+                <li><a href="/en/mongoid/v3/indexing.html">Indexing</a></li>
+                <li><a href="/en/mongoid/v3/rails.html">Rails</a></li>
+                <li><a href="/en/mongoid/v3/extras.html">Extras</a></li>
+                <li><a href="/en/mongoid/v3/upgrading.html">Upgrading</a></li>
+                <li><a href="/en/mongoid/v3/contributing.html">Contributing</a></li>
+                <li><a href="/en/mongoid/v3/performance.html">Performance</a></li>
+                <li><a href="/en/mongoid/v3/tips.html">Tips/FAQs</a></li>
               </ul>
             </li>
             <li><a href="/en/mongoid/links.html">LINKS</a></li>
@@ -117,6 +141,12 @@
 </p>
 <div class="CodeRay">
   <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:ssn</span>&#x000A;  index({ ssn: <span class="integer">1</span> }, { unique: <span class="predefined-constant">true</span>, background: <span class="predefined-constant">true</span> })&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+</div>
+<p>
+  For unique indexes that are defined for a column that might already have duplicate values, you can drop the duplicate entries:
+</p>
+<div class="CodeRay">
+  <div class="code"><pre><span class="keyword">class</span> <span class="class">Person</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:ssn</span>&#x000A;  index({ ssn: <span class="integer">1</span> }, { unique: <span class="predefined-constant">true</span>, drop_dups: <span class="predefined-constant">true</span> })&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
 </div>
 <p>
   For geospatial indexes, make sure the field you are indexing is an <tt>Array</tt>.
