@@ -744,11 +744,11 @@
     subsequent requests with no local params use the default option.
   </p>
   <p>
-    <code>#with</code>is also used for changing safe mode options temporarily
+    <code>#with</code>is also used for changing write mode options temporarily
     at runtime.
   </p>
   <div class="CodeRay">
-    <div class="code"><pre><span class="constant">Band</span>.with(safe: <span class="predefined-constant">true</span>).create&#x000A;<span class="constant">Band</span>.with(safe: { w: <span class="integer">3</span> }).create!&#x000A;</pre></div>
+    <div class="code"><pre><span class="constant">Band</span>.with(write: { w: <span class="string"><span class="delimiter">&quot;</span><span class="content">majority</span><span class="delimiter">&quot;</span></span> }).create&#x000A;<span class="constant">Band</span>.with(write: { w: <span class="integer">3</span> }).create!&#x000A;</pre></div>
   </div>
   <p>
     The values that can be passed with <code>:safe</code> are:
@@ -774,7 +774,7 @@
     about this.
   </p>
   <div class="CodeRay">
-    <div class="code"><pre><span class="constant">Band</span>.mongo_session.with(safe: <span class="predefined-constant">false</span>, database: <span class="string"><span class="delimiter">&quot;</span><span class="content">musik</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |session|&#x000A;  session[<span class="symbol">:artists</span>].find(...)&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+    <div class="code"><pre><span class="constant">Band</span>.mongo_session.with(write: {w: <span class="integer">0</span>}, database: <span class="string"><span class="delimiter">&quot;</span><span class="content">musik</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |session|&#x000A;  session[<span class="symbol">:artists</span>].find(...)&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
   </div>
   <h3>Capped Collections</h3>
   <p>
