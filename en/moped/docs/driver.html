@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta content='text/html; charset=utf-8' http-equiv='Content-Type' />
-    <meta content='A MongoDB driver for Ruby ' name='description' />
-    <meta content='mongoid, moped, mongodb, ruby, rails, odm, bernerd schaefer' name='keywords' />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta content='A MongoDB driver for Ruby ' name='description'>
+    <meta content='mongoid, moped, mongodb, ruby, rails, odm, bernerd schaefer' name='keywords'>
     <!--[if lt IE 9]>
-  <script src='http://html5shiv.googlecode.com/svn/trunk/html5.js'></script>
-<![endif]-->
-<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0' name='viewport' />
-<link href="/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
-<link href="/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
-<link href="/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
-<link href="/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
-<script src="/javascripts/jquery-1.8.1.min.js" type="text/javascript"></script>
-<script src="/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
-<script src="/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
-<script src="/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
-<script src="/javascripts/mongoid.js" type="text/javascript"></script>
-<title>Moped: Driver</title>
+      <script src='http://html5shiv.googlecode.com/svn/trunk/html5.js'></script>
+    <![endif]-->
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0' name='viewport'>
+    <link href="/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/jquery-1.8.1.min.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
+    <script src="/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
+    <script src="/javascripts/mongoid.js" type="text/javascript"></script>
+    <title>Moped: Driver</title>
   </head>
   <body data-offset='100' data-spy='scroll-spy' data-target='.page-nav'>
     <div class='moped' id='header'>
@@ -73,638 +73,638 @@
     <div id='content'>
       <div class='container'>
         <h1>Driver</h1>
-<p>
-  The driver is the core of Moped that is used to interact with MongoDB. It is
-  based of almost entirely four classes: <code>Session</code>,
-  <code>Collection</code>, <code>Indexes</code>, and <code>Query</code>.
-</p>
-<div class='page-nav'>
-  <div class='container'>
-    <ul class='nav nav-pills'>
-      <li><a href="#behaviour">Behaviour</a></li>
-      <li><a href="#protocol">Wire Protocol</a></li>
-      <li><a href="#errors">Errors</a></li>
-    </ul>
-  </div>
-</div>
-<section id='behaviour'>
-  <h2>Behaviour</h2>
-  <h3>Session</h3>
-  <p>
-    The session is the main entry point to communicating with the database, similar
-    to a database connection. The session is special though in that it can be a
-    session with a single database server, a multi-node replica set, or a mongos
-    server for sharded scenarios.
-  </p>
-  <p>
-    Once a new session is created you can interact with it in a similar fashion
-    that you would with the <code>mongo</code> console.
-  </p>
-  <div class="CodeRay">
-    <div class="code"><pre>session = <span class="constant">Moped</span>::<span class="constant">Session</span>.new([ <span class="string"><span class="delimiter">&quot;</span><span class="content">127.0.0.1:27017</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">127.0.0.1:27018</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">127.0.0.1:27019</span><span class="delimiter">&quot;</span></span> ])&#x000A;session.use <span class="symbol">:moped_test</span>&#x000A;&#x000A;session[<span class="symbol">:users</span>].insert({ name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> })&#x000A;&#x000A;session.with(safe: { w: <span class="integer">2</span>, wtimeout: <span class="integer">5</span> }) <span class="keyword">do</span> |_session|&#x000A;  _session[<span class="symbol">:users</span>].find.remove_all&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;session.with(database: <span class="string"><span class="delimiter">&quot;</span><span class="content">important_db</span><span class="delimiter">&quot;</span></span>, consistency: <span class="symbol">:strong</span>) <span class="keyword">do</span> |_session|&#x000A;  _session[<span class="symbol">:users</span>].find.first&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
-  </div>
-  <p>
-    The following is a table of the most common session API usage. For a
-    complete reference please see the
-    <a href="http://rdoc.info/github/mongoid/moped/Moped/Session">API docs</a>.
-  </p>
-  <table class='table table-bordered table-striped'>
-    <thead>
-      <tr>
-        <th>Operation</th>
-        <th>Syntax</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class='doc'>
-          <code>Session#use</code>
-          <p class='doc'>
-            <i>
-              Set the current database to operate on. All subsequent commands
-              will be on this database until switched.
-            </i>
-          </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>session.use(<span class="symbol">:my_app_test</span>)</pre></div>
+        <p>
+          The driver is the core of Moped that is used to interact with MongoDB. It is
+          based of almost entirely four classes: <code>Session</code>,
+          <code>Collection</code>, <code>Indexes</code>, and <code>Query</code>.
+        </p>
+        <div class='page-nav'>
+          <div class='container'>
+            <ul class='nav nav-pills'>
+              <li><a href="#behaviour">Behaviour</a></li>
+              <li><a href="#protocol">Wire Protocol</a></li>
+              <li><a href="#errors">Errors</a></li>
+            </ul>
           </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Session#with</code>
-          <p class='doc'>
-            <i>
-              Return or yield a copy of the session with different options set
-              on it.
-            </i>
+        </div>
+        <section id='behaviour'>
+          <h2>Behaviour</h2>
+          <h3>Session</h3>
+          <p>
+            The session is the main entry point to communicating with the database, similar
+            to a database connection. The session is special though in that it can be a
+            session with a single database server, a multi-node replica set, or a mongos
+            server for sharded scenarios.
           </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>session.with(safe: <span class="predefined-constant">true</span>) <span class="keyword">do</span> |_session|&#x000A;  ...&#x000A;<span class="keyword">end</span>&#x000A;session.with(database: <span class="string"><span class="delimiter">&quot;</span><span class="content">admin</span><span class="delimiter">&quot;</span></span>).command(...)</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Session#[]</code>
-          <p class='doc'>
-            <i>
-              Get a collection in the current database.
-            </i>
+          <p>
+            Once a new session is created you can interact with it in a similar fashion
+            that you would with the <code>mongo</code> console.
           </p>
-        </td>
-        <td>
           <div class="CodeRay">
-            <div class="code"><pre>session[<span class="symbol">:users</span>]</pre></div>
+            <div class="code"><pre>session = <span class="constant">Moped</span>::<span class="constant">Session</span>.new([ <span class="string"><span class="delimiter">&quot;</span><span class="content">127.0.0.1:27017</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">127.0.0.1:27018</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">127.0.0.1:27019</span><span class="delimiter">&quot;</span></span> ])&#x000A;session.use <span class="symbol">:moped_test</span>&#x000A;&#x000A;session[<span class="symbol">:users</span>].insert({ <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> })&#x000A;&#x000A;session.with(<span class="key">safe</span>: { <span class="key">w</span>: <span class="integer">2</span>, <span class="key">wtimeout</span>: <span class="integer">5</span> }) <span class="keyword">do</span> |_session|&#x000A;  _session[<span class="symbol">:users</span>].find.remove_all&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;session.with(<span class="key">database</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">important_db</span><span class="delimiter">&quot;</span></span>, <span class="key">consistency</span>: <span class="symbol">:strong</span>) <span class="keyword">do</span> |_session|&#x000A;  _session[<span class="symbol">:users</span>].find.first&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
           </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Session#drop</code>
-          <p class='doc'>
-            <i>
-              Drop the current database.
-            </i>
+          <p>
+            The following is a table of the most common session API usage. For a
+            complete reference please see the
+            <a href="http://rdoc.info/github/mongoid/moped/Moped/Session">API docs</a>.
           </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>session.drop</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Session#command</code>
-          <p class='doc'>
-            <i>
-              Run a command on the current database.
-            </i>
+          <table class='table table-bordered table-striped'>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Syntax</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class='doc'>
+                  <code>Session#use</code>
+                  <p class='doc'>
+                    <i>
+                      Set the current database to operate on. All subsequent commands
+                      will be on this database until switched.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>session.use(<span class="symbol">:my_app_test</span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Session#with</code>
+                  <p class='doc'>
+                    <i>
+                      Return or yield a copy of the session with different options set
+                      on it.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>session.with(<span class="key">safe</span>: <span class="predefined-constant">true</span>) <span class="keyword">do</span> |_session|&#x000A;  ...&#x000A;<span class="keyword">end</span>&#x000A;session.with(<span class="key">database</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">admin</span><span class="delimiter">&quot;</span></span>).command(...)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Session#[]</code>
+                  <p class='doc'>
+                    <i>
+                      Get a collection in the current database.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>session[<span class="symbol">:users</span>]</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Session#drop</code>
+                  <p class='doc'>
+                    <i>
+                      Drop the current database.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>session.drop</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Session#command</code>
+                  <p class='doc'>
+                    <i>
+                      Run a command on the current database.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>session.command(<span class="key">ping</span>: <span class="integer">1</span>)&#x000A;session.command(&#x000A;  <span class="key">mapreduce</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">users</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">map</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">...</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">reduce</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">...</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">query</span>: { <span class="key">created_at</span>: { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gte</span><span class="delimiter">&quot;</span></span> =&gt; <span class="constant">Time</span>.now }},&#x000A;  <span class="key">out</span>: { <span class="key">inline</span>: <span class="integer">1</span> }&#x000A;)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Session#login</code>
+                  <p class='doc'>
+                    <i>
+                      Authenticate with the current database.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>session.login(<span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">password</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Session#logout</code>
+                  <p class='doc'>
+                    <i>
+                      Logout of the current database.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>session.logout&#x000A;</pre></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h3>Collection</h3>
+          <p>
+            The collection is the main entry point for dealing with
+            collection operations, such as finding and inserting documents.
           </p>
-        </td>
-        <td>
           <div class="CodeRay">
-            <div class="code"><pre>session.command(ping: <span class="integer">1</span>)&#x000A;session.command(&#x000A;  mapreduce: <span class="string"><span class="delimiter">&quot;</span><span class="content">users</span><span class="delimiter">&quot;</span></span>,&#x000A;  map: <span class="string"><span class="delimiter">&quot;</span><span class="content">...</span><span class="delimiter">&quot;</span></span>,&#x000A;  reduce: <span class="string"><span class="delimiter">&quot;</span><span class="content">...</span><span class="delimiter">&quot;</span></span>,&#x000A;  query: { created_at: { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gte</span><span class="delimiter">&quot;</span></span> =&gt; <span class="constant">Time</span>.now }},&#x000A;  out: { inline: <span class="integer">1</span> }&#x000A;)</pre></div>
+            <div class="code"><pre>users = session[<span class="symbol">:users</span>]&#x000A;users.drop&#x000A;users.find.count <span class="comment">#=&gt; 0.0</span>&#x000A;&#x000A;users.indexes.create({<span class="key">name</span>: <span class="integer">1</span>}, {<span class="key">unique</span>: <span class="predefined-constant">true</span>})&#x000A;&#x000A;users.insert(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">John</span><span class="delimiter">&quot;</span></span>)&#x000A;users.find.count <span class="comment">#=&gt; 1.0</span>&#x000A;&#x000A;users.insert(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">John</span><span class="delimiter">&quot;</span></span>)&#x000A;users.find.count <span class="comment">#=&gt; 1.0</span>&#x000A;&#x000A;session.with(<span class="key">safe</span>: <span class="predefined-constant">true</span>) <span class="keyword">do</span> |session|&#x000A;  session[<span class="symbol">:users</span>].insert(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">John</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="keyword">end</span> <span class="comment"># raises Moped::Errors::OperationFailure</span>&#x000A;</pre></div>
           </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Session#login</code>
-          <p class='doc'>
-            <i>
-              Authenticate with the current database.
-            </i>
+          <p>
+            The following is a table of the most common collection API usage. For a
+            complete reference please see the
+            <a href="http://rdoc.info/github/mongoid/moped/Moped/Collection">API docs</a>.
           </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>session.login(<span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">password</span><span class="delimiter">&quot;</span></span>)</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Session#logout</code>
-          <p class='doc'>
-            <i>
-              Logout of the current database.
-            </i>
+          <table class='table table-bordered table-striped'>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Syntax</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class='doc'>
+                  <code>Collection#drop</code>
+                  <p class='doc'>
+                    <i>
+                      Drop the collection
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collection.drop</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Collection#find</code>
+                  <p class='doc'>
+                    <i>
+                      Build a query on the collection.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collection.find(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Collection#indexes</code>
+                  <p class='doc'>
+                    <i>
+                      Access information about the collection's indexes.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collection.indexes</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Collection#insert</code>
+                  <p class='doc'>
+                    <i>
+                      Insert one or multiple documents into the collection.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collection.insert(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>)&#x000A;colleciton.insert([{ <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> }, { <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span> }])&#x000A;</pre></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h3>Indexes</h3>
+          <p>
+            The indexes object is the main entry point for dealing with
+            indexes on a single collection.
           </p>
-        </td>
-        <td>
           <div class="CodeRay">
-            <div class="code"><pre>session.logout&#x000A;</pre></div>
+            <div class="code"><pre>session[<span class="symbol">:users</span>].indexes.create(<span class="key">name</span>: <span class="integer">1</span>)&#x000A;session[<span class="symbol">:users</span>].indexes.create(&#x000A;  { <span class="key">name</span>: <span class="integer">1</span>, <span class="key">location</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2d</span><span class="delimiter">&quot;</span></span> },&#x000A;  { <span class="key">unique</span>: <span class="predefined-constant">true</span> }&#x000A;)&#x000A;session[<span class="symbol">:users</span>].indexes[<span class="key">name</span>: <span class="integer">1</span>]&#x000A;<span class="comment"># =&gt; {&quot;v&quot;=&gt;1, &quot;key&quot;=&gt;{&quot;name&quot;=&gt;1}, &quot;ns&quot;=&gt;&quot;moped_test.users&quot;, &quot;name&quot;=&gt;&quot;name_1&quot; }</span>&#x000A;&#x000A;session[<span class="symbol">:users</span>].indexes.drop(<span class="key">name</span>: <span class="integer">1</span>)&#x000A;session[<span class="symbol">:users</span>].indexes[<span class="key">name</span>: <span class="integer">1</span>] <span class="comment"># =&gt; nil</span>&#x000A;</pre></div>
           </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <h3>Collection</h3>
-  <p>
-    The collection is the main entry point for dealing with
-    collection operations, such as finding and inserting documents.
-  </p>
-  <div class="CodeRay">
-    <div class="code"><pre>users = session[<span class="symbol">:users</span>]&#x000A;users.drop&#x000A;users.find.count <span class="comment">#=&gt; 0.0</span>&#x000A;&#x000A;users.indexes.create({name: <span class="integer">1</span>}, {unique: <span class="predefined-constant">true</span>})&#x000A;&#x000A;users.insert(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">John</span><span class="delimiter">&quot;</span></span>)&#x000A;users.find.count <span class="comment">#=&gt; 1.0</span>&#x000A;&#x000A;users.insert(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">John</span><span class="delimiter">&quot;</span></span>)&#x000A;users.find.count <span class="comment">#=&gt; 1.0</span>&#x000A;&#x000A;session.with(safe: <span class="predefined-constant">true</span>) <span class="keyword">do</span> |session|&#x000A;  session[<span class="symbol">:users</span>].insert(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">John</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="keyword">end</span> <span class="comment"># raises Moped::Errors::OperationFailure</span>&#x000A;</pre></div>
-  </div>
-  <p>
-    The following is a table of the most common collection API usage. For a
-    complete reference please see the
-    <a href="http://rdoc.info/github/mongoid/moped/Moped/Collection">API docs</a>.
-  </p>
-  <table class='table table-bordered table-striped'>
-    <thead>
-      <tr>
-        <th>Operation</th>
-        <th>Syntax</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class='doc'>
-          <code>Collection#drop</code>
-          <p class='doc'>
-            <i>
-              Drop the collection
-            </i>
+          <p>
+            The following is a table of the most common indexes API usage. For a
+            complete reference please see the
+            <a href="http://rdoc.info/github/mongoid/moped/Moped/Indexes">API docs</a>.
           </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>collection.drop</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Collection#find</code>
-          <p class='doc'>
-            <i>
-              Build a query on the collection.
-            </i>
+          <table class='table table-bordered table-striped'>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Syntax</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class='doc'>
+                  <code>Indexes#[]</code>
+                  <p class='doc'>
+                    <i>
+                      Get an index by its spec.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>indexes[<span class="key">_id</span>: <span class="integer">1</span>]</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Indexes#create</code>
+                  <p class='doc'>
+                    <i>
+                      Create a new index.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>indexes.create({ <span class="key">name</span>: <span class="integer">1</span> }, { <span class="key">unique</span>: <span class="predefined-constant">true</span> })</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Indexes#drop</code>
+                  <p class='doc'>
+                    <i>
+                      Drop one or all indexes.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>indexes.drop(<span class="key">name</span>: <span class="integer">1</span>)&#x000A;indexes.drop</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Indexes#each</code>
+                  <p class='doc'>
+                    <i>
+                      Iterate over and yield each index.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>indexes.each <span class="keyword">do</span> |index|&#x000A;  ...&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <h3>Query</h3>
+          <p>
+            The query is an object that is used to either return documents that
+            match a criterion, or perform some other operation on the documents
+            that match a criterion. This includes updates and deletes.
           </p>
-        </td>
-        <td>
           <div class="CodeRay">
-            <div class="code"><pre>collection.find(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>)</pre></div>
+            <div class="code"><pre>users = session[<span class="symbol">:users</span>]&#x000A;&#x000A;users.insert(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">John</span><span class="delimiter">&quot;</span></span>)&#x000A;users.find.count <span class="comment"># =&gt; 1</span>&#x000A;&#x000A;users.find(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mary</span><span class="delimiter">&quot;</span></span>).upsert(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mary</span><span class="delimiter">&quot;</span></span>)&#x000A;users.find.count <span class="comment"># =&gt; 2</span>&#x000A;&#x000A;users.find.skip(<span class="integer">1</span>).limit(<span class="integer">1</span>).sort(<span class="key">name</span>: <span class="integer">-1</span>).one&#x000A;<span class="comment"># =&gt; {&quot;_id&quot; =&gt; &lt;...&gt;, &quot;name&quot; =&gt; &quot;John&quot; }</span>&#x000A;&#x000A;scope = users.find(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mary</span><span class="delimiter">&quot;</span></span>).select(<span class="key">_id</span>: <span class="integer">0</span>, <span class="key">name</span>: <span class="integer">1</span>)&#x000A;scope.one <span class="comment"># =&gt; {&quot;name&quot; =&gt; &quot;Mary&quot; }</span>&#x000A;scope.remove&#x000A;scope.one <span class="comment"># nil</span>&#x000A;</pre></div>
           </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Collection#indexes</code>
-          <p class='doc'>
-            <i>
-              Access information about the collection's indexes.
-            </i>
+          <p>
+            The following is a table of the most common query API usage. For a
+            complete reference please see the
+            <a href="http://rdoc.info/github/mongoid/moped/Moped/Query">API docs</a>.
           </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>collection.indexes</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Collection#insert</code>
-          <p class='doc'>
-            <i>
-              Insert one or multiple documents into the collection.
-            </i>
+          <table class='table table-bordered table-striped'>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Syntax</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class='doc'>
+                  <code>Query#limit</code>
+                  <p class='doc'>
+                    <i>
+                      Limit the number of returned documents.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>query.limit(<span class="integer">20</span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Query#skip</code>
+                  <p class='doc'>
+                    <i>
+                      Skip the provided number of documents.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>query.skip(<span class="integer">20</span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Query#sort</code>
+                  <p class='doc'>
+                    <i>
+                      Sort the returned results.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>query.sort(<span class="key">name</span>: <span class="integer">1</span>, <span class="key">created_at</span>: <span class="integer">-1</span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Query#distinct</code>
+                  <p class='doc'>
+                    <i>
+                      Get an array of distinct values for a field.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>query.distinct(<span class="symbol">:name</span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Query#select</code>
+                  <p class='doc'>
+                    <i>
+                      Select the fields you want returned.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>query.select(<span class="key">name</span>: <span class="integer">1</span>, <span class="key">dob</span>: <span class="integer">1</span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Query#first</code>
+                  <p class='doc'>
+                    <i>
+                      Return a single document for the query. Also <code>one</code>.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>query.first</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Query#each</code>
+                  <p class='doc'>
+                    <i>
+                      Iterate through the results of a query.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>query.each <span class="keyword">do</span> |doc|&#x000A;  ...&#x000A;<span class="keyword">end</span></pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Query#count</code>
+                  <p class='doc'>
+                    <i>
+                      Return the number of documents that match the query.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>query.count</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Query#update</code>
+                  <p class='doc'>
+                    <i>
+                      Update the first document matching the query.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>query.update(<span class="string"><span class="delimiter">'</span><span class="content">$set</span><span class="delimiter">'</span></span> =&gt; {<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>})</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Query#update_all</code>
+                  <p class='doc'>
+                    <i>
+                      Update all documents matching the query.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>query.update_all(<span class="string"><span class="delimiter">'</span><span class="content">$set</span><span class="delimiter">'</span></span> =&gt; {<span class="key">pending</span>: <span class="predefined-constant">true</span>})</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Query#upsert</code>
+                  <p class='doc'>
+                    <i>
+                      Create or update a document using query's selector.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>query.upsert(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Depeche Mode</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Query#remove</code>
+                  <p class='doc'>
+                    <i>
+                      Remove a single document matching the query.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>query.remove</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Query#remove_all</code>
+                  <p class='doc'>
+                    <i>
+                      Remove all documents matching the query.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>query.remove_all&#x000A;</pre></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section id='protocol'>
+          <h2>Wire Protocol</h2>
+          <p>
+            <code>Moped::Protocol</code> is the namespace for Moped's implementation
+            of the <a href="http://www.mongodb.org/display/DOCS/Mongo+Wire+Protocol">
+            Mongo Wire Protocol</a>. Its public API consists of classes representing
+            each type of message in the protocol: <code>Delete</code>, <code>GetMore</code>,
+            <code>Insert</code>, <code>KillCursors</code>, <code>Query</code>,
+            <code>Reply</code>, <code>Update</code>, and a convenience class
+            <code>Command</code>.
           </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>collection.insert(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span>)&#x000A;colleciton.insert([{ name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd</span><span class="delimiter">&quot;</span></span> }, { name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Nancy</span><span class="delimiter">&quot;</span></span> }])&#x000A;</pre></div>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <h3>Indexes</h3>
-  <p>
-    The indexes object is the main entry point for dealing with
-    indexes on a single collection.
-  </p>
-  <div class="CodeRay">
-    <div class="code"><pre>session[<span class="symbol">:users</span>].indexes.create(name: <span class="integer">1</span>)&#x000A;session[<span class="symbol">:users</span>].indexes.create(&#x000A;  { name: <span class="integer">1</span>, location: <span class="string"><span class="delimiter">&quot;</span><span class="content">2d</span><span class="delimiter">&quot;</span></span> },&#x000A;  { unique: <span class="predefined-constant">true</span> }&#x000A;)&#x000A;session[<span class="symbol">:users</span>].indexes[name: <span class="integer">1</span>]&#x000A;<span class="comment"># =&gt; {&quot;v&quot;=&gt;1, &quot;key&quot;=&gt;{&quot;name&quot;=&gt;1}, &quot;ns&quot;=&gt;&quot;moped_test.users&quot;, &quot;name&quot;=&gt;&quot;name_1&quot; }</span>&#x000A;&#x000A;session[<span class="symbol">:users</span>].indexes.drop(name: <span class="integer">1</span>)&#x000A;session[<span class="symbol">:users</span>].indexes[name: <span class="integer">1</span>] <span class="comment"># =&gt; nil</span>&#x000A;</pre></div>
-  </div>
-  <p>
-    The following is a table of the most common indexes API usage. For a
-    complete reference please see the
-    <a href="http://rdoc.info/github/mongoid/moped/Moped/Indexes">API docs</a>.
-  </p>
-  <table class='table table-bordered table-striped'>
-    <thead>
-      <tr>
-        <th>Operation</th>
-        <th>Syntax</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class='doc'>
-          <code>Indexes#[]</code>
-          <p class='doc'>
-            <i>
-              Get an index by its spec.
-            </i>
+          <p>
+            You should never have to worry about protocol objects, but more details can
+            be found in the <a href="http://rdoc.info/github/mongoid/moped/Moped/Protocol">
+            API docs</a> if you're interested.
           </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>indexes[_id: <span class="integer">1</span>]</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Indexes#create</code>
-          <p class='doc'>
-            <i>
-              Create a new index.
-            </i>
+        </section>
+        <section id='errors'>
+          <h2>Errors</h2>
+          <p>Here's a list of the exceptions generated by Moped.</p>
+          <table class='table table-bordered table-striped'>
+            <thead>
+              <tr>
+                <th>Error</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>Moped::Errors::ConnectionFailure</code></td>
+                <td>
+                  Raised when a node cannot be reached or a connection is lost.
+                  <i>Note</i>: this exception is only raised if Moped could not
+                  reconnect, so you shouldn't attempt to rescue this.
+                </td>
+              </tr>
+              <tr>
+                <td><code>Moped::Errors::OperationFailure</code></td>
+                <td>
+                  Raised when a command fails or is invalid, such as when an insert
+                  fails in safe mode.
+                </td>
+              </tr>
+              <tr>
+                <td><code>Moped::Errors::QueryFailure</code></td>
+                <td>
+                  Raised when an invalid query was sent to the database.
+                </td>
+              </tr>
+              <tr>
+                <td><code>Moped::Errors::AuthenticationFailure</code></td>
+                <td>
+                  Raised when invalid credentials were passed to
+                  <code>session.login</code>.
+                </td>
+              </tr>
+              <tr>
+                <td><code>Moped::Errors::SocketError</code></td>
+                <td>
+                  Not a real exception, but a module used to tag unhandled
+                  exceptions inside of a node's networking code. Allows you to
+                  <code>rescue Moped::SocketError</code> while preserving the
+                  real exception.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            Other exceptions are possible while running commands, such as IO Errors around
+            failed connections. Moped tries to be smart about managing its connections,
+            such as checking if they're dead before executing a command; but those checks
+            aren't foolproof, and Moped is conservative about handling unexpected errors on
+            its connections. Namely, Moped will *not* retry a command if an unexpected
+            exception is raised. Why? Because it's impossible to know whether the command
+            was actually received by the remote Mongo instance, and without domain
+            knowledge it cannot be safely retried.
           </p>
-        </td>
-        <td>
+          <p>Take for example this case:</p>
           <div class="CodeRay">
-            <div class="code"><pre>indexes.create({ name: <span class="integer">1</span> }, { unique: <span class="predefined-constant">true</span> })</pre></div>
+            <div class="code"><pre>session.with(<span class="key">safe</span>: <span class="predefined-constant">true</span>)[<span class="string"><span class="delimiter">&quot;</span><span class="content">users</span><span class="delimiter">&quot;</span></span>].insert(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">John</span><span class="delimiter">&quot;</span></span>)&#x000A;</pre></div>
           </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Indexes#drop</code>
-          <p class='doc'>
-            <i>
-              Drop one or all indexes.
-            </i>
+          <p>
+            It's entirely possible that the insert command will be sent to Mongo, but the
+            connection gets closed before we read the result for <code>getLastError</code>.
+            In this case, there's no way to know whether the insert was actually successful!
           </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>indexes.drop(name: <span class="integer">1</span>)&#x000A;indexes.drop</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Indexes#each</code>
-          <p class='doc'>
-            <i>
-              Iterate over and yield each index.
-            </i>
+          <p>
+            If, however, you want to gracefully handle this in your own application, you
+            could do something like:
           </p>
-        </td>
-        <td>
           <div class="CodeRay">
-            <div class="code"><pre>indexes.each <span class="keyword">do</span> |index|&#x000A;  ...&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+            <div class="code"><pre>document = { <span class="key">_id</span>: <span class="constant">Moped</span>::<span class="constant">BSON</span>::<span class="constant">ObjectId</span>.new, <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">John</span><span class="delimiter">&quot;</span></span> }&#x000A;&#x000A;<span class="keyword">begin</span>&#x000A;  session[<span class="string"><span class="delimiter">&quot;</span><span class="content">users</span><span class="delimiter">&quot;</span></span>].insert(document)&#x000A;<span class="keyword">rescue</span> <span class="constant">Moped</span>::<span class="constant">Errors</span>::<span class="constant">SocketError</span>&#x000A;  session[<span class="string"><span class="delimiter">&quot;</span><span class="content">users</span><span class="delimiter">&quot;</span></span>].find(<span class="key">_id</span>: document[<span class="symbol">:_id</span>]).upsert(document)&#x000A;<span class="keyword">end</span></pre></div>
           </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <h3>Query</h3>
-  <p>
-    The query is an object that is used to either return documents that
-    match a criterion, or perform some other operation on the documents
-    that match a criterion. This includes updates and deletes.
-  </p>
-  <div class="CodeRay">
-    <div class="code"><pre>users = session[<span class="symbol">:users</span>]&#x000A;&#x000A;users.insert(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">John</span><span class="delimiter">&quot;</span></span>)&#x000A;users.find.count <span class="comment"># =&gt; 1</span>&#x000A;&#x000A;users.find(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mary</span><span class="delimiter">&quot;</span></span>).upsert(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mary</span><span class="delimiter">&quot;</span></span>)&#x000A;users.find.count <span class="comment"># =&gt; 2</span>&#x000A;&#x000A;users.find.skip(<span class="integer">1</span>).limit(<span class="integer">1</span>).sort(name: <span class="integer">-1</span>).one&#x000A;<span class="comment"># =&gt; {&quot;_id&quot; =&gt; &lt;...&gt;, &quot;name&quot; =&gt; &quot;John&quot; }</span>&#x000A;&#x000A;scope = users.find(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mary</span><span class="delimiter">&quot;</span></span>).select(_id: <span class="integer">0</span>, name: <span class="integer">1</span>)&#x000A;scope.one <span class="comment"># =&gt; {&quot;name&quot; =&gt; &quot;Mary&quot; }</span>&#x000A;scope.remove&#x000A;scope.one <span class="comment"># nil</span>&#x000A;</pre></div>
-  </div>
-  <p>
-    The following is a table of the most common query API usage. For a
-    complete reference please see the
-    <a href="http://rdoc.info/github/mongoid/moped/Moped/Query">API docs</a>.
-  </p>
-  <table class='table table-bordered table-striped'>
-    <thead>
-      <tr>
-        <th>Operation</th>
-        <th>Syntax</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class='doc'>
-          <code>Query#limit</code>
-          <p class='doc'>
-            <i>
-              Limit the number of returned documents.
-            </i>
-          </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>query.limit(<span class="integer">20</span>)</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Query#skip</code>
-          <p class='doc'>
-            <i>
-              Skip the provided number of documents.
-            </i>
-          </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>query.skip(<span class="integer">20</span>)</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Query#sort</code>
-          <p class='doc'>
-            <i>
-              Sort the returned results.
-            </i>
-          </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>query.sort(name: <span class="integer">1</span>, created_at: <span class="integer">-1</span>)</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Query#distinct</code>
-          <p class='doc'>
-            <i>
-              Get an array of distinct values for a field.
-            </i>
-          </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>query.distinct(<span class="symbol">:name</span>)</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Query#select</code>
-          <p class='doc'>
-            <i>
-              Select the fields you want returned.
-            </i>
-          </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>query.select(name: <span class="integer">1</span>, dob: <span class="integer">1</span>)</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Query#first</code>
-          <p class='doc'>
-            <i>
-              Return a single document for the query. Also <code>one</code>.
-            </i>
-          </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>query.first</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Query#each</code>
-          <p class='doc'>
-            <i>
-              Iterate through the results of a query.
-            </i>
-          </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>query.each <span class="keyword">do</span> |doc|&#x000A;  ...&#x000A;<span class="keyword">end</span></pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Query#count</code>
-          <p class='doc'>
-            <i>
-              Return the number of documents that match the query.
-            </i>
-          </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>query.count</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Query#update</code>
-          <p class='doc'>
-            <i>
-              Update the first document matching the query.
-            </i>
-          </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>query.update(<span class="string"><span class="delimiter">'</span><span class="content">$set</span><span class="delimiter">'</span></span> =&gt; {name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>})</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Query#update_all</code>
-          <p class='doc'>
-            <i>
-              Update all documents matching the query.
-            </i>
-          </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>query.update_all(<span class="string"><span class="delimiter">'</span><span class="content">$set</span><span class="delimiter">'</span></span> =&gt; {pending: <span class="predefined-constant">true</span>})</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Query#upsert</code>
-          <p class='doc'>
-            <i>
-              Create or update a document using query's selector.
-            </i>
-          </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>query.upsert(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">Depeche Mode</span><span class="delimiter">&quot;</span></span>)</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Query#remove</code>
-          <p class='doc'>
-            <i>
-              Remove a single document matching the query.
-            </i>
-          </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>query.remove</pre></div>
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td class='doc'>
-          <code>Query#remove_all</code>
-          <p class='doc'>
-            <i>
-              Remove all documents matching the query.
-            </i>
-          </p>
-        </td>
-        <td>
-          <div class="CodeRay">
-            <div class="code"><pre>query.remove_all&#x000A;</pre></div>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</section>
-<section id='protocol'>
-  <h2>Wire Protocol</h2>
-  <p>
-    <code>Moped::Protocol</code> is the namespace for Moped's implementation
-    of the <a href="http://www.mongodb.org/display/DOCS/Mongo+Wire+Protocol">
-    Mongo Wire Protocol</a>. Its public API consists of classes representing
-    each type of message in the protocol: <code>Delete</code>, <code>GetMore</code>,
-    <code>Insert</code>, <code>KillCursors</code>, <code>Query</code>,
-    <code>Reply</code>, <code>Update</code>, and a convenience class
-    <code>Command</code>.
-  </p>
-  <p>
-    You should never have to worry about protocol objects, but more details can
-    be found in the <a href="http://rdoc.info/github/mongoid/moped/Moped/Protocol">
-    API docs</a> if you're interested.
-  </p>
-</section>
-<section id='errors'>
-  <h2>Errors</h2>
-  <p>Here's a list of the exceptions generated by Moped.</p>
-  <table class='table table-bordered table-striped'>
-    <thead>
-      <tr>
-        <th>Error</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><code>Moped::Errors::ConnectionFailure</code></td>
-        <td>
-          Raised when a node cannot be reached or a connection is lost.
-          <i>Note</i>: this exception is only raised if Moped could not
-          reconnect, so you shouldn't attempt to rescue this.
-        </td>
-      </tr>
-      <tr>
-        <td><code>Moped::Errors::OperationFailure</code></td>
-        <td>
-          Raised when a command fails or is invalid, such as when an insert
-          fails in safe mode.
-        </td>
-      </tr>
-      <tr>
-        <td><code>Moped::Errors::QueryFailure</code></td>
-        <td>
-          Raised when an invalid query was sent to the database.
-        </td>
-      </tr>
-      <tr>
-        <td><code>Moped::Errors::AuthenticationFailure</code></td>
-        <td>
-          Raised when invalid credentials were passed to
-          <code>session.login</code>.
-        </td>
-      </tr>
-      <tr>
-        <td><code>Moped::Errors::SocketError</code></td>
-        <td>
-          Not a real exception, but a module used to tag unhandled
-          exceptions inside of a node's networking code. Allows you to
-          <code>rescue Moped::SocketError</code> while preserving the
-          real exception.
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <p>
-    Other exceptions are possible while running commands, such as IO Errors around
-    failed connections. Moped tries to be smart about managing its connections,
-    such as checking if they're dead before executing a command; but those checks
-    aren't foolproof, and Moped is conservative about handling unexpected errors on
-    its connections. Namely, Moped will *not* retry a command if an unexpected
-    exception is raised. Why? Because it's impossible to know whether the command
-    was actually received by the remote Mongo instance, and without domain
-    knowledge it cannot be safely retried.
-  </p>
-  <p>Take for example this case:</p>
-  <div class="CodeRay">
-    <div class="code"><pre>session.with(safe: <span class="predefined-constant">true</span>)[<span class="string"><span class="delimiter">&quot;</span><span class="content">users</span><span class="delimiter">&quot;</span></span>].insert(name: <span class="string"><span class="delimiter">&quot;</span><span class="content">John</span><span class="delimiter">&quot;</span></span>)&#x000A;</pre></div>
-  </div>
-  <p>
-    It's entirely possible that the insert command will be sent to Mongo, but the
-    connection gets closed before we read the result for <code>getLastError</code>.
-    In this case, there's no way to know whether the insert was actually successful!
-  </p>
-  <p>
-    If, however, you want to gracefully handle this in your own application, you
-    could do something like:
-  </p>
-  <div class="CodeRay">
-    <div class="code"><pre>document = { _id: <span class="constant">Moped</span>::<span class="constant">BSON</span>::<span class="constant">ObjectId</span>.new, name: <span class="string"><span class="delimiter">&quot;</span><span class="content">John</span><span class="delimiter">&quot;</span></span> }&#x000A;&#x000A;<span class="keyword">begin</span>&#x000A;  session[<span class="string"><span class="delimiter">&quot;</span><span class="content">users</span><span class="delimiter">&quot;</span></span>].insert(document)&#x000A;<span class="keyword">rescue</span> <span class="constant">Moped</span>::<span class="constant">Errors</span>::<span class="constant">SocketError</span>&#x000A;  session[<span class="string"><span class="delimiter">&quot;</span><span class="content">users</span><span class="delimiter">&quot;</span></span>].find(_id: document[<span class="symbol">:_id</span>]).upsert(document)&#x000A;<span class="keyword">end</span></pre></div>
-  </div>
-</section>
+        </section>
       </div>
     </div>
   </body>
