@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta content='A Ruby ODM for MongoDB' name='description'>
+    <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords'>
+    <!--[if lt IE 9]>
+      <script src='http://html5shiv.googlecode.com/svn/trunk/html5.js'></script>
+    <![endif]-->
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0' name='viewport'>
+    <link href="/old/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/old/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/old/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/old/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/old/javascripts/jquery-1.8.1.min.js" type="text/javascript"></script>
+    <script src="/old/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="/old/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
+    <script src="/old/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
+    <script src="/old/javascripts/mongoid.js" type="text/javascript"></script>
+    <title>Mongoid: Home</title>
+  </head>
+  <body data-offset='100' data-spy='scroll-spy' data-target='.page-nav'>
+    <div class='mongoid' id='header'>
+      <div class='navbar navbar-inverse navbar-fixed-top'>
+        <div class='navbar-inner'>
+          <div class='container'>
+            <ul class='nav'>
+              <li class='link'>
+                            <a title="Mongoid" href="/old/en/mongoid/"><img src="/old/images/mongoid-logo-small-green.png" />
+                </a>
+
+              </li>
+              <li class='link'>
+                            <a title="Origin" href="/en/origin/"><img src="/old/images/origin-logo-small-white.png" />
+                </a>
+
+              </li>
+              <li class='link'>
+                            <a title="Moped" href="/en/moped/"><img src="/old/images/moped-logo-small-white.png" />
+                </a>
+
+              </li>
+            </ul>
+            <div class='logo-text'>
+              mongoid
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id='navigation'>
+      <div class='subnav'>
+        <div class='container'>
+          <ul class='nav nav-pills mongoid'>
+            <li><a href="/old/en/mongoid/">HOME</a></li>
+            <li class='dropdown' id='docs'>
+              <a class='dropdown-toggle' data-toggle='dropdown' href='#docs'>
+                docs
+                <b class='caret'></b>
+              </a>
+              <ul class='dropdown-menu'>
+                <li><a href="/old/en/mongoid/docs/installation.html">Installation</a></li>
+                <li><a href="/old/en/mongoid/docs/documents.html">Documents</a></li>
+                <li><a href="/old/en/mongoid/docs/persistence.html">Persistence</a></li>
+                <li><a href="/old/en/mongoid/docs/querying.html">Querying</a></li>
+                <li><a href="/old/en/mongoid/docs/relations.html">Relations</a></li>
+                <li><a href="/old/en/mongoid/docs/nested_attributes.html">Nested Attributes</a></li>
+                <li><a href="/old/en/mongoid/docs/callbacks.html">Callbacks</a></li>
+                <li><a href="/old/en/mongoid/docs/validation.html">Validation</a></li>
+                <li><a href="/old/en/mongoid/docs/indexing.html">Indexing</a></li>
+                <li><a href="/old/en/mongoid/docs/rails.html">Rails</a></li>
+                <li><a href="/old/en/mongoid/docs/extras.html">Extras</a></li>
+                <li><a href="/old/en/mongoid/docs/upgrading.html">Upgrading</a></li>
+                <li><a href="/old/en/mongoid/docs/contributing.html">Contributing</a></li>
+                <li><a href="/old/en/mongoid/docs/performance.html">Performance</a></li>
+                <li><a href="/old/en/mongoid/docs/tips.html">Tips/FAQs</a></li>
+              </ul>
+            </li>
+            <li><a href="/old/en/mongoid/links.html">LINKS</a></li>
+            <li><a href="/old/en/mongoid/donate.html">DONATE</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id='content'>
+      <div class='container'>
+        <p></p>
+        <p style='background-color:#EEE;padding: 5px 10px;'>
+          You are looking at the docs for v3.x. Check out this page on the docs for Mongoid
+          <a href='/old/en/mongoid/docs/../index.html'>v4.x</a>
+        </p>
+        <h1>Mongoid</h1>
+        <p>
+          Mongoid (pronounced mann-goyd) is an Object-Document-Mapper (ODM) for
+          <a href="http://mongodb.org">MongoDB</a> written in Ruby. It was conceived in August,
+          2009 during a whiskey-induced evening at the infamous Oasis in Florida,
+          USA by <a href="http://github.com/durran">Durran Jordan</a>.
+        </p>
+        <p>
+          The philosophy of Mongoid is to provide a familiar API to Ruby developers
+          who have been using Active Record or Data Mapper, while leveraging the
+          power of MongoDB's schemaless and performant document-based design, dynamic
+          queries, and atomic modifier operations.
+        </p>
+        <h2>Sample Syntax</h2>
+        <div class='well'>
+          <table>
+            <tr>
+              <td class='achtung'><img src="/old/images/achtung.png" /></td>
+              <td class='note'>
+                Mongoid supports MRI 1.9.3+, and JRuby 1.6.0+ in
+                1.9 mode. All code samples will use 1.9 syntax.
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="CodeRay">
+          <div class="code"><pre><span class="keyword">class</span> <span class="class">Artist</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, <span class="key">type</span>: <span class="constant">String</span>&#x000A;  embeds_many <span class="symbol">:instruments</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Instrument</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, <span class="key">type</span>: <span class="constant">String</span>&#x000A;  embedded_in <span class="symbol">:artist</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;syd = <span class="constant">Artist</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Syd Vicious</span><span class="delimiter">&quot;</span></span>).between(<span class="key">age</span>: <span class="integer">18</span>..<span class="integer">25</span>).first&#x000A;syd.instruments.create(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Bass</span><span class="delimiter">&quot;</span></span>)&#x000A;syd.with(<span class="key">database</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">bands</span><span class="delimiter">&quot;</span></span>, <span class="key">session</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">backup</span><span class="delimiter">&quot;</span></span>).save!</pre></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

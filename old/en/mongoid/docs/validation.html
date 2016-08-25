@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta content='A Ruby ODM for MongoDB' name='description'>
+    <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords'>
+    <!--[if lt IE 9]>
+      <script src='http://html5shiv.googlecode.com/svn/trunk/html5.js'></script>
+    <![endif]-->
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0' name='viewport'>
+    <link href="/old/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/old/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/old/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/old/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/old/javascripts/jquery-1.8.1.min.js" type="text/javascript"></script>
+    <script src="/old/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="/old/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
+    <script src="/old/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
+    <script src="/old/javascripts/mongoid.js" type="text/javascript"></script>
+    <title>Mongoid: Validation</title>
+  </head>
+  <body data-offset='100' data-spy='scroll-spy' data-target='.page-nav'>
+    <div class='mongoid' id='header'>
+      <div class='navbar navbar-inverse navbar-fixed-top'>
+        <div class='navbar-inner'>
+          <div class='container'>
+            <ul class='nav'>
+              <li class='link'>
+                            <a title="Mongoid" href="/old/en/mongoid/"><img src="/old/images/mongoid-logo-small-green.png" />
+                </a>
+
+              </li>
+              <li class='link'>
+                            <a title="Origin" href="/en/origin/"><img src="/old/images/origin-logo-small-white.png" />
+                </a>
+
+              </li>
+              <li class='link'>
+                            <a title="Moped" href="/en/moped/"><img src="/old/images/moped-logo-small-white.png" />
+                </a>
+
+              </li>
+            </ul>
+            <div class='logo-text'>
+              mongoid
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id='navigation'>
+      <div class='subnav'>
+        <div class='container'>
+          <ul class='nav nav-pills mongoid'>
+            <li><a href="/old/en/mongoid/">HOME</a></li>
+            <li class='dropdown' id='docs'>
+              <a class='dropdown-toggle' data-toggle='dropdown' href='#docs'>
+                docs
+                <b class='caret'></b>
+              </a>
+              <ul class='dropdown-menu'>
+                <li><a href="/old/en/mongoid/docs/installation.html">Installation</a></li>
+                <li><a href="/old/en/mongoid/docs/documents.html">Documents</a></li>
+                <li><a href="/old/en/mongoid/docs/persistence.html">Persistence</a></li>
+                <li><a href="/old/en/mongoid/docs/querying.html">Querying</a></li>
+                <li><a href="/old/en/mongoid/docs/relations.html">Relations</a></li>
+                <li><a href="/old/en/mongoid/docs/nested_attributes.html">Nested Attributes</a></li>
+                <li><a href="/old/en/mongoid/docs/callbacks.html">Callbacks</a></li>
+                <li><a href="/old/en/mongoid/docs/validation.html">Validation</a></li>
+                <li><a href="/old/en/mongoid/docs/indexing.html">Indexing</a></li>
+                <li><a href="/old/en/mongoid/docs/rails.html">Rails</a></li>
+                <li><a href="/old/en/mongoid/docs/extras.html">Extras</a></li>
+                <li><a href="/old/en/mongoid/docs/upgrading.html">Upgrading</a></li>
+                <li><a href="/old/en/mongoid/docs/contributing.html">Contributing</a></li>
+                <li><a href="/old/en/mongoid/docs/performance.html">Performance</a></li>
+                <li><a href="/old/en/mongoid/docs/tips.html">Tips/FAQs</a></li>
+              </ul>
+            </li>
+            <li><a href="/old/en/mongoid/links.html">LINKS</a></li>
+            <li><a href="/old/en/mongoid/donate.html">DONATE</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id='content'>
+      <div class='container'>
+        <p style='background-color:#EEE;padding: 5px 10px;margin-top:30px;'>
+          You are looking at the docs for v4.x. You can check out this page for Mongoid
+          <a href='/old/en/mongoid/v3/validation.html'>v3.x</a>
+          if you haven't upgraded yet.
+        </p>
+        <h1>Validations</h1>
+        <p>
+          Mongoid includes <code>ActiveModel::Validations</code> to supply the basic
+          validation plus an additional associated and uniqueness validator.
+        </p>
+        <p>
+          See <code><a href="http://github.com/rails/rails/blob/master/activemodel/lib/active_model/validations.rb">ActiveModel::Validations</a></code> documentation for more information.
+        </p>
+        <div class='well'>
+          <table>
+            <tr>
+              <td class='achtung'><img src="/old/images/achtung.png" /></td>
+              <td class='note'>
+                Mongoid behaves slightly different to Active Record when using <code>#valid?</code>
+                on already persisted data. Active Record's <code>#valid?</code> will run all
+                validations whereas Mongoid's <code>#valid?</code> will only run validations on
+                documents that are in memory as an optimization.
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>Common options that can be passed to all validations:</p>
+        <ul>
+          <li>
+            <code>:allow_nil</code> Specify whether to validate on a nil attribute.
+          </li>
+          <li>
+            <code>:if</code> Only run if the supplied value evaluates to true.
+          </li>
+          <li>
+            <code>:on</code> Only run when specified, supports <code>:create</code>
+            and <code>:update</code>.
+          </li>
+          <li>
+            <code>:unless</code> Only run if the supplied value evaluates to false.
+          </li>
+        </ul>
+        <p>
+          In addition to those validations, information is provided with each macro
+          about its specific options.
+        </p>
+        <table class='table table-bordered table-striped'>
+          <thead>
+            <tr>
+              <th>Validation</th>
+              <th>Macro</th>
+              <th>Options</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class='doc'>
+                <p class='doc'>
+                  <i>Validate acceptance of terms.</i>
+                </p>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre>validates_acceptance_of <span class="symbol">:terms</span>&#x000A;validates <span class="symbol">:terms</span>, <span class="key">acceptance</span>: <span class="predefined-constant">true</span></pre></div>
+                </div>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre><span class="symbol">:message</span>&#x000A;<span class="symbol">:accept</span> <span class="comment"># Specify the accepted value. Default: 1.</span></pre></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class='doc'>
+                <p class='doc'>
+                  <i>
+                    Validate associated documents when the parent is validated. This
+                    only validates documents in memory.
+                  </i>
+                </p>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre>validates_associated <span class="symbol">:albums</span>&#x000A;validates <span class="symbol">:albums</span>, <span class="key">associated</span>: <span class="predefined-constant">true</span></pre></div>
+                </div>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre><span class="symbol">:message</span></pre></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class='doc'>
+                <p class='doc'>
+                  <i>
+                    Validate confirmation of a field, with a "_confirmation" suffix.
+                  </i>
+                </p>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre>validates_confirmation_of <span class="symbol">:password</span>&#x000A;validates <span class="symbol">:password</span>, <span class="key">confirmation</span>: <span class="predefined-constant">true</span></pre></div>
+                </div>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre><span class="symbol">:message</span></pre></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class='doc'>
+                <p class='doc'>
+                  <i>
+                    Validate items are not in a list.
+                  </i>
+                </p>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre>validates_exclusion_of <span class="symbol">:employers</span>, <span class="key">in</span>: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">SoundCloud</span><span class="delimiter">&quot;</span></span> ]&#x000A;validates <span class="symbol">:employers</span>, <span class="key">exclusion</span>: { <span class="key">in</span>: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">SoundCloud</span><span class="delimiter">&quot;</span></span> ] }</pre></div>
+                </div>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre><span class="symbol">:in</span> <span class="comment"># Required list of values.</span>&#x000A;<span class="symbol">:message</span></pre></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class='doc'>
+                <p class='doc'>
+                  <i>
+                    Validate the format of a field.
+                  </i>
+                </p>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre>validates_format_of <span class="symbol">:title</span>, <span class="key">with</span>: <span class="regexp"><span class="delimiter">/</span><span class="char">\A</span><span class="char">\w</span><span class="content">+</span><span class="char">\Z</span><span class="delimiter">/</span></span>&#x000A;validates <span class="symbol">:title</span>, <span class="key">format</span>: { <span class="key">with</span>: <span class="regexp"><span class="delimiter">/</span><span class="char">\A</span><span class="char">\w</span><span class="content">+</span><span class="char">\Z</span><span class="delimiter">/</span></span> }</pre></div>
+                </div>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre><span class="symbol">:allow_blank</span> <span class="comment"># Whether the field can be blank.</span>&#x000A;<span class="symbol">:in</span> <span class="comment"># A list or range of values.</span>&#x000A;<span class="symbol">:message</span>&#x000A;<span class="symbol">:with</span> <span class="comment"># A regular expression to match.</span>&#x000A;<span class="symbol">:without</span> <span class="comment"># A regular expression not to match.</span></pre></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class='doc'>
+                <p class='doc'>
+                  <i>
+                    Validate items are included in a list.
+                  </i>
+                </p>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre>validates_inclusion_of <span class="symbol">:employers</span>, <span class="key">in</span>: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">SoundCloud</span><span class="delimiter">&quot;</span></span> ]&#x000A;validates <span class="symbol">:employers</span>, <span class="key">inclusion</span>: { <span class="key">in</span>: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">SoundCloud</span><span class="delimiter">&quot;</span></span> ] }</pre></div>
+                </div>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre><span class="symbol">:allow_blank</span> <span class="comment"># Whether the field can be blank.</span>&#x000A;<span class="symbol">:in</span> <span class="comment"># Required list of values.</span>&#x000A;<span class="symbol">:message</span></pre></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class='doc'>
+                <p class='doc'>
+                  <i>
+                    Validate the length of a field.
+                  </i>
+                </p>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre>validates_length_of <span class="symbol">:password</span>, <span class="key">minimum</span>: <span class="integer">8</span>, <span class="key">maximum</span>: <span class="integer">16</span>&#x000A;validates <span class="symbol">:password</span>, <span class="key">length</span>: { <span class="key">minimum</span>: <span class="integer">8</span>, <span class="key">maximum</span>: <span class="integer">16</span> }</pre></div>
+                </div>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre><span class="symbol">:allow_blank</span> <span class="comment"># Whether to validate blank attributes.</span>&#x000A;<span class="symbol">:in</span> <span class="comment"># The range the length can fall within.</span>&#x000A;<span class="symbol">:maximum</span> <span class="comment"># The maximum length of the attribute.</span>&#x000A;<span class="symbol">:message</span>&#x000A;<span class="symbol">:minimum</span> <span class="comment"># The minimum length of the attribute.</span>&#x000A;<span class="symbol">:tokenizer</span> <span class="comment"># A block tokenizer.</span>&#x000A;<span class="symbol">:too_long</span> <span class="comment"># Custom message if too long.</span>&#x000A;<span class="symbol">:too_short</span> <span class="comment"># Custom message if too short.</span>&#x000A;<span class="symbol">:within</span> <span class="comment"># Range the length can fall within.</span>&#x000A;<span class="symbol">:wrong_length</span> <span class="comment"># Custom message for an incorrect length.</span></pre></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class='doc'>
+                <p class='doc'>
+                  <i>
+                    Validate the numericality of a field.
+                  </i>
+                </p>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre>validates_numericality_of <span class="symbol">:age</span>, <span class="key">even</span>: <span class="predefined-constant">true</span>&#x000A;validates <span class="symbol">:age</span>, <span class="key">numericality</span>: { <span class="key">even</span>: <span class="predefined-constant">true</span> }</pre></div>
+                </div>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre><span class="symbol">:equal_to</span> <span class="comment"># A value the field must be exactly.</span>&#x000A;<span class="symbol">:even</span> <span class="comment"># Set that the value must be even.</span>&#x000A;<span class="symbol">:greater_than</span>&#x000A;<span class="symbol">:greater_than_or_equal_to</span>&#x000A;<span class="symbol">:less_than</span>&#x000A;<span class="symbol">:less_than_or_equal_to</span>&#x000A;<span class="symbol">:message</span>&#x000A;<span class="symbol">:odd</span> <span class="comment"># Set that the value must be odd.</span>&#x000A;<span class="symbol">:only_integer</span> <span class="comment"># Set whether the value has to be an integer.</span></pre></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class='doc'>
+                <p class='doc'>
+                  <i>
+                    Validate that an attribute exists. <i>Note that if you add a
+                    presence validation to a relation, then Mongoid will enable
+                    autosave for that relation.</i>
+                  </i>
+                </p>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre>validates_presence_of <span class="symbol">:name</span>&#x000A;validates <span class="symbol">:name</span>, <span class="key">presence</span>: <span class="predefined-constant">true</span></pre></div>
+                </div>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre><span class="symbol">:message</span></pre></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class='doc'>
+                <p class='doc'>
+                  <i>
+                    Validate that an attribute is unique.
+                    Note that for embedded documents, this will only check that the
+                    field is unique within the context of the parent document, not the
+                    entire database.
+                  </i>
+                </p>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre>validates_uniqueness_of <span class="symbol">:name</span>&#x000A;validates <span class="symbol">:name</span>, <span class="key">uniqueness</span>: <span class="predefined-constant">true</span></pre></div>
+                </div>
+              </td>
+              <td>
+                <div class="CodeRay">
+                  <div class="code"><pre><span class="symbol">:message</span>&#x000A;<span class="symbol">:case_sensitive</span> <span class="comment"># Whether to use case sensitive matching.</span>&#x000A;<span class="symbol">:scope</span> <span class="comment"># Scope checks to the value of this field.</span></pre></div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

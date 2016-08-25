@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta content='A Ruby ODM for MongoDB' name='description'>
+    <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords'>
+    <!--[if lt IE 9]>
+      <script src='http://html5shiv.googlecode.com/svn/trunk/html5.js'></script>
+    <![endif]-->
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0' name='viewport'>
+    <link href="/old/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/old/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/old/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/old/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/old/javascripts/jquery-1.8.1.min.js" type="text/javascript"></script>
+    <script src="/old/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="/old/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
+    <script src="/old/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
+    <script src="/old/javascripts/mongoid.js" type="text/javascript"></script>
+    <title>Mongoid: Upgrading</title>
+  </head>
+  <body data-offset='100' data-spy='scroll-spy' data-target='.page-nav'>
+    <div class='mongoid' id='header'>
+      <div class='navbar navbar-inverse navbar-fixed-top'>
+        <div class='navbar-inner'>
+          <div class='container'>
+            <ul class='nav'>
+              <li class='link'>
+                            <a title="Mongoid" href="/old/en/mongoid/"><img src="/old/images/mongoid-logo-small-green.png" />
+                </a>
+
+              </li>
+              <li class='link'>
+                            <a title="Origin" href="/en/origin/"><img src="/old/images/origin-logo-small-white.png" />
+                </a>
+
+              </li>
+              <li class='link'>
+                            <a title="Moped" href="/en/moped/"><img src="/old/images/moped-logo-small-white.png" />
+                </a>
+
+              </li>
+            </ul>
+            <div class='logo-text'>
+              mongoid
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id='navigation'>
+      <div class='subnav'>
+        <div class='container'>
+          <ul class='nav nav-pills mongoid'>
+            <li><a href="/old/en/mongoid/">HOME</a></li>
+            <li class='dropdown' id='docs'>
+              <a class='dropdown-toggle' data-toggle='dropdown' href='#docs'>
+                docs
+                <b class='caret'></b>
+              </a>
+              <ul class='dropdown-menu'>
+                <li><a href="/old/en/mongoid/docs/installation.html">Installation</a></li>
+                <li><a href="/old/en/mongoid/docs/documents.html">Documents</a></li>
+                <li><a href="/old/en/mongoid/docs/persistence.html">Persistence</a></li>
+                <li><a href="/old/en/mongoid/docs/querying.html">Querying</a></li>
+                <li><a href="/old/en/mongoid/docs/relations.html">Relations</a></li>
+                <li><a href="/old/en/mongoid/docs/nested_attributes.html">Nested Attributes</a></li>
+                <li><a href="/old/en/mongoid/docs/callbacks.html">Callbacks</a></li>
+                <li><a href="/old/en/mongoid/docs/validation.html">Validation</a></li>
+                <li><a href="/old/en/mongoid/docs/indexing.html">Indexing</a></li>
+                <li><a href="/old/en/mongoid/docs/rails.html">Rails</a></li>
+                <li><a href="/old/en/mongoid/docs/extras.html">Extras</a></li>
+                <li><a href="/old/en/mongoid/docs/upgrading.html">Upgrading</a></li>
+                <li><a href="/old/en/mongoid/docs/contributing.html">Contributing</a></li>
+                <li><a href="/old/en/mongoid/docs/performance.html">Performance</a></li>
+                <li><a href="/old/en/mongoid/docs/tips.html">Tips/FAQs</a></li>
+              </ul>
+            </li>
+            <li><a href="/old/en/mongoid/links.html">LINKS</a></li>
+            <li><a href="/old/en/mongoid/donate.html">DONATE</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id='content'>
+      <div class='container'>
+        <p style='background-color:#EEE;padding: 5px 10px;margin-top:30px;'>
+          You are looking at the docs for v4.x. You can check out this page for Mongoid
+          <a href='/old/en/mongoid/v3/upgrading.html'>v3.x</a>
+          if you haven't upgraded yet.
+        </p>
+        <h1>Upgrading</h1>
+        <p>
+          Use this as a reference when upgrading between Mongoid versions.
+          You can always reference the
+          <a href="http://github.com/mongoid/mongoid/blob/master/CHANGELOG.md">
+          <code>CHANGELOG</code></a> for bug fixes, new features, and major changes
+          between versions.
+        </p>
+        <div class='well'>
+          <table>
+            <tr>
+              <td class='achtung'><img src="/old/images/achtung.png" /></td>
+              <td class='note'>
+                Mongoid follows versioning guidelines as outlined by the
+                <a href="http://semver.org/">Semantic Versioning Specification</a>, so
+                you can expect only backwards incompatible changes in major versions.
+              </td>
+            </tr>
+          </table>
+        </div>
+        <h2>Upgrading to 3.0</h2>
+        <p>
+          If you are just wanting to generate a new <code>mongoid.yml</code> from
+          scratch, ensure you delete the old one first so you do not get validation
+          errors when initializing the app at generation time.
+        </p>
+        <p>
+          The following are backwards incompatible changes in this release.
+        </p>
+        <ul class='incompatible'>
+          <li>
+            <i class='icon-warning-sign'></i>
+            bson and bson_ext gems are no longer necessary, and `BSON::ObjectId` objects
+            are no longer compatible with Mongoid documents. Use
+            <code>Moped::BSON::ObjectId</code> instead. It is safe to remove both gems
+            from your Gemfile and any other dependencies. They have been replaced by
+            Moped (see <a href="/en/moped/docs/bson.html"><code>Moped::BSON</code></a>).
+            Note that if you had not been converting your object ids to strings and
+            were storing them in any way that would cause a Marshal dump, you may need
+            to restore these values as strings. This is because the internals of
+            Moped's BSON and the 10gen BSON gem are not designed in the same manner,
+            even though both have the same public API and adhere to the same spec.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            GridFS support no longer exists. If you are using GridFS, you cannot
+            upgrade.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            Indexing syntax has changed. The first parameter is now a hash of
+            name/direction pairs with an optional second hash parameter for
+            additional options.
+            <p>Normal indexing with options, directions are either 1 or -1:</p>
+            <div class="CodeRay">
+              <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, <span class="key">type</span>: <span class="constant">String</span>&#x000A;  index({ <span class="key">name</span>: <span class="integer">1</span> }, { <span class="key">unique</span>: <span class="predefined-constant">true</span>, <span class="key">background</span>: <span class="predefined-constant">true</span> })&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+            </div>
+            <p>Geospatial indexing needs "2d" as its direction.</p>
+            <div class="CodeRay">
+              <div class="code"><pre><span class="keyword">class</span> <span class="class">Venue</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:location</span>, <span class="key">type</span>: <span class="constant">Array</span>&#x000A;&#x000A;  index <span class="key">location</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2d</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+            </div>
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            Custom serializable fields have revamped. Your object no longer should
+            include <code>Mongoid::Fields::Serializable</code> - instead it only needs to
+            implement 4 methods: <code>#mongoize</code>, <code>.mongoize</code>,
+            <code>.demongoize</code> and <code>.evolve</code>.
+            <p>
+              See <a href="/old/en/mongoid/docs/documents.html#custom_fields">Custom Fields Serialization</a>
+              for details on the implementation.
+            </p>
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <code>Document#changes</code> is no longer a hash with indifferent access.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <code>after_initialize</code> callbacks no longer cascade to children if the option
+            is set.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <a href="http://github.com/mongoid/mongoid/issues/1865">#1865</a>
+            <code>count</code> on the memory and mongo contexts now behave exactly the
+            same as Ruby's <code>count</code> on enumerable, and can take an object or a block.
+            This is optimized on the mongo context not to load everything in memory
+            with the exception of passing a block.
+            <div class="CodeRay">
+              <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>).count&#x000A;<span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>).count(tool) <span class="comment"># redundant.</span>&#x000A;<span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |doc|&#x000A;  doc.likes &gt; <span class="integer">0</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+            </div>
+            <p>
+              Note that although the signatures are the same for both the memory and
+              mongo contexts, it's recommended you only use the block syntax for the
+              memory context since the embedded documents are already loaded into
+              memory.
+            </p>
+            <p>
+              Also note that passing a boolean to take skip and limit into account
+              is no longer supported, as this is not necessarily a useful feature.
+            </p>
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            The <code>autocreate_indexes</code> configuration option has been removed.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <code>Model.defaults</code> no longer exists. You may get all defaults with a
+            combination of <code>Model.pre_processed_defaults</code> and
+            <code>Model.post_processed_defaults</code>.
+            <div class="CodeRay">
+              <div class="code"><pre><span class="constant">Band</span>.pre_processed_defaults&#x000A;<span class="constant">Band</span>.post_processed_defaults&#x000A;</pre></div>
+            </div>
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <code>Model.identity</code> and <code>Model.key</code> have been removed.
+            For custom ids, users must now override the _id field.
+            <p>
+              When the default value is a proc, the default is applied *after* all
+              other attributes are set.
+            </p>
+            <div class="CodeRay">
+              <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:_id</span>, <span class="key">type</span>: <span class="constant">String</span>, <span class="key">default</span>: -&gt;{ name }&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+            </div>
+            <p>
+              To have the default applied <i>before</i> other attributes, set
+              <code>:pre_processed</code> to true.
+            </p>
+            <div class="CodeRay">
+              <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:_id</span>,&#x000A;    <span class="key">type</span>: <span class="constant">String</span>,&#x000A;    <span class="key">pre_processed</span>: <span class="predefined-constant">true</span>,&#x000A;    <span class="key">default</span>: -&gt;{ <span class="constant">Moped</span>::<span class="constant">BSON</span>::<span class="constant">ObjectId</span>.new.to_s }&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+            </div>
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            Custom application exceptions in various languages has been removed,
+            along with the <code>Mongoid.add_language</code> feature.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            Mongoid no longer supports 1.8 syntax. 1.9.x or other vms running in
+            1.9 mode is now only supported.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <a href="http://github.com/mongoid/mongoid/issues/1734">#1734</a>
+            When searching for documents via <code>Model.find</code> with multiple ids,
+            Mongoid will raise an error if not <i>all</i> ids are found, and tell you
+            what the missing ones were. Previously the error only got raised if
+            nothing was returned.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <a href="http://github.com/mongoid/mongoid/issues/1675">#1675</a>
+            Adding presence validation on a relation now enables autosave.
+            This is to ensure that when a new parent object is saved with a new
+            child and marked is valid, both are persisted to ensure a correct
+            state in the database.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <a href="http://github.com/mongoid/mongoid/issues/1484">#1484</a>
+            <code>Model#has_attribute?</code> now behaves the same as Active Record.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <a href="http://github.com/mongoid/mongoid/issues/1475">#1475</a>
+            Active Support's time zone is now used by default in time
+            serialization if it is defined.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <a href="http://github.com/mongoid/mongoid/issues/1471">#1471</a>
+            Mongoid no longer strips any level of precision off of times.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <a href="http://github.com/mongoid/mongoid/issues/1342">#1342</a>
+            <code>Model.find</code> and <code>model.relation.find</code> now only
+            take a single or multiple ids. <code>Model.first</code>, <code>Model.last</code>
+            also no longer take arguments. For these use <code>Model.find_by</code>
+            instead.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <a href="http://github.com/mongoid/mongoid/issues/1291">#1291</a>
+            The <code>mongoid.yml</code> has been revamped completely, and upgrading
+            existing applications will greet you with some lovely Mongoid specific
+            configuration errors. You can re-generate a new mongoid.yml via the
+            existing rake task, which is commented to an insane degree to help you
+            with all the configuration possibilities.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <a href="http://github.com/mongoid/mongoid/issues/1291">#1291</a>
+            The <code>persist_in_safe_mode</code> configuration option has been removed.
+            You must now tell a database session in the mongoid.yml whether or not
+            it should persist in safe mode by default.
+            <div class="CodeRay">
+              <div class="code"><pre><span class="key">production</span>:&#x000A;  <span class="key">sessions</span>:&#x000A;    <span class="key">default</span>:&#x000A;      <span class="key">database</span>: <span class="string"><span class="content">my_app_prod</span></span>&#x000A;      <span class="key">hosts</span>:&#x000A;        - <span class="string"><span class="content">db.app.com:27018</span></span>&#x000A;        - <span class="string"><span class="content">db.app.com:27019</span></span>&#x000A;      <span class="key">options</span>:&#x000A;        <span class="key">consistency</span>: <span class="string"><span class="content">:eventual</span></span>&#x000A;        <span class="key">safe</span>: <span class="string"><span class="content">true</span></span>&#x000A;</pre></div>
+            </div>
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <a href="http://github.com/mongoid/mongoid/issues/1291">#1291</a>
+            <code>safely</code> and <code>unsafely</code> have been removed.
+            Please now use <code>with</code> to provide safe mode options at runtime.
+            <div class="CodeRay">
+              <div class="code"><pre><span class="constant">Band</span>.with(<span class="key">safe</span>: <span class="predefined-constant">true</span>).create&#x000A;band.with(<span class="key">safe</span>: { <span class="key">w</span>: <span class="integer">3</span> }).save!&#x000A;<span class="constant">Band</span>.with(<span class="key">safe</span>: <span class="predefined-constant">false</span>).create!&#x000A;</pre></div>
+            </div>
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <a href="http://github.com/mongoid/mongoid/issues/1270">#1270</a>
+            Relation macros have been changed to match their AR counterparts:
+            only <code>:has_one</code>, <code>:has_many</code>,
+            <code>:has_and_belongs_to_many</code>, and <code>:belongs_to</code>
+            exist now.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <a href="http://github.com/mongoid/mongoid/issues/1268">#1268</a>
+            <code>Model#new?</code> has been removed, developers must now always use
+            <code>Model#new_record?</code>.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <a href="http://github.com/mongoid/mongoid/issues/1182">#1182</a>
+            A reload is no longer required to refresh a relation after setting
+            the value of the foreign key field for it. Note this behaves exactly as
+            Active Record.
+            <p>
+              If the id is set, but the document for it has not been persisted, accessing
+              the relation will return empty results.
+            </p>
+            <p>
+              If the id is set and its document is persisted, accessing the relation
+              will return the document.
+            </p>
+            <p>
+              If the id is set, but the base document is not saved afterwards, then
+              reloading will return the document to its original state.
+            </p>
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <a href="http://github.com/mongoid/mongoid/issues/1093">#1093</a>
+            Field serialization strategies have changed on Array, Hash, Integer
+            and Boolean to be more consistent and match AR where appropriate.
+            <p>
+              Serialization of arrays calls <code>Array.wrap(object)</code>
+            </p>
+            <p>
+              Serialization of hashes calls <code>Hash[object]</code> (to_hash on the object)
+            </p>
+            <p>
+              Serialization of integers always returns an int via <code>to_i</code>
+            </p>
+            <p>
+              Serialization of booleans defaults to false instead of nil.
+            </p>
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <a href="http://github.com/mongoid/mongoid/issues/933">#933</a>
+            <code>:field.size</code> has been renamed to <code>:field.with_size</code>
+            in criteria for $size not to conflict with Symbol's size method.
+          </li>
+          <li>
+            <i class='icon-warning-sign'></i>
+            <a href="http://github.com/mongoid/mongoid/issues/797">#797</a>
+            Mongoid scoping code has been completely rewritten, and now
+            matches the Active Record API. With this backwards incompatible change,
+            some methods have been removed or renamed.
+            <p>
+              <code>Criteria#as_conditions</code> and <code>Criteria#fuse</code>
+              no longer exist.
+            </p>
+            <p>
+              <code>Criteria#merge</code> now only accepts another object that responds to
+              <code>to_criteria</code>.
+            </p>
+            <p>
+              <code>Criteria#merge!</code> now merges in another object without creating a new
+              criteria object.
+            </p>
+            <div class="CodeRay">
+              <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>).merge!(criteria)&#x000A;</pre></div>
+            </div>
+            <p>
+              Named scopes and default scopes no longer take hashes as parameters.
+              From now on only criteria and procs wrapping criteria will be
+              accepted, and an error will be raised if the arguments are incorrect.
+            </p>
+            <div class="CodeRay">
+              <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;&#x000A;  default_scope -&gt;{ where(<span class="key">active</span>: <span class="predefined-constant">true</span>) }&#x000A;  scope <span class="symbol">:inactive</span>, where(<span class="key">active</span>: <span class="predefined-constant">false</span>)&#x000A;  scope <span class="symbol">:invalid</span>, <span class="key">where</span>: { <span class="key">valid</span>: <span class="predefined-constant">false</span> } <span class="comment"># This will raise an error.</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+            </div>
+            <p>
+              The <code>named_scope</code> macro has been removed, from now on only
+              use <code>scope</code>.
+            </p>
+            <p>
+              <code>Model.unscoped</code> now accepts a block which will not allow
+              default scoping to be applied for any calls inside the block.
+            </p>
+            <div class="CodeRay">
+              <div class="code"><pre><span class="constant">Band</span>.unscoped <span class="keyword">do</span>&#x000A;  <span class="constant">Band</span>.scoped.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Ministry</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+            </div>
+            <p>
+              <code>Model.scoped</code> now takes options that will be set directly
+              on the criteria options hash.
+            </p>
+            <div class="CodeRay">
+              <div class="code"><pre><span class="constant">Band</span>.scoped(<span class="key">skip</span>: <span class="integer">10</span>, <span class="key">limit</span>: <span class="integer">20</span>)</pre></div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

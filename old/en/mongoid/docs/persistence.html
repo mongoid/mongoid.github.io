@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta content='A Ruby ODM for MongoDB' name='description'>
+    <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords'>
+    <!--[if lt IE 9]>
+      <script src='http://html5shiv.googlecode.com/svn/trunk/html5.js'></script>
+    <![endif]-->
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0' name='viewport'>
+    <link href="/old/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/old/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/old/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/old/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/old/javascripts/jquery-1.8.1.min.js" type="text/javascript"></script>
+    <script src="/old/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="/old/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
+    <script src="/old/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
+    <script src="/old/javascripts/mongoid.js" type="text/javascript"></script>
+    <title>Mongoid: Persistence</title>
+  </head>
+  <body data-offset='100' data-spy='scroll-spy' data-target='.page-nav'>
+    <div class='mongoid' id='header'>
+      <div class='navbar navbar-inverse navbar-fixed-top'>
+        <div class='navbar-inner'>
+          <div class='container'>
+            <ul class='nav'>
+              <li class='link'>
+                            <a title="Mongoid" href="/old/en/mongoid/"><img src="/old/images/mongoid-logo-small-green.png" />
+                </a>
+
+              </li>
+              <li class='link'>
+                            <a title="Origin" href="/en/origin/"><img src="/old/images/origin-logo-small-white.png" />
+                </a>
+
+              </li>
+              <li class='link'>
+                            <a title="Moped" href="/en/moped/"><img src="/old/images/moped-logo-small-white.png" />
+                </a>
+
+              </li>
+            </ul>
+            <div class='logo-text'>
+              mongoid
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id='navigation'>
+      <div class='subnav'>
+        <div class='container'>
+          <ul class='nav nav-pills mongoid'>
+            <li><a href="/old/en/mongoid/">HOME</a></li>
+            <li class='dropdown' id='docs'>
+              <a class='dropdown-toggle' data-toggle='dropdown' href='#docs'>
+                docs
+                <b class='caret'></b>
+              </a>
+              <ul class='dropdown-menu'>
+                <li><a href="/old/en/mongoid/docs/installation.html">Installation</a></li>
+                <li><a href="/old/en/mongoid/docs/documents.html">Documents</a></li>
+                <li><a href="/old/en/mongoid/docs/persistence.html">Persistence</a></li>
+                <li><a href="/old/en/mongoid/docs/querying.html">Querying</a></li>
+                <li><a href="/old/en/mongoid/docs/relations.html">Relations</a></li>
+                <li><a href="/old/en/mongoid/docs/nested_attributes.html">Nested Attributes</a></li>
+                <li><a href="/old/en/mongoid/docs/callbacks.html">Callbacks</a></li>
+                <li><a href="/old/en/mongoid/docs/validation.html">Validation</a></li>
+                <li><a href="/old/en/mongoid/docs/indexing.html">Indexing</a></li>
+                <li><a href="/old/en/mongoid/docs/rails.html">Rails</a></li>
+                <li><a href="/old/en/mongoid/docs/extras.html">Extras</a></li>
+                <li><a href="/old/en/mongoid/docs/upgrading.html">Upgrading</a></li>
+                <li><a href="/old/en/mongoid/docs/contributing.html">Contributing</a></li>
+                <li><a href="/old/en/mongoid/docs/performance.html">Performance</a></li>
+                <li><a href="/old/en/mongoid/docs/tips.html">Tips/FAQs</a></li>
+              </ul>
+            </li>
+            <li><a href="/old/en/mongoid/links.html">LINKS</a></li>
+            <li><a href="/old/en/mongoid/donate.html">DONATE</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id='content'>
+      <div class='container'>
+        <p style='background-color:#EEE;padding: 5px 10px;margin-top:30px;'>
+          You are looking at the docs for v4.x. You can check out this page for Mongoid
+          <a href='/old/en/mongoid/v3/persistence.html'>v3.x</a>
+          if you haven't upgraded yet.
+        </p>
+        <h1>Persistence</h1>
+        <p>
+          Mongoid supports all expected <tt>CRUD</tt> operations for those familiar
+          with other Ruby mappers like
+          <a href="http://rubyonrails.org/">Active Record</a> or
+          <a href="https://datamapper.org">Data Mapper</a>.
+          What distinguishes Mongoid from other mappers for MongoDB is that the
+          general persistence operations perform atomic
+          updates on only the fields that have changed instead of writing the entire
+          document to the database each time.
+        </p>
+        <p>
+          The persistence sections will provide examples on what database operation
+          is performed when executing the documented command.
+        </p>
+        <div class='page-nav'>
+          <div class='container'>
+            <ul class='nav nav-pills'>
+              <li><a href="#standard">Standard</a></li>
+              <li><a href="#atomic">Atomic</a></li>
+              <li><a href="#custom">Custom</a></li>
+            </ul>
+          </div>
+        </div>
+        <section id='standard'>
+          <h2>Standard</h2>
+          <p>
+            Mongoid's standard persistence methods come in the form of common methods
+            you would find in other mapping frameworks. The following table is a cheat
+            sheet with the method in Mongoid on the left, and the Moped driver operation
+            on the right.
+          </p>
+          <div class='well'>
+            <table>
+              <tr>
+                <td class='achtung'><img src="/old/images/achtung.png" /></td>
+                <td class='note'>
+                  Mongoid never persists the entire document at once unless it is new.
+                  It figures out what has changed, and only ever updates the changed
+                  items atomically.
+                </td>
+              </tr>
+            </table>
+          </div>
+          <table class='table table-bordered table-striped'>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Mongoid</th>
+                <th>Moped</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class='doc'>
+                  <code>Model.create</code>
+                  <p class='doc'>
+                    <i>Insert a document or multiple documents into the database</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Person</span>.create(&#x000A;  <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;)&#x000A;&#x000A;<span class="constant">Person</span>.create([&#x000A;  { <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>, <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span> },&#x000A;  { <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Willy</span><span class="delimiter">&quot;</span></span>, <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Brandt</span><span class="delimiter">&quot;</span></span> }&#x000A;])&#x000A;&#x000A;<span class="constant">Person</span>.create(<span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |doc|&#x000A;  doc.last_name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="keyword">end</span></pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:people</span>].insert({&#x000A;  <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;})&#x000A;collections[<span class="symbol">:people</span>].insert([&#x000A;  { <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>, <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span> },&#x000A;  { <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Willy</span><span class="delimiter">&quot;</span></span>, <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Brandt</span><span class="delimiter">&quot;</span></span> }&#x000A;])</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>Model.create!</code>
+                  <p class='doc'>
+                    <i>
+                      Insert a document or multiple documents into the database,
+                      raising an error if a validation error occurs.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Person</span>.create!(&#x000A;  <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;)&#x000A;&#x000A;<span class="constant">Person</span>.create!(<span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |doc|&#x000A;  doc.last_name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="keyword">end</span></pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:people</span>].insert({&#x000A;  <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;})</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>Model#save</code>
+                  <p class='doc'>
+                    <i>
+                      Saves the changed attributes to the database
+                      atomically, or insert the document if flagged as a new_record via
+                      <code>Model#new_record?</code>. Can bypass validations if wanted.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>person = <span class="constant">Person</span>.new(&#x000A;  <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;)&#x000A;person.save&#x000A;person.save(<span class="key">validate</span>: <span class="predefined-constant">false</span>)&#x000A;&#x000A;person.first_name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Christian Johan</span><span class="delimiter">&quot;</span></span>&#x000A;person.save</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:people</span>].insert({&#x000A;  <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;})&#x000A;&#x000A;collections[<span class="symbol">:people</span>].find(...).&#x000A;  update(<span class="string"><span class="delimiter">&quot;</span><span class="content">$set</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Christian Johan</span><span class="delimiter">&quot;</span></span> })</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>Model#save!</code>
+                  <p class='doc'>
+                    <i>
+                      Saves the changed attributes to the database
+                      atomically, or insert the document if new. Will
+                      raise an error of validations fail.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>person = <span class="constant">Person</span>.new(&#x000A;  <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;)&#x000A;person.save!&#x000A;&#x000A;person.first_name = <span class="string"><span class="delimiter">&quot;</span><span class="content">Christian Johan</span><span class="delimiter">&quot;</span></span>&#x000A;person.save!</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:people</span>].insert({&#x000A;  <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;})&#x000A;&#x000A;collections[<span class="symbol">:people</span>].find(...).&#x000A;  update(<span class="string"><span class="delimiter">&quot;</span><span class="content">$set</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Christian Johan</span><span class="delimiter">&quot;</span></span> })</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>Model#update_attributes</code>
+                  <p class='doc'>
+                    <i>
+                      Update the provided attributes (and any other dirty fields).
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>person.update_attributes(&#x000A;  <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Zorg</span><span class="delimiter">&quot;</span></span>&#x000A;)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:people</span>].find(...).&#x000A;  update(<span class="string"><span class="delimiter">&quot;</span><span class="content">$set</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean</span><span class="delimiter">&quot;</span></span>,&#x000A;    <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Zorg</span><span class="delimiter">&quot;</span></span>&#x000A;  })</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>Model#update_attributes!</code>
+                  <p class='doc'>
+                    <i>
+                      Update the attributes and raise an error if validation fails.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>person.update_attributes!(&#x000A;  <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Zorg</span><span class="delimiter">&quot;</span></span>&#x000A;)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:people</span>].find(...).&#x000A;  update(<span class="string"><span class="delimiter">&quot;</span><span class="content">$set</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;    <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean</span><span class="delimiter">&quot;</span></span>,&#x000A;    <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Zorg</span><span class="delimiter">&quot;</span></span>&#x000A;  })</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>Model#update_attribute</code>
+                  <p class='doc'>
+                    <i>
+                      Update a single attribute, bypassing validations.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>person.update_attribute(<span class="symbol">:first_name</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:people</span>].find(...).&#x000A;  update(<span class="string"><span class="delimiter">&quot;</span><span class="content">$set</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Jean</span><span class="delimiter">&quot;</span></span> })</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>Model#upsert</code>
+                  <p class='doc'>
+                    <i>
+                      Performs a MongoDB <code>upsert</code> on the document. If the
+                      document exists in the database, it will get overwritten with
+                      the current attributes of the document in memory. If the document
+                      does not exist in the database, it will be inserted. Note that
+                      this only runs the <code>{before|after|around}_upsert</code>
+                      callbacks.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>person = <span class="constant">Person</span>.new(&#x000A;  <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;)&#x000A;person.upsert</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:people</span>].upsert({&#x000A;  <span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">last_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heine</span><span class="delimiter">&quot;</span></span>&#x000A;})</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>Model#touch</code>
+                  <p class='doc'>
+                    <i>
+                      Update the document's updated_at timestamp, optionally
+                      with one extra provided time field. This will cascade the
+                      touch to all <code>belongs_to</code> relations of the
+                      document with the option set. This operation skips validations
+                      and callbacks.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>person.touch&#x000A;person.touch(<span class="symbol">:audited_at</span>)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:people</span>].find(...).&#x000A;  update(<span class="string"><span class="delimiter">&quot;</span><span class="content">$set</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">updated_at</span>: <span class="constant">Time</span>.now })&#x000A;&#x000A;collections[<span class="symbol">:people</span>].find(...).&#x000A;  update({&#x000A;    <span class="string"><span class="delimiter">&quot;</span><span class="content">$set</span><span class="delimiter">&quot;</span></span> =&gt; {&#x000A;      <span class="key">updated_at</span>: <span class="constant">Time</span>.now,&#x000A;      <span class="key">audited_at</span>: <span class="constant">Time</span>.now&#x000A;    }&#x000A;  })</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>Model#delete</code>
+                  <p class='doc'>
+                    <i>
+                      Deletes the document from the database without
+                      running callbacks.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>person.delete</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:people</span>].find(...).remove</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>Model#destroy</code>
+                  <p class='doc'>
+                    <i>
+                      Deletes the document from the database while running
+                      destroy callbacks.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>person.destroy</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:people</span>].find(...).remove</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>Model.delete_all</code>
+                  <p class='doc'>
+                    <i>
+                      Deletes all documents from the database that match the
+                      provided attributes. Does not run any callbacks.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Person</span>.delete_all&#x000A;&#x000A;<span class="constant">Person</span>.delete_all(<span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:people</span>].find.remove_all&#x000A;&#x000A;collections[<span class="symbol">:people</span>].find(<span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>).&#x000A;  remove_all</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <code>Model.destroy_all</code>
+                  <p class='doc'>
+                    <i>
+                      Deletes all documents from the database that match the
+                      provided attributes. Runs each document's destroy
+                      callbacks
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Person</span>.destroy_all&#x000A;&#x000A;<span class="constant">Person</span>.destroy_all(<span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:people</span>].find.remove_all&#x000A;&#x000A;collections[<span class="symbol">:people</span>].find(<span class="key">first_name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Heinrich</span><span class="delimiter">&quot;</span></span>).&#x000A;  remove_all&#x000A;</pre></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section id='atomic'>
+          <h2>Atomic Persistence</h2>
+          <p>
+            Although Mongoid performs atomic operations under the covers by default,
+            there may be cases where you want to do this explicitly without
+            persisting other fields. Mongoid provides support for all of
+            these operations as well.
+            <div class='well'>
+              <table>
+                <tr>
+                  <td class='achtung'><img src="/old/images/achtung.png" /></td>
+                  <td class='note'>
+                    When executing atomic operations via these methods, no callbacks
+                    will ever get run, nor will any validations.
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <table class='table table-bordered table-striped'>
+              <thead>
+                <tr>
+                  <th>Operation</th>
+                  <th>Mongoid</th>
+                  <th>Moped</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class='doc'>
+                    <code>Model#add_to_set</code><br/>
+                    <p class='doc'>
+                      <i>Performs an atomic $addToSet on the field.</i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>person.add_to_set(<span class="key">aliases</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Bond</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:people</span>].find(...).&#x000A;  update(<span class="string"><span class="delimiter">&quot;</span><span class="content">$addToSet</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">aliases</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Bond</span><span class="delimiter">&quot;</span></span> })</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>Model#bit</code><br/>
+                    <p class='doc'>
+                      <i>Performs an atomic $bit on the field.</i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>person.bit(<span class="key">age</span>: { <span class="key">and</span>: <span class="integer">10</span>, <span class="key">or</span>: <span class="integer">12</span> })</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:people</span>].find(...).&#x000A;  update(<span class="string"><span class="delimiter">&quot;</span><span class="content">$bit</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">age</span>: { <span class="key">and</span>: <span class="integer">10</span>, <span class="key">or</span>: <span class="integer">12</span> }})</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>Model#inc</code><br/>
+                    <p class='doc'>
+                      <i>Performs an atomic $inc on the field.</i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>person.inc(<span class="key">age</span>: <span class="integer">1</span>)</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:people</span>].find(...).&#x000A;  update(<span class="string"><span class="delimiter">&quot;</span><span class="content">$inc</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">age</span>: <span class="integer">1</span> })</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>Model#pop</code><br/>
+                    <p class='doc'>
+                      <i>Performs an atomic $pop on the field.</i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>person.pop(<span class="key">aliases</span>: <span class="integer">1</span>)</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:people</span>].find(...).&#x000A;  update(<span class="string"><span class="delimiter">&quot;</span><span class="content">$pop</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">aliases</span>: <span class="integer">1</span> })</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>Model#pull</code><br/>
+                    <p class='doc'>
+                      <i>Performs an atomic $pull on the field.</i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>person.pull(<span class="key">aliases</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Bond</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:people</span>].find(...).&#x000A;  update(<span class="string"><span class="delimiter">&quot;</span><span class="content">$pull</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">aliases</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Bond</span><span class="delimiter">&quot;</span></span> })</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>Model#pull_all</code><br/>
+                    <p class='doc'>
+                      <i>Performs an atomic $pullAll on the field.</i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>person.pull_all(<span class="key">aliases</span>: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Bond</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">James</span><span class="delimiter">&quot;</span></span> ])</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:people</span>].find(...).&#x000A;  update(<span class="string"><span class="delimiter">&quot;</span><span class="content">$pullAll</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">aliases</span>: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Bond</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">James</span><span class="delimiter">&quot;</span></span> ]})</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>Model#push</code><br/>
+                    <p class='doc'>
+                      <i>Performs an atomic $push on the field.</i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>person.push(<span class="key">aliases</span>: [<span class="string"><span class="delimiter">&quot;</span><span class="content">007</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">008</span><span class="delimiter">&quot;</span></span>])</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:people</span>].find(...).&#x000A;  update(<span class="string"><span class="delimiter">&quot;</span><span class="content">$push</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">aliases</span>: [<span class="string"><span class="delimiter">&quot;</span><span class="content">007</span><span class="delimiter">&quot;</span></span>,<span class="string"><span class="delimiter">&quot;</span><span class="content">008'] })&#x000A;</span></span></pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>Model#rename</code><br/>
+                    <p class='doc'>
+                      <i>Performs an atomic $rename on the field.</i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>person.rename(<span class="key">bday</span>: <span class="symbol">:dob</span>)</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:people</span>].find(...).&#x000A;  update(<span class="string"><span class="delimiter">&quot;</span><span class="content">$rename</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">bday</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">dob</span><span class="delimiter">&quot;</span></span> })</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>Model#set</code><br/>
+                    <p class='doc'>
+                      <i>Performs an atomic $set on the field.</i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>person.set(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tyler Durden</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:people</span>].find(...).&#x000A;  update(<span class="string"><span class="delimiter">&quot;</span><span class="content">$set</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tyler Durden</span><span class="delimiter">&quot;</span></span> })</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <code>Model#unset</code><br/>
+                    <p class='doc'>
+                      <i>Performs an atomic $unset on the field.</i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>person.unset(<span class="symbol">:name</span>)</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:people</span>].find(...).&#x000A;  update(<span class="string"><span class="delimiter">&quot;</span><span class="content">$unset</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">name</span>: <span class="integer">1</span> })&#x000A;</pre></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </p>
+        </section>
+        <section id='custom'>
+          <h2>Custom</h2>
+          <p>
+            There may be cases where you want to persist documents to different
+            sources from their defaults, or with different options from the default.
+            Mongoid provides run-time support for this as well as support on a per-model
+            basis.
+          </p>
+          <h3>
+            Model Level Persistence Options
+          </h3>
+          <p>
+            On a per-model basis, you can tell it to store in a custom collection name,
+            a different database, or a different session. The following example would
+            store the Band class by default into a collection named "artists" in the
+            database named "music", with the session "secondary".
+            <div class='well'>
+              <table>
+                <tr>
+                  <td class='achtung'><img src="/old/images/achtung.png" /></td>
+                  <td class='note'>
+                    Note that the value supplied to the <code>session</code> option must be
+                    configured under <code>sessions</code> in your mongoid.yml.
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  store_in <span class="key">collection</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">artists</span><span class="delimiter">&quot;</span></span>, <span class="key">database</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">music</span><span class="delimiter">&quot;</span></span>, <span class="key">session</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">secondary</span><span class="delimiter">&quot;</span></span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            If no `store_in` macro would have been provided, Mongoid would store the model
+            in a collection named "bands" in the default database in the default session.
+          </p>
+          <h3>
+            Runtime Persistence Options
+          </h3>
+          <p>
+            You can change at runtime where to store, query, update, or remove documents
+            by prefixing any operation with <code>#with</code>.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Band</span>.with(<span class="key">database</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">music-non-stop</span><span class="delimiter">&quot;</span></span>).create&#x000A;<span class="constant">Band</span>.with(<span class="key">collection</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">artists</span><span class="delimiter">&quot;</span></span>).delete_all&#x000A;band.with(<span class="key">session</span>: <span class="symbol">:tertiary</span>).save!&#x000A;</pre></div>
+          </div>
+          <p>
+            Persisting using <code>with</code> is a <i>one time</i> switch in the persistence
+            context - it changes back to its defaults immediately after. Mongoid
+            will not remember anything specific on the document level regarding how it was
+            saved when using this method. A potential gotcha with this is persisting a document
+            via <code>with</code> and then immediately updating it after.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>band = <span class="constant">Band</span>.new(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Scuba</span><span class="delimiter">&quot;</span></span>)&#x000A;band.with(<span class="key">collection</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">artists</span><span class="delimiter">&quot;</span></span>).save!&#x000A;band.update_attribute(<span class="key">likes</span>: <span class="integer">1000</span>) <span class="comment"># This will not save - tries the collection &quot;bands&quot;</span>&#x000A;band.with(<span class="key">collection</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">artists</span><span class="delimiter">&quot;</span></span>).update_attribute(<span class="key">likes</span>: <span class="integer">1000</span>) <span class="comment"># This will update the document.</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            If you want to switch the persistence context for all operations at runtime,
+            but don't want to be using <code>with</code> all over your code, Mongoid provides
+            the ability to do this as the session and database level globally. The methods
+            for this are <code>Mongoid.override_session</code> and
+            <code>Mongoid.override_database</code>. A useful case for this are internationalized
+            applications that store information for different locales in different databases
+            or sessions, but the schema in each remains the same.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">BandsController</span> &lt; <span class="constant">ApplicationController</span>&#x000A;  before_filter <span class="symbol">:switch_database</span>&#x000A;  after_filter <span class="symbol">:reset_database</span>&#x000A;&#x000A;  private&#x000A;&#x000A;  <span class="keyword">def</span> <span class="function">switch_database</span>&#x000A;    <span class="constant">I18n</span>.locale = params[<span class="symbol">:locale</span>] || <span class="constant">I18n</span>.default_locale&#x000A;    <span class="constant">Mongoid</span>.override_database(<span class="string"><span class="delimiter">&quot;</span><span class="content">my_db_name_</span><span class="inline"><span class="inline-delimiter">#{</span><span class="constant">I18n</span>.locale<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>)&#x000A;  <span class="keyword">end</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="function">reset_database</span>&#x000A;    <span class="constant">Mongoid</span>.override_database(<span class="predefined-constant">nil</span>)&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            In the above example, all persistence operations would be stored in the
+            alternative database <i>for all remaining operations on this thread</i>.
+            This is why the after request set the override back to nil - it ensures
+            subsequent requests with no local params use the default option.
+          </p>
+          <p>
+            <code>#with</code>is also used for changing write mode options temporarily
+            at runtime.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Band</span>.with(<span class="key">write</span>: { <span class="key">w</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">majority</span><span class="delimiter">&quot;</span></span> }).create&#x000A;<span class="constant">Band</span>.with(<span class="key">write</span>: { <span class="key">w</span>: <span class="integer">3</span> }).create!&#x000A;</pre></div>
+          </div>
+          <p>
+            The values that can be passed with <code>:safe</code> are:
+          </p>
+          <ul>
+            <li><code>true</code>: Persist in safe mode, no extra options.</li>
+            <li><code>false</code>: Don't persist in safe mode.</li>
+            <li><code>fsync: true|false</code>: Whether to perform an fsync.</li>
+            <li><code>w: n</code>: The number of nodes to write to before returning.</li>
+            <li><code>wtimeout: n</code>: The timeout value for writing to multiple nodes.</li>
+          </ul>
+          <h3>Session and Collection Access</h3>
+          <p>
+            If you want to drop down to the driver level to perform operations, you
+            can grab the Moped session or collection from the model or document instance.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Band</span>.mongo_session&#x000A;band.mongo_session&#x000A;<span class="constant">Band</span>.collection&#x000A;band.collection&#x000A;</pre></div>
+          </div>
+          <p>
+            From here you also have the same runtime persistence options using Moped's
+            <code>#with</code>. The Moped documentation will go into more detail
+            about this.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Band</span>.mongo_session.with(<span class="key">write</span>: {<span class="key">w</span>: <span class="integer">0</span>}, <span class="key">database</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">musik</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |session|&#x000A;  session[<span class="symbol">:artists</span>].find(...)&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <h3>Capped Collections</h3>
+          <p>
+            Mongoid does not provide a mechanism for creating capped collections on
+            the fly - you will need to create these yourself one time up front either
+            with Moped or via the Mongo console.
+          </p>
+          <p>
+            To create a capped collection with Moped:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>session.command(<span class="key">create</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>, <span class="key">capped</span>: <span class="predefined-constant">true</span>, <span class="key">size</span>: <span class="integer">10000000</span>, <span class="key">max</span>: <span class="integer">1000</span>)&#x000A;</pre></div>
+          </div>
+          <p>
+            To create a capped collection from the Mongo console:
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>db.createCollection(<span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span>, { <span class="key">capped</span>: <span class="predefined-constant">true</span>, <span class="key">size</span>: <span class="integer">10000000</span>, <span class="key">max</span>: <span class="integer">1000</span> });</pre></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <meta content='A Ruby ODM for MongoDB' name='description'>
+    <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords'>
+    <!--[if lt IE 9]>
+      <script src='http://html5shiv.googlecode.com/svn/trunk/html5.js'></script>
+    <![endif]-->
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0' name='viewport'>
+    <link href="/old/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/old/stylesheets/bootstrap-responsive.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/old/stylesheets/mongoid.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="/old/stylesheets/mongoid-coderay.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="/old/javascripts/jquery-1.8.1.min.js" type="text/javascript"></script>
+    <script src="/old/javascripts/bootstrap-dropdown.js" type="text/javascript"></script>
+    <script src="/old/javascripts/bootstrap-scrollspy.js" type="text/javascript"></script>
+    <script src="/old/javascripts/bootstrap-tooltip.js" type="text/javascript"></script>
+    <script src="/old/javascripts/mongoid.js" type="text/javascript"></script>
+    <title>Mongoid: Querying</title>
+  </head>
+  <body data-offset='100' data-spy='scroll-spy' data-target='.page-nav'>
+    <div class='mongoid' id='header'>
+      <div class='navbar navbar-inverse navbar-fixed-top'>
+        <div class='navbar-inner'>
+          <div class='container'>
+            <ul class='nav'>
+              <li class='link'>
+                            <a title="Mongoid" href="/old/en/mongoid/"><img src="/old/images/mongoid-logo-small-green.png" />
+                </a>
+
+              </li>
+              <li class='link'>
+                            <a title="Origin" href="/en/origin/"><img src="/old/images/origin-logo-small-white.png" />
+                </a>
+
+              </li>
+              <li class='link'>
+                            <a title="Moped" href="/en/moped/"><img src="/old/images/moped-logo-small-white.png" />
+                </a>
+
+              </li>
+            </ul>
+            <div class='logo-text'>
+              mongoid
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id='navigation'>
+      <div class='subnav'>
+        <div class='container'>
+          <ul class='nav nav-pills mongoid'>
+            <li><a href="/old/en/mongoid/">HOME</a></li>
+            <li class='dropdown' id='docs'>
+              <a class='dropdown-toggle' data-toggle='dropdown' href='#docs'>
+                docs
+                <b class='caret'></b>
+              </a>
+              <ul class='dropdown-menu'>
+                <li><a href="/old/en/mongoid/docs/installation.html">Installation</a></li>
+                <li><a href="/old/en/mongoid/docs/documents.html">Documents</a></li>
+                <li><a href="/old/en/mongoid/docs/persistence.html">Persistence</a></li>
+                <li><a href="/old/en/mongoid/docs/querying.html">Querying</a></li>
+                <li><a href="/old/en/mongoid/docs/relations.html">Relations</a></li>
+                <li><a href="/old/en/mongoid/docs/nested_attributes.html">Nested Attributes</a></li>
+                <li><a href="/old/en/mongoid/docs/callbacks.html">Callbacks</a></li>
+                <li><a href="/old/en/mongoid/docs/validation.html">Validation</a></li>
+                <li><a href="/old/en/mongoid/docs/indexing.html">Indexing</a></li>
+                <li><a href="/old/en/mongoid/docs/rails.html">Rails</a></li>
+                <li><a href="/old/en/mongoid/docs/extras.html">Extras</a></li>
+                <li><a href="/old/en/mongoid/docs/upgrading.html">Upgrading</a></li>
+                <li><a href="/old/en/mongoid/docs/contributing.html">Contributing</a></li>
+                <li><a href="/old/en/mongoid/docs/performance.html">Performance</a></li>
+                <li><a href="/old/en/mongoid/docs/tips.html">Tips/FAQs</a></li>
+              </ul>
+            </li>
+            <li><a href="/old/en/mongoid/links.html">LINKS</a></li>
+            <li><a href="/old/en/mongoid/donate.html">DONATE</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id='content'>
+      <div class='container'>
+        <p></p>
+        <p style='background-color:#EEE;padding: 5px 10px;'>
+          You are looking at the docs for v3.x. Check out this page on the docs for Mongoid
+          <a href='/old/en/mongoid/docs/querying.html'>v4.x</a>
+        </p>
+        <h1>Querying</h1>
+        <p>
+          One of MongoDB's greatest features is its ability to execute dynamic
+          queries, which Origin abstracts in a familiar Arel-style DSL that
+          Mongoid includes.
+        </p>
+        <div class='page-nav'>
+          <div class='container'>
+            <ul class='nav nav-pills'>
+              <li><a href="#queries">Queries</a></li>
+              <li><a href="#query_plus">Queries + Persistence</a></li>
+              <li><a href="#scoping">Scoping</a></li>
+              <li><a href="#find_and_modify">Find and Modify</a></li>
+              <li><a href="#map_reduce">Map/Reduce</a></li>
+              <li><a href="#aggregations">Aggregations</a></li>
+              <li><a href="#geo_near">Geo Near</a></li>
+            </ul>
+          </div>
+        </div>
+        <section id='queries'>
+          <h2>Queries</h2>
+          <p>
+            All queries in Mongoid are <code>Criteria</code>, which is a chainable and
+            lazily evaluated wrapper to a MongoDB dynamic query. Criteria only
+            touch the database when they need to, for example on iteration of the
+            results, and when executed wrap a cursor in order to keep memory
+            management and performance predictable.
+          </p>
+          <h3>Queryable DSL</h3>
+          <p>
+            Mongoid's main query DSL is provided by Origin. Any method that is available
+            on an <code>Origin::Queryable</code> exists on a <code>Mongoid::Criteria</code>
+            <i>as well as</i> off the model's class.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Depeche Mode</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="constant">Band</span>.&#x000A;  where(<span class="symbol">:founded</span>.gte =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">1980-1-1</span><span class="delimiter">&quot;</span></span>).&#x000A;  in(<span class="key">name</span>: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Deftones</span><span class="delimiter">&quot;</span></span> ]).&#x000A;  union.&#x000A;  in(<span class="key">name</span>: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Melvins</span><span class="delimiter">&quot;</span></span> ])&#x000A;</pre></div>
+          </div>
+          <p>
+            With each chained method on a criteria, a newly cloned criteria
+            is returned with the new query added. This is so that with scoping
+            or exposures, for example, the original queries are unmodified
+            and remain reusable.
+          </p>
+          <div class='well'>
+            <table>
+              <tr>
+                <td class='achtung'><img src="/old/images/achtung.png" /></td>
+                <td class='note'>
+                  Most of Mongoid's criteria has been extracted into its own
+                  gem, Origin, which Mongoid now depends on for most of its API.
+                  A complete list of commands can be found in
+                  <a href="/en/origin/docs/selection.html">Selection with Origin</a>
+                  and <a href="/en/origin/docs/options.html">Options with Origin</a>.
+                  Note that the API has changed from 2.0 - see the
+                  <a href="/old/en/mongoid/docs/upgrading.html">Upgrading</a> section for
+                  a list of backwards incompatible changes.
+                </td>
+              </tr>
+            </table>
+          </div>
+          <h3>Additional Query Methods</h3>
+          <p>
+            In addition to behavior that Origin provides, Mongoid also has some helpful
+            methods on criteria.
+            <table class='table table-bordered table-striped'>
+              <thead>
+                <tr>
+                  <th>Operation</th>
+                  <th>Mongoid</th>
+                  <th>Moped</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class='doc'>
+                    <code>Criteria#count</code>
+                    <p class='doc'>
+                      <i>
+                        Get a count of persisted documents. Note this will always hit
+                        the database for the count.
+                      </i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre><span class="constant">Band</span>.count&#x000A;<span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).count</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:bands</span>].find.count&#x000A;collections[<span class="symbol">:bands</span>].find(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).count</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='doc'>
+                    <code>Criteria#distinct</code>
+                    <p class='doc'>
+                      <i>
+                        Get a list of distinct values for a single field.
+                      </i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre><span class="constant">Band</span>.distinct(<span class="symbol">:name</span>)&#x000A;<span class="constant">Band</span>.where(<span class="symbol">:fans</span>.gt =&gt; <span class="integer">100000</span>).&#x000A;  distinct(<span class="symbol">:name</span>)</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:bands</span>].find.&#x000A;  distinct(<span class="symbol">:name</span>)&#x000A;collections[<span class="symbol">:bands</span>].find(<span class="key">fans</span>: { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gt</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">100000</span> }).&#x000A;  distinct(<span class="symbol">:name</span>)</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='doc'>
+                    <code>Criteria#each</code>
+                    <p class='doc'>
+                      <i>
+                        Iterate over all documents in the collection.
+                      </i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre><span class="constant">Band</span>.each <span class="keyword">do</span> |band|&#x000A;  p band.name&#x000A;<span class="keyword">end</span></pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:bands</span>].find</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='doc'>
+                    <code>Criteria#exists?</code>
+                    <p class='doc'>
+                      <i>
+                        Determine if any documents exist in the database. Will return
+                        true for 1 or more.
+                      </i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre><span class="constant">Band</span>.exists?&#x000A;<span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).exists?</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:bands</span>].find.count&#x000A;collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span> }&#x000A;).count</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='doc'>
+                    <code>Criteria#find</code>
+                    <p class='doc'>
+                      <i>
+                        Find a document or multiple documents by their ids. Will raise
+                        an error by default if any of the ids do not match.
+                      </i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre><span class="constant">Band</span>.find(<span class="string"><span class="delimiter">&quot;</span><span class="content">4baa56f1230048567300485c</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="constant">Band</span>.find(&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">4baa56f1230048567300485c</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">4baa56f1230048567300485d</span><span class="delimiter">&quot;</span></span>&#x000A;)&#x000A;<span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).find(&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">4baa56f1230048567300485c</span><span class="delimiter">&quot;</span></span>&#x000A;)</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">_id</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">4baa56f1230048567300485c</span><span class="delimiter">&quot;</span></span> }&#x000A;)&#x000A;collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">_id</span>:&#x000A;    { <span class="string"><span class="delimiter">&quot;</span><span class="content">$in</span><span class="delimiter">&quot;</span></span> =&gt; [&#x000A;      <span class="string"><span class="delimiter">&quot;</span><span class="content">4baa56f1230048567300485c</span><span class="delimiter">&quot;</span></span>,&#x000A;      <span class="string"><span class="delimiter">&quot;</span><span class="content">4baa56f1230048567300485d</span><span class="delimiter">&quot;</span></span>&#x000A;      ]&#x000A;    }&#x000A;  }&#x000A;)&#x000A;collections[<span class="symbol">:bands</span>].find(&#x000A;  {&#x000A;    <span class="key">_id</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">4baa56f1230048567300485c</span><span class="delimiter">&quot;</span></span>,&#x000A;    <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>&#x000A;  }&#x000A;)</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='doc'>
+                    <code>Model.find_by</code>
+                    <p class='doc'>
+                      <i>
+                        Find a document by the provided attributes, and if not found
+                        raise an error or return nil depending on the
+                        <code>raise_not_found_error</code> configuration option.
+                      </i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre><span class="constant">Band</span>.find_by(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)&#x000A;&#x000A;<span class="constant">Band</span>.find_by(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>) <span class="keyword">do</span> |band|&#x000A;  band.impressions += <span class="integer">1</span>&#x000A;<span class="keyword">end</span></pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='doc'>
+                    <code>Criteria#find_or_create_by</code>
+                    <p class='doc'>
+                      <i>
+                        Find a document by the provided attributes, and if not found
+                        create and return a newly persisted one.
+                      </i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre><span class="constant">Band</span>.find_or_create_by(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="constant">Band</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">10</span>).find_or_create_by(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first&#x000A;collections[<span class="symbol">:bands</span>].find(&#x000A;  <span class="key">likes</span>: { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gt</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">10</span> }, <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>&#x000A;).first</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='doc'>
+                    <code>Criteria#find_or_initialize_by</code>
+                    <p class='doc'>
+                      <i>
+                        Find a document by the provided attributes, and if not found
+                        initialize and return a new one.
+                      </i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre><span class="constant">Band</span>.find_or_initialize_by(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="constant">Band</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">10</span>).find_or_create_by(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first&#x000A;collections[<span class="symbol">:bands</span>].find(&#x000A;  <span class="key">likes</span>: { <span class="string"><span class="delimiter">&quot;</span><span class="content">$gt</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">10</span> }, <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>&#x000A;).first</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='doc'>
+                    <code>Criteria#first</code>
+                    <p class='doc'>
+                      <i>
+                        Get the first document. If no sort options are provided, Mongoid
+                        will add an ascending _id sort to the criteria.
+                      </i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre><span class="constant">Band</span>.first&#x000A;<span class="constant">Band</span>.where(<span class="symbol">:members</span>.with_size =&gt; <span class="integer">3</span>).first</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:bands</span>].find.sort(<span class="key">_id</span>: <span class="integer">1</span>).limit(<span class="integer">-1</span>)&#x000A;collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">members</span>: { <span class="string"><span class="delimiter">&quot;</span><span class="content">$size</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">3</span> }}&#x000A;).sort(<span class="key">_id</span>: <span class="integer">1</span>).limit(<span class="integer">-1</span>)</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='doc'>
+                    <code>Criteria#first_or_create</code><br/>
+                    <span class="label label-info">Since 3.1.0</span>
+                    <p class='doc'>
+                      <i>
+                        Find the first document by the provided attributes, and if not found
+                        create and return a newly persisted one.
+                      </i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first_or_create</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='doc'>
+                    <code>Criteria#first_or_create!</code><br/>
+                    <span class="label label-info">Since 3.1.0</span>
+                    <p class='doc'>
+                      <i>
+                        Find the first document by the provided attributes, and if not found
+                        create and return a newly persisted one using `create!`.
+                      </i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first_or_create!</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='doc'>
+                    <code>Criteria#first_or_initialize</code><br/>
+                    <span class="label label-info">Since 3.1.0</span>
+                    <p class='doc'>
+                      <i>
+                        Find the first document by the provided attributes, and if not found
+                        instantiate and return a new one.
+                      </i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first_or_initialize</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).first</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='doc'>
+                    <code>Criteria#for_js</code>
+                    <p class='doc'>
+                      <i>
+                        Find documents for a provided javascript expression. This will
+                        wrap the javascript in a `Moped::BSON::Code` object will is the
+                        safe way to avoid javascript injection attacks.
+                      </i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre><span class="constant">Band</span>.for_js(<span class="string"><span class="delimiter">&quot;</span><span class="content">this.name = param</span><span class="delimiter">&quot;</span></span>, <span class="key">param</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>expr = <span class="constant">Moped</span>::<span class="constant">BSON</span>::<span class="constant">Code</span>.new(&#x000A;  <span class="string"><span class="delimiter">&quot;</span><span class="content">this.name = param</span><span class="delimiter">&quot;</span></span>, <span class="key">param</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>&#x000A;)&#x000A;collections[<span class="symbol">:bands</span>].find(<span class="string"><span class="delimiter">&quot;</span><span class="content">$where</span><span class="delimiter">&quot;</span></span> =&gt; expr)</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='doc'>
+                    <code>Criteria#last</code>
+                    <p class='doc'>
+                      <i>
+                        Get the last document. If no sort options are provided, Mongoid
+                        will add a descending _id sort to the criteria.
+                      </i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre><span class="constant">Band</span>.last&#x000A;<span class="constant">Band</span>.where(<span class="symbol">:members</span>.with_size =&gt; <span class="integer">3</span>).last</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:bands</span>].find.sort(<span class="key">_id</span>: <span class="integer">-1</span>).limit(<span class="integer">-1</span>)&#x000A;collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">members</span>: { <span class="string"><span class="delimiter">&quot;</span><span class="content">$size</span><span class="delimiter">&quot;</span></span> =&gt; <span class="integer">3</span> }}&#x000A;).sort(<span class="key">_id</span>: <span class="integer">-1</span>).limit(<span class="integer">-1</span>)</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='doc'>
+                    <code>Criteria#length</code>
+                    <p class='doc'>
+                      <i>
+                        Also <code>size</code>. Get a count of persisted documents. After
+                        being called once for the criteria, will cache subsequent calls
+                        and not hit the database.
+                      </i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre><span class="constant">Band</span>.length&#x000A;<span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).length</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:bands</span>].find.count&#x000A;collections[<span class="symbol">:bands</span>].find(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).count</pre></div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class='doc'>
+                    <code>Criteria#pluck</code><br/>
+                    <span class="label label-info">Since 3.1.0</span>
+                    <p class='doc'>
+                      <i>
+                        Get all the non nil values for the provided field.
+                      </i>
+                    </p>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre><span class="constant">Band</span>.all.pluck(<span class="symbol">:name</span>)</pre></div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="CodeRay">
+                      <div class="code"><pre>collections[<span class="symbol">:bands</span>].find.select(<span class="key">name</span>: <span class="integer">1</span>)&#x000A;</pre></div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </p>
+          <h3>Eager Loading</h3>
+          <p>
+            Mongoid provides a facility to eager load documents
+            from relations to prevent the n+1 issue when
+            iterating over documents with relation access. Eager loaded is supported on
+            all relations with the exception of polymorphic <code>belongs_to</code>
+            associations.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  has_many <span class="symbol">:albums</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Album</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  belongs_to <span class="symbol">:band</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="constant">Band</span>.includes(<span class="symbol">:albums</span>).each <span class="keyword">do</span> |band|&#x000A;  p band.albums.first.name <span class="comment"># Does not hit the database again.</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <div class='well'>
+            <table>
+              <tr>
+                <td class='achtung'><img src="/old/images/achtung.png" /></td>
+                <td class='note'>
+                  In order for eager loading to work, the <a href="/old/en/mongoid/docs/identity_map.html">Identity Map</a>
+                  must be enabled.
+                </td>
+              </tr>
+            </table>
+          </div>
+        </section>
+        <section id='query_plus'>
+          <h2>Queries + Persistence</h2>
+          <p>
+            Mongoid supports persistence operations off of criteria
+            in a light capacity for when you want to expressively perform multi
+            document inserts, updates, and deletion.
+          </p>
+          <table class='table table-bordered table-striped'>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Mongoid</th>
+                <th>Moped</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#create</code>
+                  <p class='doc'>
+                    <i>Create a newly persisted document.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).create</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)&#x000A;collections[<span class="symbol">:bands</span>].insert(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#create!</code>
+                  <p class='doc'>
+                    <i>Create a newly persisted document with <code>create!</code>.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).create!</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)&#x000A;collections[<span class="symbol">:bands</span>].insert(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#build</code>
+                  <p class='doc'>
+                    <i>Create a new document (unsaved). Also <code>new</code>.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).build</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#update</code>
+                  <p class='doc'>
+                    <i>Update attributes of the first matching document.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).update(<span class="key">label</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mute</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span> }&#x000A;).update({ <span class="string"><span class="delimiter">&quot;</span><span class="content">$set</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">label</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mute</span><span class="delimiter">&quot;</span></span> }})</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#update_all</code>
+                  <p class='doc'>
+                    <i>Update attributes of all matching documents.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).update_all(<span class="key">label</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mute</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span> }&#x000A;).update_all({ <span class="string"><span class="delimiter">&quot;</span><span class="content">$set</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">label</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mute</span><span class="delimiter">&quot;</span></span> }})</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#add_to_set</code>
+                  <p class='doc'>
+                    <i>Perform an $addToSet on all matching documents.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).add_to_set(<span class="symbol">:label</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Mute</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span> }&#x000A;).update_all({ <span class="string"><span class="delimiter">&quot;</span><span class="content">$addToSet</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">label</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mute</span><span class="delimiter">&quot;</span></span> }})</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#bit</code>
+                  <p class='doc'>
+                    <i>Perform a $bit on all matching documents.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).bit(<span class="symbol">:likes</span>, { <span class="key">and</span>: <span class="integer">14</span>, <span class="key">or</span>: <span class="integer">4</span> })</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span> }&#x000A;).update_all({ <span class="string"><span class="delimiter">&quot;</span><span class="content">$bit</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">likes</span>: { <span class="key">and</span>: <span class="integer">14</span>, <span class="key">or</span>: <span class="integer">4</span>} }})</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#inc</code>
+                  <p class='doc'>
+                    <i>Perform an $inc on all matching documents.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).inc(<span class="symbol">:likes</span>, <span class="integer">123</span>)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span> }&#x000A;).update_all({ <span class="string"><span class="delimiter">&quot;</span><span class="content">$inc</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">likes</span>: <span class="integer">123</span> }})</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#pop</code>
+                  <p class='doc'>
+                    <i>Perform a $pop on all matching documents.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).pop(<span class="symbol">:members</span>, <span class="integer">-1</span>)&#x000A;<span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span>).pop(<span class="symbol">:members</span>, <span class="integer">1</span>)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span> }&#x000A;).update_all({ <span class="string"><span class="delimiter">&quot;</span><span class="content">$pop</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">members</span>: <span class="integer">-1</span> }})&#x000A;&#x000A;collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Photek</span><span class="delimiter">&quot;</span></span> }&#x000A;).update_all({ <span class="string"><span class="delimiter">&quot;</span><span class="content">$pop</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">members</span>: <span class="integer">1</span> }})</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#pull</code>
+                  <p class='doc'>
+                    <i>Perform a $pull on all matching documents.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>).pull(<span class="symbol">:members</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Maynard</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span> }&#x000A;).update_all({ <span class="string"><span class="delimiter">&quot;</span><span class="content">$pull</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">members</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Maynard</span><span class="delimiter">&quot;</span></span> }})</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#pull_all</code>
+                  <p class='doc'>
+                    <i>Perform a $pullAll on all matching documents.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>).&#x000A;  pull_all(<span class="symbol">:members</span>, [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Maynard</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Danny</span><span class="delimiter">&quot;</span></span> ])</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span> }&#x000A;).update_all(&#x000A;  { <span class="string"><span class="delimiter">&quot;</span><span class="content">$pullAll</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">members</span>: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Maynard</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Danny</span><span class="delimiter">&quot;</span></span> ] }}&#x000A;)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#push</code>
+                  <p class='doc'>
+                    <i>Perform a $push on all matching documents.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>).push(<span class="symbol">:members</span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Maynard</span><span class="delimiter">&quot;</span></span>)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span> }&#x000A;).update_all(&#x000A;  { <span class="string"><span class="delimiter">&quot;</span><span class="content">$push</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">members</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Maynard</span><span class="delimiter">&quot;</span></span> }}&#x000A;)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#push_all</code>
+                  <p class='doc'>
+                    <i>Perform a $pushAll on all matching documents.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>).&#x000A;  push_all(<span class="symbol">:members</span>, [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Maynard</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Danny</span><span class="delimiter">&quot;</span></span> ])</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span> }&#x000A;).update_all(&#x000A;  { <span class="string"><span class="delimiter">&quot;</span><span class="content">$pushAll</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">members</span>: [ <span class="string"><span class="delimiter">&quot;</span><span class="content">Maynard</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">Danny</span><span class="delimiter">&quot;</span></span> ] }}&#x000A;)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#rename</code>
+                  <p class='doc'>
+                    <i>Perform a $rename on all matching documents.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>).rename(<span class="symbol">:name</span>, <span class="symbol">:title</span>)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span> }&#x000A;).update_all({ <span class="string"><span class="delimiter">&quot;</span><span class="content">$rename</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="string"><span class="delimiter">&quot;</span><span class="content">name</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">title</span><span class="delimiter">&quot;</span></span> }})</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#set</code>
+                  <p class='doc'>
+                    <i>Perform a $set on all matching documents.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>).set(<span class="symbol">:likes</span>, <span class="integer">10000</span>)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span> }&#x000A;).update_all({ <span class="string"><span class="delimiter">&quot;</span><span class="content">$set</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">likes</span>: <span class="integer">10000</span> }})</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#unset</code>
+                  <p class='doc'>
+                    <i>Perform a $unset on all matching documents.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span>).unset(<span class="symbol">:likes</span>)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(&#x000A;  { <span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Tool</span><span class="delimiter">&quot;</span></span> }&#x000A;).update_all({ <span class="string"><span class="delimiter">&quot;</span><span class="content">$unset</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">likes</span>: <span class="predefined-constant">true</span> }})</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#delete</code>
+                  <p class='doc'>
+                    <i>
+                      Delete all matching documents. Note that this will ignore
+                      any skip and limit arguments that exist on the criteria.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">label</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mute</span><span class="delimiter">&quot;</span></span>).delete</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(<span class="key">label</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mute</span><span class="delimiter">&quot;</span></span>).remove_all</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#destroy</code>
+                  <p class='doc'>
+                    <i>
+                      Destroy all matching documents and run callbacks. This will
+                      respect skip and limit criteria.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.where(<span class="key">label</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mute</span><span class="delimiter">&quot;</span></span>).destroy</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>collections[<span class="symbol">:bands</span>].find(<span class="key">label</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Mute</span><span class="delimiter">&quot;</span></span>).remove_all&#x000A;</pre></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class='well'>
+            <table>
+              <tr>
+                <td class='achtung'><img src="/old/images/achtung.png" /></td>
+                <td class='note'>
+                  Be careful with using <code>Criteria#destroy</code> in this context as
+                  it will load every matching document into memory in order to run the
+                  destroy callbacks.
+                </td>
+              </tr>
+            </table>
+          </div>
+        </section>
+        <section id='scoping'>
+          <h2>Scoping</h2>
+          <p>
+            Scopes provide a convenient way to reuse common criteria with more
+            business domain style syntax.
+          </p>
+          <h3>Named Scopes</h3>
+          <p>
+            Named scopes are simply criteria defined at class load that are referenced
+            by a provided name. Just like normal criteria, they are lazy and chainable.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:country</span>, <span class="key">type</span>: <span class="constant">String</span>&#x000A;  field <span class="symbol">:genres</span>, <span class="key">type</span>: <span class="constant">Array</span>&#x000A;&#x000A;  scope <span class="symbol">:english</span>, where(<span class="key">country</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">England</span><span class="delimiter">&quot;</span></span>)&#x000A;  scope <span class="symbol">:rock</span>, where(<span class="symbol">:genres</span>.in =&gt; [ <span class="string"><span class="delimiter">&quot;</span><span class="content">rock</span><span class="delimiter">&quot;</span></span> ])&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="constant">Band</span>.english.rock <span class="comment"># Get the English rock bands.</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            Named scopes can take procs and blocks for accepting parameters or
+            extending functionality.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, <span class="key">type</span>: <span class="constant">String</span>&#x000A;  field <span class="symbol">:country</span>, <span class="key">type</span>: <span class="constant">String</span>&#x000A;  field <span class="symbol">:active</span>, <span class="key">type</span>: <span class="constant">Boolean</span>, <span class="key">default</span>: <span class="predefined-constant">true</span>&#x000A;&#x000A;  scope <span class="symbol">:named</span>, -&gt;(name){ where(<span class="key">name</span>: name) }&#x000A;  scope <span class="symbol">:active</span>, where(<span class="key">active</span>: <span class="predefined-constant">true</span>) <span class="keyword">do</span>&#x000A;    <span class="keyword">def</span> <span class="function">deutsch</span>&#x000A;      tap |scope| <span class="keyword">do</span>&#x000A;        scope.selector.store(<span class="string"><span class="delimiter">&quot;</span><span class="content">origin</span><span class="delimiter">&quot;</span></span> =&gt; <span class="string"><span class="delimiter">&quot;</span><span class="content">Deutschland</span><span class="delimiter">&quot;</span></span>)&#x000A;      <span class="keyword">end</span>&#x000A;    <span class="keyword">end</span>&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="constant">Band</span>.named(<span class="string"><span class="delimiter">&quot;</span><span class="content">Depeche Mode</span><span class="delimiter">&quot;</span></span>) <span class="comment"># Find Depeche Mode.</span>&#x000A;<span class="constant">Band</span>.active.deutsch <span class="comment"># Find active German bands.</span>&#x000A;</pre></div>
+          </div>
+          <h3>Default Scopes</h3>
+          <p>
+            Default scopes can be useful when you find yourself applying the same
+            criteria to most queries, and want something to be there by default.
+            Default scopes take either criteria objects or procs that return criteria
+            objects for cases like multi-tenant applications.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, <span class="key">type</span>: <span class="constant">String</span>&#x000A;  field <span class="symbol">:active</span>, <span class="key">type</span>: <span class="constant">Boolean</span>, <span class="key">default</span>: <span class="predefined-constant">true</span>&#x000A;&#x000A;  default_scope where(<span class="key">active</span>: <span class="predefined-constant">true</span>)&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="constant">Band</span>.each <span class="keyword">do</span> |band|&#x000A;  <span class="comment"># All bands here are active.</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            You can tell Mongoid not to apply the default scope by using
+            <code>unscoped</code>, which can be inline or take a block.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Band</span>.unscoped.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Depeche Mode</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="constant">Band</span>.unscoped <span class="keyword">do</span>&#x000A;  <span class="constant">Band</span>.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Depeche Mode</span><span class="delimiter">&quot;</span></span>)&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            You can also tell Mongoid to explicitly apply the default scope
+            again later to always ensure it's there.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Band</span>.unscoped.where(<span class="key">name</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">Depeche Mode</span><span class="delimiter">&quot;</span></span>).scoped&#x000A;</pre></div>
+          </div>
+          <p>
+            If you are using a default scope on a model that is part of a relation like a
+            <code>has_many</code>, <code>has_and_belongs_to_many</code>, or
+            <code>embeds_many</code>, you must reload the relation to have scoping reapplied.
+            This is important to note if you change a value of a document in the relation
+            that would affect its visibility within the scoped relation.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Label</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  embeds_many <span class="symbol">:bands</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:active</span>, <span class="key">default</span>: <span class="predefined-constant">true</span>&#x000A;  embedded_in <span class="symbol">:label</span>&#x000A;  default_scoped where(<span class="key">active</span>: <span class="predefined-constant">true</span>)&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;label.bands.push(band)&#x000A;label.bands <span class="comment">#=&gt; [ band ]</span>&#x000A;band.update_attribute(<span class="symbol">:active</span>, <span class="predefined-constant">false</span>)&#x000A;label.bands <span class="comment">#=&gt; [ band ] Must reload.</span>&#x000A;label.reload.bands <span class="comment">#=&gt; []</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            Note that you should not use default scopes in conjunction with
+            `Mongoid::Paranoia` as the default scope will override the paranoia scope
+            and cause all documents, soft-deleted or not, to be included.
+          </p>
+          <h3>Class Methods</h3>
+          <p>
+            Class methods on models that return criteria objects are also
+            treated like scopes, and can be chained as well.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="keyword">class</span> <span class="class">Band</span>&#x000A;  include <span class="constant">Mongoid</span>::<span class="constant">Document</span>&#x000A;  field <span class="symbol">:name</span>, <span class="key">type</span>: <span class="constant">String</span>&#x000A;  field <span class="symbol">:active</span>, <span class="key">type</span>: <span class="constant">Boolean</span>, <span class="key">default</span>: <span class="predefined-constant">true</span>&#x000A;&#x000A;  <span class="keyword">def</span> <span class="predefined-constant">self</span>.<span class="function">active</span>&#x000A;    where(<span class="key">active</span>: <span class="predefined-constant">true</span>)&#x000A;  <span class="keyword">end</span>&#x000A;<span class="keyword">end</span>&#x000A;&#x000A;<span class="constant">Band</span>.active&#x000A;</pre></div>
+          </div>
+        </section>
+        <section id='find_and_modify'>
+          <h2>Find and Modify</h2>
+          <p>
+            MongoDB's <code>$findAndModify</code> command is a unique atomic "find, perform
+            some operation, and return" operation. In Mongoid, this can be used from the
+            model class level or chained to a criteria.
+          </p>
+          <div class='well'>
+            <table>
+              <tr>
+                <td class='achtung'><img src="/old/images/achtung.png" /></td>
+                <td class='note'>
+                  The atomic operation that is provided to the <code>find_and_modify</code>
+                  operates on the first document it locates in the database. Therefore it is
+                  usually important to provide sorting criteria as well.
+                </td>
+              </tr>
+            </table>
+          </div>
+          <h3>Execution</h3>
+          <p>
+            Simply call <code>#find_and_modify</code> from the class or the end of a
+            criteria. Unlike other lazy Mongoid operations, this command executes
+            immediately.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Queue</span>.&#x000A;  where(<span class="key">pending</span>: <span class="predefined-constant">true</span>).&#x000A;  asc(<span class="symbol">:created_at</span>).&#x000A;  find_and_modify({ <span class="string"><span class="delimiter">&quot;</span><span class="content">$set</span><span class="delimiter">&quot;</span></span> =&gt; { <span class="key">pending</span>: <span class="predefined-constant">false</span> }}, <span class="key">new</span>: <span class="predefined-constant">true</span>)&#x000A;</pre></div>
+          </div>
+          <p>
+            The first parameter to <code>find_and_modify</code> is an atomic update
+            selector, and the optional second parameter is a hash of options. Valid
+            options are:
+            <ul>
+              <li><code>new: (true|false)</code> Return the updated document.</li>
+              <li><code>remove: (true|false)</code> Delete the found document.</li>
+            </ul>
+          </p>
+        </section>
+        <section id='map_reduce'>
+          <h2>Map/Reduce</h2>
+          <p>
+            Mongoid provides a DSL around MongoDB's map/reduce framework, for performing
+            custom map/reduce jobs or simple aggregations.
+          </p>
+          <h3>Execution</h3>
+          <p>
+            You can tell Mongoid off the class or a criteria to perform a map/reduce
+            by calling <code>map_reduce</code> and providing map and reduce javascript
+            functions.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre>map = <span class="string"><span class="delimiter">%Q{</span><span class="content">&#x000A;  function() </span><span class="content">{</span><span class="content">&#x000A;    emit(this.name, </span><span class="content">{</span><span class="content"> likes: this.likes </span><span class="content">}</span><span class="content">);&#x000A;  </span><span class="content">}</span><span class="content">&#x000A;</span><span class="delimiter">}</span></span>&#x000A;&#x000A;reduce = <span class="string"><span class="delimiter">%Q{</span><span class="content">&#x000A;  function(key, values) </span><span class="content">{</span><span class="content">&#x000A;    var result = </span><span class="content">{</span><span class="content"> likes: 0 </span><span class="content">}</span><span class="content">;&#x000A;    values.forEach(function(value) </span><span class="content">{</span><span class="content">&#x000A;      result.likes += value.likes;&#x000A;    </span><span class="content">}</span><span class="content">);&#x000A;    return result;&#x000A;  </span><span class="content">}</span><span class="content">&#x000A;</span><span class="delimiter">}</span></span>&#x000A;&#x000A;<span class="constant">Band</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">100</span>).map_reduce(map, reduce).out(<span class="key">inline</span>: <span class="predefined-constant">true</span>)&#x000A;</pre></div>
+          </div>
+          <p>
+            Just like criteria, map/reduce calls are lazily evaluated. So nothing will
+            hit the database until you iterate over the results, or make a call on the
+            wrapper that would need to force a database hit.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Band</span>.map_reduce(map, reduce).out(<span class="key">replace</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">mr-results</span><span class="delimiter">&quot;</span></span>).each <span class="keyword">do</span> |document|&#x000A;  p document <span class="comment"># { &quot;_id&quot; =&gt; &quot;Tool&quot;, &quot;value&quot; =&gt; { &quot;likes&quot; =&gt; 200 }}</span>&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            The only required thing you provide along with a map/reduce is where to
+            output the results. If you do not provide this an error will be raised.
+            Valid options to <code>#out</code> are:
+            <ul>
+              <li>
+                <code>inline: 1</code>: Don't store the output in a collection.
+              </li>
+              <li>
+                <code>replace: "name"</code>: Store in a collection with the
+                provided name, and overwrite any documents that exist in it.
+              </li>
+              <li>
+                <code>merge: "name"</code>: Store in a collection with the
+                provided name, and merge the results with the existing documents.
+              </li>
+              <li>
+                <code>reduce: "name"</code>: Store in a collection with the
+                provided name, and reduce all existing results in that collection.
+              </li>
+            </ul>
+          </p>
+          <p>
+            The full API for map/reduce is as follows.
+          </p>
+          <table class='table table-bordered table-striped'>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Mongoid</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class='doc'>
+                  <code>MapReduce#out</code>
+                  <p class='doc'>
+                    <i>Specify the result output location</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.map_reduce(m, r).out(<span class="key">inline</span>: <span class="integer">1</span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>MapReduce#counts</code>
+                  <p class='doc'>
+                    <i>
+                      Get the count statistics for the map reduce (input, emit,
+                      reduce, count).
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.map_reduce(m, r).out(<span class="key">inline</span>: <span class="integer">1</span>).counts</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>MapReduce#emitted</code>
+                  <p class='doc'>
+                    <i>
+                      Get the number of emits.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.map_reduce(m, r).out(<span class="key">inline</span>: <span class="integer">1</span>).emitted</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>MapReduce#finalize</code>
+                  <p class='doc'>
+                    <i>
+                      Provide a finalize function to run at the end of the job.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>func = <span class="string"><span class="delimiter">%Q{</span><span class="content">&#x000A;  function(key, value) </span><span class="content">{</span><span class="content">&#x000A;    value.extra = true;&#x000A;    return value;&#x000A;  </span><span class="content">}</span><span class="content">&#x000A;</span><span class="delimiter">}</span></span>&#x000A;<span class="constant">Band</span>.map_reduce(m, r).out(<span class="key">inline</span>: <span class="integer">1</span>).finalize(func)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>MapReduce#input</code>
+                  <p class='doc'>
+                    <i>
+                      Get the number of inputs.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.map_reduce(m, r).out(<span class="key">inline</span>: <span class="integer">1</span>).input</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>MapReduce#js_mode</code>
+                  <p class='doc'>
+                    <i>
+                      Execute the map/reduce in jsMode.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.map_reduce(m, r).out(<span class="key">inline</span>: <span class="integer">1</span>).js_mode</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>MapReduce#output</code>
+                  <p class='doc'>
+                    <i>
+                      Get the number of outputs.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.map_reduce(m, r).out(<span class="key">inline</span>: <span class="integer">1</span>).output</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>MapReduce#reduced</code>
+                  <p class='doc'>
+                    <i>
+                      Get the number of reduces.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.map_reduce(m, r).out(<span class="key">inline</span>: <span class="integer">1</span>).reduced</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>MapReduce#scope</code>
+                  <p class='doc'>
+                    <i>
+                      Provide values to set in the global js scope.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.map_reduce(m, r).out(<span class="key">inline</span>: <span class="integer">1</span>).scope(<span class="key">field</span>: <span class="integer">10</span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>MapReduce#time</code>
+                  <p class='doc'>
+                    <i>
+                      Returns the execution time.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.map_reduce(m, r).out(<span class="key">inline</span>: <span class="integer">1</span>).time&#x000A;</pre></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section id='aggregations'>
+          <h2>Aggregations</h2>
+          <p>
+            Mongoid provides convenience methods for simple aggregations, which
+            can be invoked from the class or criteria. Note that with
+            <code>#min</code>, <code>#max</code> and <code>#sum</code>, if a
+            block is provided it behaves just like they would with a Ruby
+            enumerable.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="comment"># Use map/reduce, return a float with the max value.</span>&#x000A;<span class="constant">Band</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">100</span>).max(<span class="symbol">:likes</span>)&#x000A;&#x000A;<span class="comment"># Use enumerable, returning the document with the max value.</span>&#x000A;<span class="constant">Band</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">100</span>).max <span class="keyword">do</span> |a,b|&#x000A;  a.likes &lt;=&gt; b.likes&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>The full API is as follows.</p>
+          <table class='table table-bordered table-striped'>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Mongoid</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#avg</code>
+                  <p class='doc'>
+                    <i>Get the average value for the given field.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.avg(<span class="symbol">:likes</span>)&#x000A;<span class="constant">Band</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">100</span>).avg(<span class="symbol">:likes</span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#max</code>
+                  <p class='doc'>
+                    <i>Get the max value for the given field.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.max(<span class="symbol">:likes</span>)&#x000A;<span class="constant">Band</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">100</span>).max(<span class="symbol">:likes</span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#min</code>
+                  <p class='doc'>
+                    <i>Get the min value for the given field.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.min(<span class="symbol">:likes</span>)&#x000A;<span class="constant">Band</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">100</span>).min(<span class="symbol">:likes</span>)</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>Criteria#sum</code>
+                  <p class='doc'>
+                    <i>Get the sum of all values for a given field.</i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Band</span>.sum(<span class="symbol">:likes</span>)&#x000A;<span class="constant">Band</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">100</span>).sum(<span class="symbol">:likes</span>)&#x000A;</pre></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section id='geo_near'>
+          <h2>Geo Near</h2>
+          <p>
+            Mongoid provides a DSL around MongoDB's <code>$geoNear</code> command.
+          </p>
+          <h3>Execution</h3>
+          <p>
+            You can tell Mongoid off the class or a criteria to perform a $geoNear
+            by calling <code>geo_near</code> and providing an array of
+            <code>[ x, y ]</code> coordinates to search from.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Bar</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">100</span>).geo_near([ <span class="integer">50</span>, <span class="integer">12</span> ]).spherical&#x000A;</pre></div>
+          </div>
+          <p>
+            Just like criteria, <code>geo_near</code> calls are lazily evaluated. So
+            nothing will hit the database until you iterate over the results, or make
+            a call on the wrapper that would need to force a database hit. Note that
+            each instantiated document from a $geoNear query will get a special
+            dynamic attribute <code>geo_near_distance</code> that will be available
+            as long as the document is in memory.
+          </p>
+          <div class="CodeRay">
+            <div class="code"><pre><span class="constant">Bar</span>.where(<span class="symbol">:likes</span>.gt =&gt; <span class="integer">100</span>).geo_near([ <span class="integer">50</span>, <span class="integer">12</span> ]).each <span class="keyword">do</span> |document|&#x000A;  p document.geo_near_distance&#x000A;<span class="keyword">end</span>&#x000A;</pre></div>
+          </div>
+          <p>
+            The full API for $geoNear is as follows.
+          </p>
+          <table class='table table-bordered table-striped'>
+            <thead>
+              <tr>
+                <th>Operation</th>
+                <th>Mongoid</th>
+                <th>Moped</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class='doc'>
+                  <code>GeoNear#average_distance</code>
+                  <p class='doc'>
+                    <i>
+                      Get the average distance of all the documents from the
+                      provided location.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Bar</span>.geo_near([ <span class="integer">50</span>, <span class="integer">13</span> ]).average_distance</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>session.command({&#x000A;  <span class="key">geoNear</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">bars</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">near</span>: [ <span class="integer">50</span>, <span class="integer">13</span> ]&#x000A;})[<span class="string"><span class="delimiter">&quot;</span><span class="content">stats</span><span class="delimiter">&quot;</span></span>][<span class="string"><span class="delimiter">&quot;</span><span class="content">averageDistance</span><span class="delimiter">&quot;</span></span>]</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>GeoNear#distance_multiplier</code>
+                  <p class='doc'>
+                    <i>
+                      Set the distance multiplier for returned distance
+                      calculations.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Bar</span>.geo_near([ <span class="integer">50</span>, <span class="integer">13</span> ]).distance_multiplier(<span class="integer">5012</span>)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>session.command({&#x000A;  <span class="key">geoNear</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">bars</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">near</span>: [ <span class="integer">50</span>, <span class="integer">13</span> ],&#x000A;  <span class="key">distanceMultiplier</span>: <span class="integer">5012</span>&#x000A;})</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>GeoNear#max_distance</code>
+                  <p class='doc'>
+                    <i>
+                      Set the maximum distance to return documents for.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Bar</span>.geo_near([ <span class="integer">50</span>, <span class="integer">13</span> ]).max_distance(<span class="integer">100</span>)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>session.command({&#x000A;  <span class="key">geoNear</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">bars</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">near</span>: [ <span class="integer">50</span>, <span class="integer">13</span> ],&#x000A;  <span class="key">maxDistance</span>: <span class="integer">100</span>&#x000A;})</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>GeoNear#spherical</code>
+                  <p class='doc'>
+                    <i>
+                      Set the calculations to work for spheres.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Bar</span>.geo_near([ <span class="integer">50</span>, <span class="integer">13</span> ]).spherical</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>session.command({&#x000A;  <span class="key">geoNear</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">bars</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">near</span>: [ <span class="integer">50</span>, <span class="integer">13</span> ],&#x000A;  <span class="key">spherical</span>: <span class="predefined-constant">true</span>&#x000A;})</pre></div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td class='doc'>
+                  <code>GeoNear#unique</code>
+                  <p class='doc'>
+                    <i>
+                      Specify whether unique documents should be returned.
+                    </i>
+                  </p>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre><span class="constant">Bar</span>.geo_near([ <span class="integer">50</span>, <span class="integer">13</span> ]).unique(<span class="predefined-constant">false</span>)</pre></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="CodeRay">
+                    <div class="code"><pre>session.command({&#x000A;  <span class="key">geoNear</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">bars</span><span class="delimiter">&quot;</span></span>,&#x000A;  <span class="key">near</span>: [ <span class="integer">50</span>, <span class="integer">13</span> ],&#x000A;  <span class="key">unique</span>: <span class="predefined-constant">false</span>&#x000A;})</pre></div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+    </div>
+  </body>
+</html>
