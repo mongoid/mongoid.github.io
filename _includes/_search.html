@@ -1,0 +1,8 @@
+{{ if site.google_custom_search }}
+<div class="search">
+  <form action="https://www.google.com" method="get">
+    <input type="hidden" value="{{ site.google_custom_search }}" name="cx" />
+    <input class="search" type="text" placeholder="Search ..." name="q" />
+  </form>
+</div>
+{{ endif }}

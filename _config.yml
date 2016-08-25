@@ -1,0 +1,38 @@
+title:
+  long: Mongoid | Mongoid is the officially supported ODM (Object-Document-Mapper) framework for MongoDB in Ruby.
+  short: Mongoid
+locale: en_US
+sass:
+  sass_dir: _sass
+  style: compressed
+gems:
+  - jekyll-sitemap
+kramdown:
+  input: GFM
+owner:
+  name: MongoDB
+  avatar: mongoid.png
+  info:
+  email: mongodb-user@googlegroups.com
+  disqus-shortname:
+  twitter:
+  facebook:
+  google:
+    plus:
+    analytics:
+    verify:
+    ad-client:
+    ad-slot:
+  bing-verify:
+  github: mongoid
+  stackoverflow:
+  linkedin:
+  instagram:
+  lastfm:
+  tumblr:
+  pinterest:
+  foursquare:
+  steam:
+  dribbble:
+  youtube:
+  soundcloud:
