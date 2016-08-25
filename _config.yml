@@ -10,7 +10,7 @@ gems:
 kramdown:
   input: GFM
 owner:
-  name: MongoDB
+  name: Mongoid Community
   avatar: mongoid.png
   info:
   email: mongodb-user@googlegroups.com
