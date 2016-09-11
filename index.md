@@ -12,6 +12,7 @@ We encourage you to move your `mongoid-` projects into [github/mongoid](https://
 ## Notable Projects
 
 * [mongoid-compatibility](https://github.com/mongoid/mongoid-compatibility)
+* [mongoid-slug](https://github.com/mongoid/mongoid-slug)
 * [mongoid_orderable](https://github.com/mongoid/mongoid_orderable)
 * [mongoid-history](https://github.com/mongoid/mongoid-history)
 * [mongoid-locker](https://github.com/mongoid/mongoid-locker)
