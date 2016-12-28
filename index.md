@@ -20,6 +20,7 @@ We encourage you to move your `mongoid-` projects into [github/mongoid](https://
 * [mongoid-tag-collectible](https://github.com/mongoid/mongoid-tag-collectible)
 * [mongoid-cached-json](https://github.com/mongoid/mongoid-cached-json)
 * [mongoid-shell](https://github.com/mongoid/mongoid-shell)
+* [mongo_session_store](https://github.com/mongoid/mongo_session_store)
 
 ## Mongoid References
 
