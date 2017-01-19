@@ -21,11 +21,12 @@ We encourage you to move your `mongoid-` projects into [github/mongoid](https://
 * [mongoid-cached-json](https://github.com/mongoid/mongoid-cached-json)
 * [mongoid-shell](https://github.com/mongoid/mongoid-shell)
 * [mongo_session_store](https://github.com/mongoid/mongo_session_store)
+* [mongoid_fulltext](https://github.com/mongoid/mongoid_fulltext)
 
 ## Mongoid References
 
 * [Latest](http://mongoid.org)
-* [Mongoid 5](http://mongoid.org)
+* [Mongoid 5 and 6](http://mongoid.org)
 * [Mongoid 4](/old/en/mongoid/index.html)
 * [Mongoid 3](/old/en/mongoid/v3/index.html)
 
