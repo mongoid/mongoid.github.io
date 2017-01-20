@@ -22,6 +22,7 @@ We encourage you to move your `mongoid-` projects into [github/mongoid](https://
 * [mongoid-shell](https://github.com/mongoid/mongoid-shell)
 * [mongo_session_store](https://github.com/mongoid/mongo_session_store)
 * [mongoid_fulltext](https://github.com/mongoid/mongoid_fulltext)
+* [mongoid-collection-snapshot](https://github.com/mongoid/mongoid-collection-snapshot)
 
 ## Mongoid References
 
