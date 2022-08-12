@@ -5,7 +5,7 @@
     <meta content='A Ruby ODM for MongoDB' name='description'>
     <meta content='mongoid, mongodb, ruby, rails, odm, durran jordan' name='keywords'>
     <!--[if lt IE 9]>
-      <script src='http://html5shiv.googlecode.com/svn/trunk/html5.js'></script>
+      <script src='html5shiv.googlecode.com/svn/trunk/html5.js'></script>
     <![endif]-->
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0' name='viewport'>
     <link href="/old/stylesheets/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css" />
@@ -118,9 +118,9 @@
             data types used in the MongoDB wire protocol. All data sent via the wire protocol,
             as well as the BSON specification itself use little endian and the ability to decode
             32 bit and 64 bit signed longs and ints did not arrive in Ruby until this
-            version. See <a href="http://ruby-doc.org/core-1.9.3/String.html#method-i-unpack">
+            version. See <a href="ruby-doc.org/core-1.9.3/String.html#method-i-unpack">
             <code>String#unpack</code></a> and
-            <a href="http://www.mongodb.org/display/DOCS/Mongo+Wire+Protocol">Mongo Wire Protocol</a>
+            <a href="www.mongodb.org/display/DOCS/Mongo+Wire+Protocol">Mongo Wire Protocol</a>
             for more detailed information.
           </p>
           <p>
@@ -134,7 +134,7 @@
             run on 1.9.3 in your applications. First, you will need to upgrade to the
             Cedar stack, and then you will need to specify 1.9.3 as your Ruby in your
             application's <code>Gemfile</code>.
-            See <a href="http://blog.heroku.com/archives/2012/5/9/multiple_ruby_version_support_on_heroku/">
+            See <a href="blog.heroku.com/archives/2012/5/9/multiple_ruby_version_support_on_heroku/">
             Multiple Rubies on Heroku</a> for instructions on making this migration.
           </p>
         </section>
@@ -152,8 +152,8 @@
             of documents) can experience count queries in the neighborhood of seconds,
             which can easily cripple application performance.
             <ul>
-              <li>See: <a href="http://jira.mongodb.org/browse/SERVER-1752">SERVER-1752</a></li>
-              <li>See: <a href="http://jira.mongodb.org/browse/SERVER-2274">SERVER-2274</a></li>
+              <li>See: <a href="jira.mongodb.org/browse/SERVER-1752">SERVER-1752</a></li>
+              <li>See: <a href="jira.mongodb.org/browse/SERVER-2274">SERVER-2274</a></li>
             </ul>
           </p>
         </section>
@@ -181,7 +181,7 @@
             embedded documents in another process. If you were to do so, Mongoid would
             be updating the incorrect field. It is recommended until this is fixed that
             you sort your documents in memory and leave the underlying order untouched.
-            See <a href="http://jira.mongodb.org/browse/SERVER-831">SERVER-831</a> for
+            See <a href="jira.mongodb.org/browse/SERVER-831">SERVER-831</a> for
             more information.
           </p>
         </section>

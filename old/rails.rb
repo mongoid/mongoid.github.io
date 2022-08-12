@@ -11,7 +11,7 @@ else
 end
 
 file 'Gemfile', <<-GEMS
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 gem "rails",    "3.0.0.rc"
 gem "bson_ext", "1.0.4"
 gem "mongoid",  "2.0.0.beta.16"
@@ -37,8 +37,8 @@ run 'rails g mongoid:config'
 if jquery_flag
   # Remove default javascript files and initialize jQuery in application.js
   run "rm public/old/javascripts/*.js"
-  run "curl -L http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js > public/old/javascripts/jquery.js"
-  run "curl -L http://github.com/rails/jquery-ujs/raw/master/src/rails.js > public/old/javascripts/rails.js"
+  run "curl -L https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js > public/old/javascripts/jquery.js"
+  run "curl -L https://github.com/rails/jquery-ujs/raw/master/src/rails.js > public/old/javascripts/rails.js"
 end
 
 config = <<-CONFIG

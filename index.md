@@ -26,8 +26,8 @@ We encourage you to move your `mongoid-` projects into [github/mongoid](https://
 
 ## Mongoid References
 
-* [Latest](http://mongoid.org)
-* [Mongoid 5 and 6](http://mongoid.org)
+* [Latest](https://mongoid.org)
+* [Mongoid 5 and 6](https://mongoid.org)
 * [Mongoid 4](/old/en/mongoid/index.html)
 * [Mongoid 3](/old/en/mongoid/v3/index.html)
 
