@@ -2,6 +2,7 @@ title:
   long: Mongoid | Mongoid is the officially supported ODM (Object-Document-Mapper) framework for MongoDB in Ruby.
   short: Mongoid
 locale: en_US
+url: https://mongoid.github.io
 sass:
   sass_dir: _sass
   style: compressed
