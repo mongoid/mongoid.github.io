@@ -1,7 +1,7 @@
 Contributing
 ============
 
-The http://mongoid.github.io site is work of [many contributors](https://github.com/mongoid/mongoid.github.io/graphs/contributors). You're encouraged to submit [pull requests](https://github.com/mongoid/mongoid.github.io/pulls) and [propose topics](https://github.com/mongoid/mongoid.github.io/issues). When in doubt, ask a question in the [MongoDB User Group](http://groups.google.com/group/mongodb-user).
+The https://mongoid.github.io site is work of [many contributors](https://github.com/mongoid/mongoid.github.io/graphs/contributors). You're encouraged to submit [pull requests](https://github.com/mongoid/mongoid.github.io/pulls) and [propose topics](https://github.com/mongoid/mongoid.github.io/issues). When in doubt, ask a question in the [MongoDB User Group](https://groups.google.com/group/mongodb-user).
 
 #### Fork the Project
 
