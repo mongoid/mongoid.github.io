@@ -34,6 +34,8 @@ bundle exec jekyll serve
 
 Navigate to http://localhost:4000.
 
+GitHub Actions builds the site on Ruby 4.0 for pushes and pull requests using the GitHub Pages dependency bundle. To run the same check locally, use `bundle exec jekyll build`. This is a static documentation site; it does not require a MongoDB server or a Mongoid compatibility matrix.
+
 #### Add Content
 
 Create markdown content.
