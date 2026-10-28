@@ -1,7 +1,7 @@
 Contributing
 ============
 
-The https://mongoid.github.io site is work of [many contributors](https://github.com/mongoid/mongoid.github.io/graphs/contributors). You're encouraged to submit [pull requests](https://github.com/mongoid/mongoid.github.io/pulls) and [propose topics](https://github.com/mongoid/mongoid.github.io/issues). When in doubt, ask a question in the [MongoDB User Group](https://groups.google.com/group/mongodb-user).
+The https://mongoid.github.io site is work of [many contributors](https://github.com/mongoid/mongoid.github.io/graphs/contributors). You're encouraged to submit [pull requests](https://github.com/mongoid/mongoid.github.io/pulls) and [propose topics](https://github.com/mongoid/mongoid.github.io/issues). Ask Mongoid usage questions in the [MongoDB Community Forums](https://www.mongodb.com/community/forums/tag/mongoid-odm).
 
 #### Fork the Project
 
@@ -25,10 +25,11 @@ git checkout -b my-feature-branch
 
 #### Bundle Install and Run Jekyll
 
-Ensure that you can build the project and run tests.
+Use Ruby 3.3 or newer and the committed GitHub Pages-compatible bundle. Ensure that the production site builds before submitting a pull request.
 
 ```
 bundle install
+JEKYLL_ENV=production bundle exec jekyll build --strict_front_matter
 bundle exec jekyll serve
 ```
 
@@ -37,6 +38,14 @@ Navigate to http://localhost:4000.
 #### Add Content
 
 Create markdown content.
+
+#### Maintain the Homepage
+
+Update release numbers in `index.md` using [RubyGems](https://rubygems.org/gems/mongoid/versions) and [upstream releases](https://github.com/mongodb/mongoid/releases), and refresh the checked date. Distinguish the current major from the previous major without implying that they have the same support policy. Link to MongoDB's official documentation and compatibility tables rather than duplicating a compatibility matrix here.
+
+List only non-archived projects with recent substantive default-branch maintenance or an active modernization pull request. Check the actual code and maintenance activity; a recent repository `updated_at` or incidental branch push alone is not sufficient. Keep descriptions concise, use canonical repository links, and let each project document its supported versions. Remove dormant projects from the homepage without deleting their repositories or historical documentation.
+
+Preserve existing paths under `old/` and keep those references clearly labeled as historical. Keep Markdown paragraphs on one line.
 
 #### Commit Changes
 
@@ -71,15 +80,10 @@ If you've been working on a change for a while, rebase with upstream/master.
 ```
 git fetch upstream
 git rebase upstream/master
-git push origin my-feature-branch -f
+git push --force-with-lease origin my-feature-branch
 ```
 
-Amend your previous commit and force push the changes.
-
-```
-git commit --amend
-git push origin my-feature-branch -f
-```
+Keep the pull request focused and never force-push the default branch.
 
 #### Be Patient
 
