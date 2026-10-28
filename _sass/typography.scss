@@ -144,3 +144,17 @@ pre {
 	line-height: 1.5;
 	overflow-x: auto;
 }
+
+.article-wrap > table {
+	margin-bottom: $indent-var;
+	table-layout: fixed;
+
+	th, td {
+		padding: .75em 1em;
+		border-bottom: 1px solid lighten($border-color, 60);
+		text-align: left;
+		vertical-align: top;
+		line-height: 1.5;
+		overflow-wrap: anywhere;
+	}
+}

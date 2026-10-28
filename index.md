@@ -12,7 +12,7 @@ Mongoid is the officially supported object-document mapper (ODM) for MongoDB in 
 Latest stable releases, checked October 28, 2026:
 
 | Release line | Latest release | Release notes |
-|---|---|---|
+|:---:|:---:|:---:|
 | Current major: 9.x | [9.1.1](https://rubygems.org/gems/mongoid/versions/9.1.1) | [v9.1.1](https://github.com/mongodb/mongoid/releases/tag/v9.1.1) |
 | Previous major: 8.x | [8.1.13](https://rubygems.org/gems/mongoid/versions/8.1.13) | [v8.1.13](https://github.com/mongodb/mongoid/releases/tag/v8.1.13) |
 
